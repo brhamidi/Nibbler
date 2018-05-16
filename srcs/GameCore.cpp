@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/16 17:37:42 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/16 18:39:27 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,27 @@ GameCore::~GameCore(void)
 
 GameCore::GameCore(short width, short height)
 {
-	_data._score(0), _data._width(width), _data._height(height),
-		_data._snake({{width / 2, height / 2}, {width / 2 + 1, height / 2},
-				{width / 2 + 2, height / 2}, {width / 2 + 3, height / 2}})
-	if (this->_data._width < 10)
+	if (width < 10)
 		throw "width too small";
-	else if (this->_data._height < 10)
+	else if (height < 10)
 		throw "height too small";
+	this->_data._score = 0;
+	this->_data._width = width;
+	this->_data._height = height;
+	this->_snake = {
+			{width / 2, height / 2}, {width / 2 + 1, height / 2},
+			{width / 2 + 2, height / 2}, {width / 2 + 3, height / 2}
+		};
 	this->_data._map = new short * [this->_data._height];
 	for (auto h = 0; h < this->_data._height; h++)
 		this->_data._map[h] = new short[this->_data._width]();
 	_buildTheWall();
+	_popFood();
+	this->_data._map[this->_data._height / 2][this->_data._width / 2] = 2;
+	this->_data._map[this->_data._height / 2][this->_data._width / 2 + 1] = 2;
+	this->_data._map[this->_data._height / 2][this->_data._width / 2 + 2] = 2;
+	this->_data._map[this->_data._height / 2][ this->_data._width / 2 + 3] = 2;
+
 	_printMap();
 	return ;
 }
@@ -67,5 +77,26 @@ void	GameCore::_buildTheWall(void)
 	{
 		this->_data._map[i][0] = 1;
 		this->_data._map[i][this->_data._width - 1] = 1;
+	}
+}
+/*
+void	GameCore::_moveSnake(char c)
+{
+	
+}
+*/
+void	GameCore::_popFood(void)
+{
+	std::srand(std::time(nullptr));
+	while (1)
+	{
+		short x = std::rand() % this->_data._width + 1;
+		short y = std::rand() % this->_data._height + 1;
+
+		if (this->_data._map[y][x] == 0)
+		{
+			this->_data._map[y][x] = 3;
+			return ;
+		}
 	}
 }
