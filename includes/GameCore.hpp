@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/15 19:30:01 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/16 17:10:18 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,27 @@
 # define GAMECORE_HPP
 
 #include <list>
-#include <array>
+#include <iostream>
 
 class GameCore
 {
 	public:
-		virtual	~GameCore(void);
-		static GameCore const &	getGame(void);
+		~GameCore(void);
+		static GameCore const &	getGame(short, short);
 
 	private:
-		GameCore(void);
 		GameCore(short, short);
-		void	_popFood(void);
+		GameCore(void);
 		void	_buildTheWall(void);
+		void	_printMap(void);
 
-		long long	_score;
-		short		_width;
-		short		_height;
-		std::list< std::pair< short, short > > _snake;
-		std::list< std::pair< short, short > > _food;
-		std::list< std::pair< short, short > > _obstacle;
-
-		std::array< std::array< char > > _map;
+		long long								_score;
+		const short								_width;
+		const short								_height;
+		std::list< std::pair< short, short > >	_snake;
+		std::list< std::pair< short, short > >	_food;
+		std::list< std::pair< short, short > >	_obstacle;
+		short ** 								_map;
 };
 
 #endif
