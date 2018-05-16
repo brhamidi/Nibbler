@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/16 17:12:27 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/16 17:37:42 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,24 @@
 
 GameCore::~GameCore(void)
 {
-	for (auto h = 0; h < this->_height; h++)
-		delete [] this->_map[h];
-	delete [] this->_map;
+	for (auto h = 0; h < this->_data._height; h++)
+		delete [] this->_data._map[h];
+	delete [] this->_data._map;
 	return ;
 }
 
 GameCore::GameCore(short width, short height)
-	: _score(0), _width(width), _height(height),
-		_snake({{width / 2, height / 2}, {width / 2 + 1, height / 2},
-				{width / 2 + 2, height / 2}, {width / 2 + 3, height / 2}})
 {
-	if (this->_width < 10)
+	_data._score(0), _data._width(width), _data._height(height),
+		_data._snake({{width / 2, height / 2}, {width / 2 + 1, height / 2},
+				{width / 2 + 2, height / 2}, {width / 2 + 3, height / 2}})
+	if (this->_data._width < 10)
 		throw "width too small";
-	else if (this->_height < 10)
+	else if (this->_data._height < 10)
 		throw "height too small";
-	this->_map = new short * [this->_height];
+	this->_data._map = new short * [this->_data._height];
+	for (auto h = 0; h < this->_data._height; h++)
+		this->_data._map[h] = new short[this->_data._width]();
 	_buildTheWall();
 	_printMap();
 	return ;
@@ -45,27 +47,25 @@ GameCore const &	GameCore::getGame(short width, short height)
 
 void	GameCore::_printMap(void)
 {
-	for (auto h = 0; h < this->_height; h++)
+	for (auto h = 0; h < this->_data._height; h++)
 	{
 		std::cout << std::endl;
-		for (auto w = 0; w < this->_width; w++)
-			std::cout << this->_map[h][w];
+		for (auto w = 0; w < this->_data._width; w++)
+			std::cout << this->_data._map[h][w];
 	}
 	std::cout << std::endl;
 }
 
 void	GameCore::_buildTheWall(void)
 {
-	for (auto h = 0; h < this->_height; h++)
-		this->_map[h] = new short[this->_width]();
-	for (int i = 0; i < this->_width; i++)
+	for (int i = 0; i < this->_data._width; i++)
 	{
-		this->_map[0][i] = 1;
-		this->_map[this->_height - 1][i] = 1;
+		this->_data._map[0][i] = 1;
+		this->_data._map[this->_data._height - 1][i] = 1;
 	}
-	for (int i = 0; i < this->_height; i++)
+	for (int i = 0; i < this->_data._height; i++)
 	{
-		this->_map[i][0] = 1;
-		this->_map[i][this->_width - 1] = 1;
+		this->_data._map[i][0] = 1;
+		this->_data._map[i][this->_data._width - 1] = 1;
 	}
 }
