@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/16 18:39:27 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/17 12:47:44 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ GameCore::GameCore(short width, short height)
 		this->_data._map[h] = new short[this->_data._width]();
 	_buildTheWall();
 	_popFood();
-	this->_data._map[this->_data._height / 2][this->_data._width / 2] = 2;
-	this->_data._map[this->_data._height / 2][this->_data._width / 2 + 1] = 2;
-	this->_data._map[this->_data._height / 2][this->_data._width / 2 + 2] = 2;
-	this->_data._map[this->_data._height / 2][ this->_data._width / 2 + 3] = 2;
+	this->_data._map[this->_data._height / 2][this->_data._width / 2] = eNum::Snake;
+	this->_data._map[this->_data._height / 2][this->_data._width / 2 + 1] = eNum::Snake;
+	this->_data._map[this->_data._height / 2][this->_data._width / 2 + 2] = eNum::Snake;
+	this->_data._map[this->_data._height / 2][ this->_data._width / 2 + 3] = eNum::Snake;
 
 	_printMap();
 	return ;
@@ -55,7 +55,7 @@ GameCore const &	GameCore::getGame(short width, short height)
 	return g;
 }
 
-void	GameCore::_printMap(void)
+void	GameCore::_printMap(void) const
 {
 	for (auto h = 0; h < this->_data._height; h++)
 	{
@@ -70,13 +70,13 @@ void	GameCore::_buildTheWall(void)
 {
 	for (int i = 0; i < this->_data._width; i++)
 	{
-		this->_data._map[0][i] = 1;
-		this->_data._map[this->_data._height - 1][i] = 1;
+		this->_data._map[0][i] = eNum::Wall;
+		this->_data._map[this->_data._height - 1][i] = eNum::Wall;
 	}
 	for (int i = 0; i < this->_data._height; i++)
 	{
-		this->_data._map[i][0] = 1;
-		this->_data._map[i][this->_data._width - 1] = 1;
+		this->_data._map[i][0] = eNum::Wall;
+		this->_data._map[i][this->_data._width - 1] = eNum::Wall;
 	}
 }
 /*
@@ -85,18 +85,27 @@ void	GameCore::_moveSnake(char c)
 	
 }
 */
+bool GameCore::_findPos(short y, short x, short limitY, short limitX)
+{
+	for (; y < limitY; y++)
+	{
+		for ( ; x < limitX; x++)
+			if (_data._map[y][x] == 0)
+			{
+				_data._map[y][x] = eNum::Food;
+				return true;
+			}
+		x = 0;
+	}
+	return false;
+}
+
 void	GameCore::_popFood(void)
 {
-	std::srand(std::time(nullptr));
-	while (1)
-	{
-		short x = std::rand() % this->_data._width + 1;
-		short y = std::rand() % this->_data._height + 1;
+	short x = std::rand() % this->_data._width + 1;
+	short y = std::rand() % this->_data._height + 1;
 
-		if (this->_data._map[y][x] == 0)
-		{
-			this->_data._map[y][x] = 3;
-			return ;
-		}
-	}
+	if (_findPos(y, x, this->_data._height, this->_data._width) == false)
+		if (_findPos(0, 0, this->_data._height, this->_data._width) == false)
+			std::cout << "Winner !" << std::endl;
 }
