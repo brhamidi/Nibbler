@@ -6,7 +6,11 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/05/17 12:47:39 by msrun            ###   ########.fr       */
+=======
+/*   Updated: 2018/05/17 12:49:05 by bhamidi          ###   ########.fr       */
+>>>>>>> 40a456627306798455334ffeaac80dcfff8cf21e
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +19,13 @@
 
 int		main(void)
 {
+<<<<<<< HEAD
 	GameCore & core = GameCore::getGame(200, 30);
+=======
+	std::srand(std::time(nullptr));
+
+	GameCore const & core = GameCore::getGame(200, 30);
+>>>>>>> 40a456627306798455334ffeaac80dcfff8cf21e
 	(void)core;
 
 	initscr();				/* start the curses mode */

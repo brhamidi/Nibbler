@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/17 12:35:32 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/17 12:54:39 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ struct Data
 
 };
 
+enum eNum
+{
+	Blank, Wall, Snake, Food
+};
+
 class GameCore
 {
 	public:
@@ -35,9 +40,10 @@ class GameCore
 	private:
 		GameCore(short, short);
 		GameCore(void);
+		bool	_findPos(short, short, short, short);
 		void	_buildTheWall(void);
 		void	_popFood(void);
-		void	_printMap(void);
+		void	_printMap(void) const;
 
 		std::list< std::pair< short, short > >	_snake;
 		std::list< std::pair< short, short > >	_food;
