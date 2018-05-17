@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/16 18:37:05 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/17 12:35:32 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ class GameCore
 {
 	public:
 		~GameCore(void);
-		static GameCore const &	getGame(short, short);
+		static GameCore &	getGame(short, short);
+		void	moveSnake(int);
 
 	private:
 		GameCore(short, short);

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/16 18:39:27 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/17 12:50:45 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ GameCore::GameCore(short width, short height)
 	this->_data._map[this->_data._height / 2][this->_data._width / 2 + 2] = 2;
 	this->_data._map[this->_data._height / 2][ this->_data._width / 2 + 3] = 2;
 
-	_printMap();
+	//_printMap();
 	return ;
 }
 
-GameCore const &	GameCore::getGame(short width, short height)
+GameCore &	GameCore::getGame(short width, short height)
 {
 	static	GameCore g = GameCore(width, height);
 
@@ -79,12 +79,31 @@ void	GameCore::_buildTheWall(void)
 		this->_data._map[i][this->_data._width - 1] = 1;
 	}
 }
-/*
-void	GameCore::_moveSnake(char c)
+
+void	GameCore::moveSnake(int input)
 {
-	
+	std::cout << input << std::endl;
+	switch(input)
+	{
+		case KEY_UP:
+			mvup();
+			break;
+		case KEY_DOWN:
+			mvdown();
+			break;
+		case KEY_LEFT:
+			mvleft();
+			break;
+		case KEY_RIGHT:
+			mvright();
+			break;
+		case 32:
+			this->attack(list);
+		default:
+			break;
+	}
 }
-*/
+
 void	GameCore::_popFood(void)
 {
 	std::srand(std::time(nullptr));
