@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 17:02:16 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:47:00 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ bool GameCore::moveSnake(int input)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-
+	if (input == eDir::Exit)
+		input = this->_direction;
 	if (input != -1)
 	{
 		if(input % 2 != this->_direction % 2)

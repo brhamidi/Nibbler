@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:50:07 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 18:01:00 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:14:37 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,11 @@ class Ncurses : public IGraphicLib
 		void	_stop(void);
 
 };
+
+extern "C"
+{
+	IGraphicLib	*createGraphicLib(void);
+	void		deleteGraphicLib(IGraphicLib *);
+}
 
 #endif

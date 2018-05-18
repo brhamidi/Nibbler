@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/18 17:40:10 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/18 18:58:10 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ SRC_PATH= srcs/
 OBJ_PATH= obj/
 INCLUDE_PATH= includes/
 
-OBJ=GameCore.o main.o Ncurses.o
+OBJ=GameCore.o main.o
 
-INCLUDE=GameCore.hpp Ncurses.hpp IGraphicLib.hpp
+INCLUDE=GameCore.hpp IGraphicLib.hpp
 
 OBJS=$(addprefix $(OBJ_PATH), $(OBJ))
 INCLUDES=$(addprefix $(INCLUDE_PATH), $(INCLUDE))
@@ -42,6 +42,9 @@ clean:
 
 fclean : clean
 	rm -f $(NAME)
+
+lib :
+	$(CXX) $(CXXFLAGS) -shared -fPIC -o Ncurses.so -lncurses -std=c++11 srcs/Ncurses.cpp -I includes
 
 re : fclean all
 

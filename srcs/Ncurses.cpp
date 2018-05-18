@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 18:02:54 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:59:10 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ eDir	Ncurses::getEvent(void) const
 	{
 		tmp = direction;
 		if (c == eDir::Exit)
+		{
+			flushinp();
 			return eDir::Exit;
+		}
 		switch(c)
 		{
 			case KEY_UP:
@@ -94,4 +97,14 @@ eDir	Ncurses::getEvent(void) const
 	}
 	flushinp();
 	return direction;
+}
+
+IGraphicLib	*createGraphicLib(void)
+{
+	return new Ncurses();
+}
+
+void	deleteGraphicLib(IGraphicLib *graphicLib)
+{
+	delete graphicLib;
 }
