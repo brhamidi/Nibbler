@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 13:01:24 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/18 14:10:10 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class GameCore
 		static GameCore &	getGame(short, short);
 		bool	moveSnake(int);
 		void	_printMap(void) const;
+		Data &	getData(void);
 
 	private:
 		GameCore(short, short);

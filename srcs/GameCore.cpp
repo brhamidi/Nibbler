@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 14:01:15 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/18 14:10:07 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ GameCore &	GameCore::getGame(short width, short height)
 	static	GameCore g = GameCore(width, height);
 
 	return g;
+}
+
+Data &	GameCore::getData(void)
+{
+	return this->_data;
 }
 
 void	GameCore::_printMap(void) const
