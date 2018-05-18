@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/16 19:38:26 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/18 14:00:17 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ INCLUDES=$(addprefix $(INCLUDE_PATH), $(INCLUDE))
 all: $(NAME)
 
 $(NAME): setup $(OBJS)
-	$(CXX) $(OBJS) $(CXXFLAGS) -o $@
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $@ -lncurses
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.$(FILE_TYPE) $(INCLUDES) Makefile
 	$(CXX) $(CXXFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
