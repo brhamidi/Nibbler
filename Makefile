@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/18 14:00:17 by msrun            ###   ########.fr        #
+#    Updated: 2018/05/18 15:35:28 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ SRC_PATH= srcs/
 OBJ_PATH= obj/
 INCLUDE_PATH= includes/
 
-OBJ=GameCore.o main.o
+OBJ=GameCore.o main.o Ncurses.o
 
-INCLUDE=GameCore.hpp
+INCLUDE=GameCore.hpp Ncurses.hpp
 
 OBJS=$(addprefix $(OBJ_PATH), $(OBJ))
 INCLUDES=$(addprefix $(INCLUDE_PATH), $(INCLUDE))

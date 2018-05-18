@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 14:10:07 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/18 17:02:16 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ GameCore::GameCore(short width, short height) : _fed(false), _direction(3)
 	_buildTheWall();
 	_popFood();
 	for(auto corps: this->_snake)
-		this->_updateSnake(corps, true);
+		this->_updateSnake(corps, eNum::Snake);
 	return ;
 }
 
@@ -63,6 +63,8 @@ void	GameCore::_printMap(void) const
 		std::cout << std::endl;
 		for (auto w = 0; w < this->_data._width; w++)
 		{
+			if (_data._map[h][w] == eNum::Head )
+				std::cout << CYAN << "  " << RESET;
 			if (_data._map[h][w] == eNum::Snake )
 				std::cout << GREEN << "  " << RESET;
 			if (_data._map[h][w] == eNum::Food )
@@ -120,11 +122,12 @@ bool GameCore::moveSnake(int input)
 	}
 
 	this->_snake.push_front(newHead);
-	this->_updateSnake(*(this->_snake.begin()), true);
+	this->_updateSnake( * (this->_snake.begin()), eNum::Head );
+	this->_updateSnake( * std::next(this->_snake.begin()) , eNum::Snake );
 
 	if (this->_fed == false)
 	{
-		this->_updateSnake(*(std::next(this->_snake.end(), -1)), false);
+		this->_updateSnake(*(std::next(this->_snake.end(), -1)), eNum::Blank);
 		this->_snake.pop_back();
 	}
 	else
@@ -134,14 +137,11 @@ bool GameCore::moveSnake(int input)
 	return true;
 }
 
-void	GameCore::_updateSnake(std::pair<short, short> & _snakePos, bool update)
+void	GameCore::_updateSnake(std::pair<short, short> & _snakePos, eNum form)
 {
 	if (_snakePos.second < this->_data._width && _snakePos.second >= 0 &&
 		_snakePos.first < this->_data._height && _snakePos.first >= 0 )
-	{
-		this->_data._map[_snakePos.first][_snakePos.second] =
-			(update ? eNum::Snake : eNum::Blank);
-	}
+		this->_data._map[_snakePos.first][_snakePos.second] = form;
 }
 
 bool GameCore::_findPos(short y, short x, short limitY, short limitX)

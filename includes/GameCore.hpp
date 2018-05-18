@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 14:10:10 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/18 17:07:00 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 
 #include <list>
 #include <iostream>
-
-struct Data
-{
-	long long								_score;
-	short									_width;
-	short									_height;
-	short ** 								_map;
-
-};
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[40m"      /* Black */
@@ -35,9 +26,23 @@ struct Data
 #define CYAN    "\033[46m"      /* Cyan */
 #define WHITE   "\033[47m"      /* White */
 
+struct Data
+{
+	long long	_score;
+	short		_width;
+	short		_height;
+	short ** 	_map;
+
+};
+
+enum eDir
+{
+	Up = 0, Right, Down, Left, Exit = 32
+};
+
 enum eNum
 {
-	Blank, Wall, Snake, Food
+	Blank = 0, Wall, Food, Snake, Head
 };
 
 class GameCore
@@ -55,10 +60,9 @@ class GameCore
 		bool	_findPos(short, short, short, short);
 		void	_buildTheWall(void);
 		void	_popFood(void);
-		void	_updateSnake(std::pair<short, short> &, bool);
+		void	_updateSnake(std::pair<short, short> &, eNum);
 
 		std::list< std::pair< short, short > >	_snake;
-		std::list< std::pair< short, short > >	_food;
 		bool	_fed;
 		int		_direction;
 		Data	_data;
