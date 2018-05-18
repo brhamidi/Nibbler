@@ -6,13 +6,28 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 17:01:09 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:02:54 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Ncurses.hpp"
 
+Ncurses::~Ncurses(void)
+{
+	this->_stop();
+}
+
 Ncurses::Ncurses(void)
+{
+	this->_init();
+}
+
+void	Ncurses::_stop(void)
+{
+	endwin();
+}
+
+void	Ncurses::_init(void) 
 {
 	int row,col;
 
@@ -31,24 +46,31 @@ Ncurses::Ncurses(void)
 	init_pair(eNum::Head + 1, COLOR_YELLOW, COLOR_YELLOW);
 }
 
-Ncurses::~Ncurses(void)
+void	Ncurses::render(Data const & data) const
 {
+	for (auto h = 0; h < data._height; h++)
+	{
+		for (auto w = 0; w < data._width; w++)
+		{
+			attron(COLOR_PAIR(data._map[h][w] + 1));
+			mvprintw(h, w * 2, "  ");
+		}
+	}
+	refresh();
 }
 
-int		Ncurses::printMap(Data & data)
+eDir	Ncurses::getEvent(void) const
 {
-	static int	direction = eDir::Left;
+	static eDir	direction = eDir::Left;
+	int			c = -1;
+	eDir		tmp;
 
-	int	ctrash = -1;
-	while((ctrash = getch()) != ERR)
+	while((c = getch()) != ERR)
 	{
-		int tmp = direction;
-		if (ctrash == eDir::Exit)
-		{
-			endwin();
-			return -2;
-		}
-		switch(ctrash)
+		tmp = direction;
+		if (c == eDir::Exit)
+			return eDir::Exit;
+		switch(c)
 		{
 			case KEY_UP:
 				direction = eDir::Up;
@@ -71,14 +93,5 @@ int		Ncurses::printMap(Data & data)
 			break;
 	}
 	flushinp();
-	for (auto h = 0; h < data._height; h++)
-	{
-		for (auto w = 0; w < data._width; w++)
-		{
-			attron(COLOR_PAIR(data._map[h][w] + 1));
-			mvprintw(h, w * 2, "  ");
-		}
-	}
-	refresh();
 	return direction;
 }

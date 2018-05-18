@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/18 16:54:04 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:05:07 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <sys/time.h>
 #include <ctime>
 #include "Ncurses.hpp"
+#include "IGraphicLib.hpp"
 
 int		main(void)
 {
@@ -22,22 +23,27 @@ int		main(void)
 	GameCore & core = GameCore::getGame(150, 50);
 	std::srand(std::time(nullptr));
 
-	Ncurses ncur;
-	int direction = ncur.printMap(core.getData());
+	eDir	direction;
+	IGraphicLib	*ncur = new Ncurses();
 	while (1)
 	{
 		gettimeofday(&start, NULL);
 
+		direction = ncur->getEvent();
+
+		if (direction == eDir::Exit)
+		{
+			delete ncur;
+			break ;
+		}
 		if (!(core.moveSnake(direction)))
 		{
+			delete ncur;
 			std::cout << "Dead\n";
-			endwin();
 			break;
 		}
 
-		direction = ncur.printMap(core.getData());
-		if (direction == -2)
-			break ;
+		ncur->render( core.getData() );
 
 		gettimeofday(&stop, NULL);
 		while (std::abs(stop.tv_usec - start.tv_usec) < 100000)

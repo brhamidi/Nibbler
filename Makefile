@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/18 15:35:28 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/18 17:40:10 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ INCLUDE_PATH= includes/
 
 OBJ=GameCore.o main.o Ncurses.o
 
-INCLUDE=GameCore.hpp Ncurses.hpp
+INCLUDE=GameCore.hpp Ncurses.hpp IGraphicLib.hpp
 
 OBJS=$(addprefix $(OBJ_PATH), $(OBJ))
 INCLUDES=$(addprefix $(INCLUDE_PATH), $(INCLUDE))

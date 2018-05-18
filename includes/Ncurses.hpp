@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:50:07 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 16:33:13 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:01:00 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,20 @@
 
 # include <ncurses.h>
 # include "GameCore.hpp"
+# include "IGraphicLib.hpp"
 
-class Ncurses
+class Ncurses : public IGraphicLib
 {
 	public:
 		Ncurses(void);
 		~Ncurses(void);
-		Ncurses(Ncurses const &);
-		Ncurses &	operator=(Ncurses const &);
-		int	printMap(Data &);
+
+		void	render(Data const &) const;
+		eDir	getEvent(void) const;
 
 	private:
+		void	_init(void);
+		void	_stop(void);
 
 };
 
