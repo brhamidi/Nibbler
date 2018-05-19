@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 18:47:00 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/19 14:23:47 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ GameCore::~GameCore(void)
 	return ;
 }
 
-GameCore::GameCore(short width, short height) : _fed(false), _direction(3)
+GameCore::GameCore(short width, short height) : _fed(false), _direction(eDir::Left)
 {
 	if (width < 10)
 		throw "width too small";
@@ -92,34 +92,37 @@ void	GameCore::_buildTheWall(void)
 	}
 }
 
-bool GameCore::moveSnake(int input)
+bool GameCore::moveSnake(eDir input)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
 	if (input == eDir::Exit)
 		input = this->_direction;
-	if (input != -1)
+	if (input != eDir::Error)
 	{
-		if(input % 2 != this->_direction % 2)
+		if(input % 2 != this->_direction % 2) //check if direction is not opposite
 			this->_direction = input;
 	}
 
-	bool tmp = false;
+	bool onFood = false;
 	std::pair <short, short> newHead =
-	{this->_snake.begin()->first + getDirection[this->_direction].first,
-	   	this->_snake.begin()->second + getDirection[this->_direction].second};
+	{
+		this->_snake.begin()->first + getDirection[this->_direction].first,
+	   	this->_snake.begin()->second + getDirection[this->_direction].second
+	};
 
 	if (newHead.second < this->_data._width && newHead.second >= 0 &&
-		newHead.first < this->_data._height && newHead.first >= 0 &&
-		(this->_data._map[newHead.first][newHead.second] == eNum::Wall ||
-		this->_data._map[newHead.first][newHead.second] == eNum::Snake))
-		return false;
-	if (newHead.second < this->_data._width && newHead.second >= 0 &&
-		newHead.first < this->_data._height && newHead.first >= 0 &&
-		this->_data._map[newHead.first][newHead.second] == eNum::Food)
+		newHead.first < this->_data._height && newHead.first >= 0)
 	{
-		this->_popFood();
-		tmp = true;
+		if ( this->_data._map[newHead.first][newHead.second] == eNum::Wall
+			|| this->_data._map[newHead.first][newHead.second] == eNum::Snake )
+			return false;
+		if ( this->_data._map[newHead.first][newHead.second] == eNum::Food )
+		{
+			this->_popFood();
+			onFood = true;
+		}
 	}
 
 	this->_snake.push_front(newHead);
@@ -133,7 +136,7 @@ bool GameCore::moveSnake(int input)
 	}
 	else
 		this->_fed = false;
-	if (tmp)
+	if (onFood)
 		this->_fed = true;
 	return true;
 }
@@ -145,7 +148,7 @@ void	GameCore::_updateSnake(std::pair<short, short> & _snakePos, eNum form)
 		this->_data._map[_snakePos.first][_snakePos.second] = form;
 }
 
-bool GameCore::_findPos(short y, short x, short limitY, short limitX)
+bool	GameCore::_findPos(short y, short x, short limitY, short limitX)
 {
 	for (; y < limitY; y++)
 	{

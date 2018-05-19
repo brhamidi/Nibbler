@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/18 18:59:05 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/19 13:57:19 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,13 @@ void	dlerror_wrapper(void)
 IGraphicLib	*getLib(void **dl_handle)
 {
 	*dl_handle = dlopen("Ncurses.so", RTLD_LAZY | RTLD_LOCAL);
-	if (!*dl_handle)
+	if (! *dl_handle)
 		dlerror_wrapper();
 	IGraphicLib *(*createGraphicLib)(void);
 	createGraphicLib = (IGraphicLib *(*)(void)) dlsym(*dl_handle, "createGraphicLib");
 	if (!createGraphicLib)
 		dlerror_wrapper();
-	IGraphicLib *library = createGraphicLib();
-	return library;
+	return createGraphicLib();
 }
 
 void	deleteLib(IGraphicLib *library, void *dl_handle)
@@ -52,13 +51,13 @@ void	deleteLib(IGraphicLib *library, void *dl_handle)
 
 int		main(void)
 {
-	void	*dl_handle;
-	struct timeval stop, start;
-	GameCore & core = GameCore::getGame(150, 50);
-	std::srand(std::time(nullptr));
+	void			*dl_handle;
+	struct timeval	stop, start;
+	GameCore & 		core = GameCore::getGame(150, 50);
+	eDir			direction;
+	IGraphicLib		*library = getLib(&dl_handle);
 
-	eDir	direction;
-	IGraphicLib	*library = getLib(&dl_handle);
+	std::srand(std::time(nullptr));
 	while (1)
 	{
 		gettimeofday(&start, NULL);

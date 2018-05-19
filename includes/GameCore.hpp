@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 17:56:33 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/19 14:15:30 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ struct Data
 
 enum eDir
 {
-	Up = 0, Right, Down, Left, Exit = 32
+	Up = 0, Right, Down, Left, Exit = 32, Error = -1
 };
 
 enum eNum
@@ -50,7 +50,7 @@ class GameCore
 	public:
 		~GameCore(void);
 		static GameCore &	getGame(short, short);
-		bool	moveSnake(int);
+		bool	moveSnake(eDir);
 		void	_printMap(void) const;
 		Data &	getData(void);
 
@@ -64,7 +64,7 @@ class GameCore
 
 		std::list< std::pair< short, short > >	_snake;
 		bool	_fed;
-		int		_direction;
+		eDir	_direction;
 		Data	_data;
 };
 

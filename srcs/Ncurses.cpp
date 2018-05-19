@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/18 18:59:10 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/19 14:15:56 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	Ncurses::render(Data const & data) const
 eDir	Ncurses::getEvent(void) const
 {
 	static eDir	direction = eDir::Left;
-	int			c = -1;
+	eDir		c = eDir::Error;
 	eDir		tmp;
 
 	while((c = getch()) != ERR)
