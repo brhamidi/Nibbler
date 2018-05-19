@@ -6,11 +6,11 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/19 13:57:42 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/19 14:47:52 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CXX= clang++
+CXX= g++
 NAME=nibbler
 CXXFLAGS= -Werror -Wextra -Wall -std=c++11 -O2
 FILE_TYPE=cpp
