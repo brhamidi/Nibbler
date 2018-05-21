@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/21 14:53:46 by bhamidi           #+#    #+#              #
-#    Updated: 2018/05/21 15:41:44 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/21 16:23:28 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ=Ncurses.o
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -shared -fPIC -o $@ -lncurses -std=c++11 -I../includes
+	$(CXX) $(CXXFLAGS) $(OBJ) -shared -fPIC -o $@ -lncurses -std=c++11
 
 %.o: %.cpp Ncurses.hpp Makefile
 	$(CXX) $(CXXFLAGS) -I./../includes -c $< -o $@
