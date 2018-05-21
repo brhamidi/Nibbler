@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/21 19:09:21 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/21 20:14:40 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ clean:
 
 fclean : clean
 	make fclean -C $(LIB1_PATH)
+	make fclean -C $(LIB2_PATH)
 	rm -f $(NAME)
 
 re : fclean all
