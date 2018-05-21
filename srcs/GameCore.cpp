@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/19 14:23:47 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/21 17:00:18 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,18 +116,16 @@ bool GameCore::moveSnake(eDir input)
 		newHead.first < this->_data._height && newHead.first >= 0)
 	{
 		if ( this->_data._map[newHead.first][newHead.second] == eNum::Wall
-			|| this->_data._map[newHead.first][newHead.second] == eNum::Snake )
-			return false;
+			|| (this->_data._map[newHead.first][newHead.second] == eNum::Snake
+		   	&& (newHead.first != (--this->_snake.end())->first
+				|| newHead.second != (--this->_snake.end())->second)))
+				return false;
 		if ( this->_data._map[newHead.first][newHead.second] == eNum::Food )
 		{
 			this->_popFood();
 			onFood = true;
 		}
 	}
-
-	this->_snake.push_front(newHead);
-	this->_updateSnake( * (this->_snake.begin()), eNum::Head );
-	this->_updateSnake( * std::next(this->_snake.begin()) , eNum::Snake );
 
 	if (this->_fed == false)
 	{
@@ -136,6 +134,11 @@ bool GameCore::moveSnake(eDir input)
 	}
 	else
 		this->_fed = false;
+
+	this->_snake.push_front(newHead);
+	this->_updateSnake( * (this->_snake.begin()), eNum::Head );
+	this->_updateSnake( * std::next(this->_snake.begin()) , eNum::Snake );
+
 	if (onFood)
 		this->_fed = true;
 	return true;
