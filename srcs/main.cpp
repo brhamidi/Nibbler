@@ -6,15 +6,13 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/19 13:57:19 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/21 15:42:39 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GameCore.hpp"
-#include <ncurses.h>
 #include <sys/time.h>
 #include <ctime>
-#include "Ncurses.hpp"
 #include "IGraphicLib.hpp"
 #include <dlfcn.h>
 
@@ -26,7 +24,7 @@ void	dlerror_wrapper(void)
 
 IGraphicLib	*getLib(void **dl_handle)
 {
-	*dl_handle = dlopen("Ncurses.so", RTLD_LAZY | RTLD_LOCAL);
+	*dl_handle = dlopen("lib1.so", RTLD_LAZY | RTLD_LOCAL);
 	if (! *dl_handle)
 		dlerror_wrapper();
 	IGraphicLib *(*createGraphicLib)(void);
@@ -38,7 +36,7 @@ IGraphicLib	*getLib(void **dl_handle)
 
 void	deleteLib(IGraphicLib *library, void *dl_handle)
 {
-	dl_handle = dlopen("Ncurses.so", RTLD_LAZY | RTLD_LOCAL);
+	dl_handle = dlopen("lib1.so", RTLD_LAZY | RTLD_LOCAL);
 	if (!dl_handle)
 		dlerror_wrapper();
 	void (*deleteGraphicLib)(IGraphicLib *);

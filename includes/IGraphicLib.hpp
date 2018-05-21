@@ -6,14 +6,14 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 16:28:58 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/18 18:00:53 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/21 15:03:52 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IGRAPHICLIB_HPP
 # define IGRAPHICLIB_HPP
 
-# include "GameCore.hpp"
+# include "Nibbler.hpp"
 
 class 	IGraphicLib
 {

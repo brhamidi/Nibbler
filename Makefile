@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/19 14:47:52 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/21 15:40:30 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,25 +26,33 @@ INCLUDE=GameCore.hpp IGraphicLib.hpp
 OBJS=$(addprefix $(OBJ_PATH), $(OBJ))
 INCLUDES=$(addprefix $(INCLUDE_PATH), $(INCLUDE))
 
+LIB1_PATH=lib1/
+LIB1_NAME=ncurses.so
+SYM1=lib1.so
+
 all: $(NAME)
 
-$(NAME): setup $(OBJS)
+$(NAME): $(OBJ_PATH) $(OBJS) $(LIB1_PATH)$(LIB1_NAME)
 	$(CXX) $(OBJS) $(CXXFLAGS) -o $@
+	@ln -fs $(LIB1_PATH)$(LIB1_NAME) $(SYM1)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.$(FILE_TYPE) $(INCLUDES) Makefile
 	$(CXX) $(CXXFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
 
-setup:
-	@mkdir -p obj
+$(LIB1_PATH)$(LIB1_NAME):
+	make -C $(LIB1_PATH)
+
+$(OBJ_PATH):
+	@mkdir -p $@
 
 clean:
+	make clean -C $(LIB1_PATH)
+	rm -f $(SYM1)
 	rm -f $(OBJS)
 
 fclean : clean
+	make fclean -C $(LIB1_PATH)
 	rm -f $(NAME)
-
-lib :
-	$(CXX) $(CXXFLAGS) -shared -fPIC -o Ncurses.so -lncurses -std=c++11 srcs/Ncurses.cpp -I includes
 
 re : fclean all
 
