@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/21 15:42:39 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/21 19:09:41 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,34 @@ void	deleteLib(IGraphicLib *library, void *dl_handle)
 	dlclose(dl_handle);
 }
 
-int		main(void)
+int		main(int ac, char *av[])
 {
+	int x;
+	int y;
+	if (ac > 3)
+		return -1;
+	else 
+	{
+		if (strlen(av[1]) > 4 || strlen(av[2]) > 4)
+		{
+			std::cerr << "Usage: " << av[0] << " [ 10 <= X <= 170] [10 <= Y <= 70]\n";
+			return -1;
+		}
+		x = atoi(av[1]);
+		y = atoi(av[2]);
+		if (x < 10 || x > 170 || y < 10 || y > 70)
+		{
+			std::cerr << "Usage: " << av[0] << " [ 10 <= X <= 170] [10 <= Y <= 70]\n";
+			return -1;
+		}
+	}
+
 	void			*dl_handle;
 	struct timeval	stop, start;
-	GameCore & 		core = GameCore::getGame(150, 50);
 	eDir			direction;
 	IGraphicLib		*library = getLib(&dl_handle);
 
+	GameCore & 		core = GameCore::getGame(x, y);
 	std::srand(std::time(nullptr));
 	while (1)
 	{
