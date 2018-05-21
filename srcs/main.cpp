@@ -6,13 +6,14 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/21 19:33:56 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/21 20:07:28 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GameCore.hpp"
 #include <sys/time.h>
 #include <ctime>
+#include <cstring>
 #include "IGraphicLib.hpp"
 #include <dlfcn.h>
 
@@ -69,7 +70,7 @@ int		main(int ac, char *av[])
 
 	if (ac != 3)
 		return usage(av[0]);
-	if (strlen(av[1]) > 4 || strlen(av[2]) > 4
+	if (std::strlen(av[1]) > 4 || std::strlen(av[2]) > 4
 			|| ! str_is_digit(av[1]) || ! str_is_digit(av[2]))
 		return usage(av[0]);
 	x = std::atoi(av[1]);
