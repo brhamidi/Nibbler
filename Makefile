@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/21 16:21:50 by msrun            ###   ########.fr        #
+#    Updated: 2018/05/21 19:09:21 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,17 +30,23 @@ LIB1_PATH=lib1/
 LIB1_NAME=ncurses.so
 SYM1=lib1.so
 
+LIB2_PATH=lib2/
+LIB2_NAME=sdl2.so
+SYM2=lib2.so
+
 all: $(NAME) MAKELIBS
 
 $(NAME): $(OBJ_PATH) $(OBJS)
 	$(CXX) $(OBJS) $(CXXFLAGS) -o $@
 	@ln -fs $(LIB1_PATH)$(LIB1_NAME) $(SYM1)
+	@ln -fs $(LIB2_PATH)$(LIB2_NAME) $(SYM2)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.$(FILE_TYPE) $(INCLUDES) Makefile
 	$(CXX) $(CXXFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
 
 MAKELIBS:
 	@make -C $(LIB1_PATH)
+	@make -C $(LIB2_PATH)
 
 $(OBJ_PATH):
 	@mkdir -p $@
@@ -48,6 +54,7 @@ $(OBJ_PATH):
 clean:
 	make clean -C $(LIB1_PATH)
 	rm -f $(SYM1)
+	rm -f $(SYM2)
 	rm -f $(OBJS)
 
 fclean : clean
