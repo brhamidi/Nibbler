@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/22 15:21:37 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/22 15:25:29 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,25 @@ void	Sdl2::render(Data const & data) const
 eDir	Sdl2::getEvent(void) const
 {
 	static eDir	direction = eDir::Left;
+	eDir		tmp = direction;
+	SDL_Event 	event;
+
+	SDL_WaitEvent(&event); 
+    switch (event.type)
+    {
+		case SDL_QUIT: direction = eDir::Exit; break;
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_LEFT:  direction = eDir::Left; break;
+				case SDLK_RIGHT: direction = eDir::Right; break;
+				case SDLK_UP:    direction = eDir::Up; break;
+				case SDLK_DOWN:  direction = eDir::Down; break;
+			}
+			break;
+    }
+	if (direction % 2 == tmp % 2)
+		direction = tmp;
 	return direction;
 }
 
