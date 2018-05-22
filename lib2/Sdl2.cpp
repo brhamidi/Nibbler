@@ -1,87 +1,57 @@
-#include <SDL2/SDL.h>
-#include <iostream>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Sdl2.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/05/22 13:03:42 by bhamidi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "Sdl2.hpp"
 
-int main(int argc, char **argv)
-{   
-	(void)argc;
-	(void)argv;
-    // Notre fenêtre
-    
-    SDL_Window* 	fenetre(0);
-    SDL_GLContext 	contexteOpenGL(0);
-    
-    SDL_Event	evenements;
-    bool		terminer(false);
-    
-    
-    // Initialisation de la SDL
-    
-    if(SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::cout << "Erreur lors de l'initialisation de la SDL : " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        
-        return -1;
-    }
-    
-    
-    // Version d'OpenGL
-    
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    
- 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+Sdl2::~Sdl2(void)
+{
+	this->_stop();
+}
 
-    // Double Buffer
-    
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    
-    
-    // Création de la fenêtre
+Sdl2::Sdl2(short x, short y)
+{
+	this->_init(x, y);
+}
 
-    fenetre = SDL_CreateWindow("Test SDL 2.0", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+void	Sdl2::_stop(void)
+{
+	SDL_DestroyWindow(this->_win);
+	SDL_Quit();
+}
 
-    if(fenetre == 0)
-    {
-        std::cout << "Erreur lors de la creation de la fenetre : " << SDL_GetError() << std::endl;
-        SDL_Quit();
+void	Sdl2::_init(short x, short y) 
+{
+	SDL_Init(SDL_INIT_VIDEO);
 
-        return -1;
-    }
+	this->_win = SDL_CreateWindow("Nibbler" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , x, y, SDL_WINDOW_SHOWN);
+	SDL_Delay(10000);
+}
 
+void	Sdl2::render(Data const &) const
+{
+}
 
-    // Création du contexte OpenGL
+eDir	Sdl2::getEvent(void) const
+{
+	static eDir	direction = eDir::Left;
+	return direction;
+}
 
-    contexteOpenGL = SDL_GL_CreateContext(fenetre);
+IGraphicLib	*createGraphicLib(short x, short y)
+{
+	return new Sdl2(x, y);
+}
 
-    if(contexteOpenGL == 0)
-    {
-        std::cout << SDL_GetError() << std::endl;
-        SDL_DestroyWindow(fenetre);
-        SDL_Quit();
-
-        return -1;
-    }
-    
-    
-    // Boucle principale
-    
-    while(!terminer)
-    {
-        SDL_WaitEvent(&evenements);
-        
-        if(evenements.window.event == SDL_WINDOWEVENT_CLOSE)
-        terminer = true;
-    }
-    
-    
-    // On quitte la SDL
-    
-    SDL_GL_DeleteContext(contexteOpenGL);
-    SDL_DestroyWindow(fenetre);
-    SDL_Quit();
-    
-    return 0;
+void	deleteGraphicLib(IGraphicLib *graphicLib)
+{
+	delete graphicLib;
 }

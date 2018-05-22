@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Ncurses.hpp                                        :+:      :+:    :+:   */
+/*   Sdl2.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/18 13:50:07 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/22 12:49:28 by bhamidi          ###   ########.fr       */
+/*   Created: 2018/05/22 12:18:05 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/05/22 12:57:58 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NCURSES_HPP
-# define NCURSES_HPP
+#ifndef SDL2_HPP
+# define SDL2_HPP
 
-# include <ncurses.h>
 # include "IGraphicLib.hpp"
+# include <SDL2/SDL.h>
 
-class Ncurses : public IGraphicLib
+class Sdl2 : public IGraphicLib
 {
 	public:
-		Ncurses(short, short);
-		~Ncurses(void);
+		Sdl2(short, short);
+		~Sdl2(void);
 
 		void	render(Data const &) const;
 		eDir	getEvent(void) const;
 
 	private:
+		SDL_Window	*_win;
+
 		void	_init(short, short);
 		void	_stop(void);
 

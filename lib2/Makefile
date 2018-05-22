@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/21 14:53:46 by bhamidi           #+#    #+#              #
-#    Updated: 2018/05/21 19:05:49 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/22 12:20:58 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CXX) $(CXXFLAGS) $(OBJ) -shared -fPIC -o $@ $(LIBFLAGS)
 
-%.o: %.cpp Makefile
+%.o: %.cpp Makefile Sdl2.hpp
 	$(CXX) $(CXXFLAGS) -I./../includes -c $< -o $@
 
 clean:

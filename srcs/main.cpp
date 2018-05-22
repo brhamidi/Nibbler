@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/21 20:07:28 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/22 12:59:10 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,22 @@ void	dlerror_wrapper(void)
 	exit(EXIT_FAILURE);
 }
 
-IGraphicLib	*getLib(void **dl_handle)
+IGraphicLib	*getLib(void **dl_handle, short x, short y)
 {
-	*dl_handle = dlopen("lib1.so", RTLD_LAZY | RTLD_LOCAL);
+	*dl_handle = dlopen("lib2.so", RTLD_LAZY | RTLD_LOCAL);
 	if (! *dl_handle)
 		dlerror_wrapper();
-	IGraphicLib *(*createGraphicLib)(void);
-	createGraphicLib = (IGraphicLib *(*)(void)) dlsym(*dl_handle, "createGraphicLib");
+	IGraphicLib *(*createGraphicLib)(short, short);
+	createGraphicLib =
+		(IGraphicLib *(*)(short, short)) dlsym(*dl_handle, "createGraphicLib");
 	if (!createGraphicLib)
 		dlerror_wrapper();
-	return createGraphicLib();
+	return createGraphicLib(x, y);
 }
 
 void	deleteLib(IGraphicLib *library, void *dl_handle)
 {
-	dl_handle = dlopen("lib1.so", RTLD_LAZY | RTLD_LOCAL);
+	dl_handle = dlopen("lib2.so", RTLD_LAZY | RTLD_LOCAL);
 	if (!dl_handle)
 		dlerror_wrapper();
 	void (*deleteGraphicLib)(IGraphicLib *);
@@ -81,7 +82,7 @@ int		main(int ac, char *av[])
 	void			*dl_handle;
 	struct timeval	stop, start;
 	eDir			direction;
-	IGraphicLib		*library = getLib(&dl_handle);
+	IGraphicLib		*library = getLib(&dl_handle, x, y);
 
 	GameCore & 		core = GameCore::getGame(x, y);
 	std::srand(std::time(nullptr));

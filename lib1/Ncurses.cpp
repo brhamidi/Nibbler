@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/21 15:42:48 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/22 12:54:14 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ Ncurses::~Ncurses(void)
 	this->_stop();
 }
 
-Ncurses::Ncurses(void)
+Ncurses::Ncurses(short x, short y)
 {
-	this->_init();
+	this->_init(x, y);
 }
 
 void	Ncurses::_stop(void)
@@ -27,17 +27,14 @@ void	Ncurses::_stop(void)
 	endwin();
 }
 
-void	Ncurses::_init(void) 
+void	Ncurses::_init(short, short) 
 {
-	int row,col;
-
 	initscr();
 	cbreak();
 	timeout(0);
 	noecho();
 	keypad(stdscr, TRUE);
 	curs_set(0);
-	getmaxyx(stdscr,row,col);
 	start_color();
 	init_pair(eNum::Blank + 1, COLOR_BLACK, COLOR_BLACK);
 	init_pair(eNum::Wall + 1, COLOR_GREEN, COLOR_GREEN);
@@ -99,9 +96,9 @@ eDir	Ncurses::getEvent(void) const
 	return direction;
 }
 
-IGraphicLib	*createGraphicLib(void)
+IGraphicLib	*createGraphicLib(short x, short y)
 {
-	return new Ncurses();
+	return new Ncurses(x, y);
 }
 
 void	deleteGraphicLib(IGraphicLib *graphicLib)
