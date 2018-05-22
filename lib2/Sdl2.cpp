@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/22 15:25:29 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/22 16:29:23 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,8 @@ void	Sdl2::_init(short x, short y)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	this->_win = SDL_CreateWindow("Nibbler" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , x, y, 0);
-
-//	SDL_Point ligne_depart,ligne_arrivee; // Déclaration du point de départ et du point d'arrivée d'une ligne
-
-
-	if(SDL_VideoInit(NULL) < 0) // Initialisation de la SDL
-	{
-		std::cerr << "Erreur d'initialisation de la SDL : " << SDL_GetError() << std::endl;
-		throw "Error";
-	}
-
-	// Création de la fenêtre :
-	this->_win = SDL_CreateWindow("Une this->_win SDL" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 800 , 800 , 0);
-	if(this->_win == NULL) // Gestion des erreurs
-	{
-		std::cerr << "Erreur lors de la creation d'une this->_win : " << SDL_GetError() << std::endl;
-		throw "Error";
-	}
-
-	// Création du this->_renderer :
-	this->_renderer = SDL_CreateRenderer(this->_win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); // Création du this->_renderer
-	if(this->_renderer == NULL) // Gestion des erreurs
-	{
-		std::cerr << "Erreur lors de la creation d'un this->_renderer : " << SDL_GetError() << std::endl;
-		throw "Error";
-	}
+	this->_win = SDL_CreateWindow("Une this->_win SDL" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED ,  x * 10, y * 10, 0);
+	this->_renderer = SDL_CreateRenderer(this->_win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
 void	Sdl2::render(Data const & data) const
@@ -100,22 +76,27 @@ eDir	Sdl2::getEvent(void) const
 	eDir		tmp = direction;
 	SDL_Event 	event;
 
-	SDL_WaitEvent(&event); 
-    switch (event.type)
-    {
-		case SDL_QUIT: direction = eDir::Exit; break;
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym)
-			{
-				case SDLK_LEFT:  direction = eDir::Left; break;
-				case SDLK_RIGHT: direction = eDir::Right; break;
-				case SDLK_UP:    direction = eDir::Up; break;
-				case SDLK_DOWN:  direction = eDir::Down; break;
-			}
+	while ( SDL_PollEvent(&event) == 1 )
+	{
+    	switch (event.type)
+    	{
+			case SDL_QUIT: direction = eDir::Exit; break;
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+					case SDLK_LEFT:  direction = eDir::Left; break;
+					case SDLK_RIGHT: direction = eDir::Right; break;
+					case SDLK_UP:    direction = eDir::Up; break;
+					case SDLK_DOWN:  direction = eDir::Down; break;
+				}
+				break;
+    	}
+		if (direction % 2 == tmp % 2)
+			direction = tmp;
+		if (tmp != direction)
 			break;
-    }
-	if (direction % 2 == tmp % 2)
-		direction = tmp;
+	}
+	while (SDL_PollEvent (&event));
 	return direction;
 }
 
