@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 13:58:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/23 14:28:59 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/23 16:15:34 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "IGraphicLib.hpp"
 # include <SFML/Window.hpp>
+# include <SFML/Graphics.hpp>
 
 class Sfml : public IGraphicLib
 {
@@ -29,7 +30,7 @@ class Sfml : public IGraphicLib
 		void	_init(short, short);
 		void	_stop(void);
 
-		sf::Window	*_window;
+		sf::RenderWindow	*_window;
 
 };
 

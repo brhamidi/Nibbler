@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/23 14:59:42 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/23 16:08:43 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int		main(int ac, char *av[])
 			break;
 		}
 
-		core._printMap();
+//		core._printMap();
 		library->render( core.getData() );
 
 		gettimeofday(&stop, NULL);

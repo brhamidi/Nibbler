@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/21 14:53:46 by bhamidi           #+#    #+#              #
-#    Updated: 2018/05/23 14:24:16 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/23 15:38:39 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,10 @@
 CXX				= g++
 NAME			= sfml.so
 CXXFLAGS		= -Werror -Wextra -Wall -std=c++11 -O2
-LIBFLAGS 		=  -L ~/.brew/lib -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio \
-						-Wl,-rpath,$HOME/.brew/lib
+LIBFLAGS 		=  -L ~/.brew/lib -lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio
 INCLUDES_PATH 	= -I ~/.brew/include -I./../includes
 
-OBJ 		= Sfml.o
+OBJ = Sfml.o
 
 all: $(NAME)
 
