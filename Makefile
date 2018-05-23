@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/21 20:14:40 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/23 15:05:38 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,12 +34,17 @@ LIB2_PATH=lib2/
 LIB2_NAME=sdl2.so
 SYM2=lib2.so
 
+LIB3_PATH=lib3/
+LIB3_NAME=Sfml.so
+SYM3=lib3.so
+
 all: $(NAME) MAKELIBS
 
 $(NAME): $(OBJ_PATH) $(OBJS)
-	$(CXX) $(OBJS) $(CXXFLAGS) -o $@
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $@ -Wl,-rpath,$$HOME/.brew/lib
 	@ln -fs $(LIB1_PATH)$(LIB1_NAME) $(SYM1)
 	@ln -fs $(LIB2_PATH)$(LIB2_NAME) $(SYM2)
+	@ln -fs $(LIB3_PATH)$(LIB3_NAME) $(SYM3)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.$(FILE_TYPE) $(INCLUDES) Makefile
 	$(CXX) $(CXXFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
@@ -47,19 +52,24 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.$(FILE_TYPE) $(INCLUDES) Makefile
 MAKELIBS:
 	@make -C $(LIB1_PATH)
 	@make -C $(LIB2_PATH)
+	@make -C $(LIB3_PATH)
 
 $(OBJ_PATH):
 	@mkdir -p $@
 
 clean:
 	make clean -C $(LIB1_PATH)
+	make clean -C $(LIB2_PATH)
+	make clean -C $(LIB3_PATH)
 	rm -f $(SYM1)
 	rm -f $(SYM2)
+	rm -f $(SYM3)
 	rm -f $(OBJS)
 
 fclean : clean
 	make fclean -C $(LIB1_PATH)
 	make fclean -C $(LIB2_PATH)
+	make fclean -C $(LIB3_PATH)
 	rm -f $(NAME)
 
 re : fclean all

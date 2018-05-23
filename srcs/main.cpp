@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/22 15:20:02 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/23 14:59:42 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	dlerror_wrapper(void)
 
 IGraphicLib	*getLib(void **dl_handle, short x, short y)
 {
-	*dl_handle = dlopen("lib2.so", RTLD_LAZY | RTLD_LOCAL);
+	*dl_handle = dlopen("lib3.so", RTLD_LAZY | RTLD_LOCAL);
 	if (! *dl_handle)
 		dlerror_wrapper();
 	IGraphicLib *(*createGraphicLib)(short, short);
@@ -102,7 +102,7 @@ int		main(int ac, char *av[])
 		}
 
 		core._printMap();
-		//library->render( core.getData() );
+		library->render( core.getData() );
 
 		gettimeofday(&stop, NULL);
 		while (std::abs(stop.tv_usec - start.tv_usec) < 100000)
