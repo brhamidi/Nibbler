@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/23 16:45:14 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/23 16:54:48 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,18 @@ void	Sfml::render(Data const & data) const
 	{
 		for (auto w = 0; w < data._width; w++)
 		{
-		/*	if (data._map[h][w] == eNum::Blank)
+			if (data._map[h][w] == eNum::Blank)
+				rectangle.setFillColor(sf::Color(255, 255, 0));
 			if (data._map[h][w] == eNum::Wall)
+				rectangle.setFillColor(sf::Color(255, 0, 255));
 			if (data._map[h][w] == eNum::Snake)
+				rectangle.setFillColor(sf::Color(0, 0, 255));
 			if (data._map[h][w] == eNum::Head)
+				rectangle.setFillColor(sf::Color(253, 109, 177));
 			if (data._map[h][w] == eNum::Food)
-			*/
-			rectangle.setSize(sf::Vector2f(10, 10));
-			rectangle.setPosition(w * 30, h * 30);
-			rectangle.setFillColor(sf::Color(100, 250, 50));
+				rectangle.setFillColor(sf::Color(0, 0, 0));
+			rectangle.setSize(sf::Vector2f(20, 20));
+			rectangle.setPosition(w * 10, h * 10);
 			this->_window->draw(rectangle);
 		}
 	}
