@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/24 16:35:14 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 18:21:19 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ GameCore::~GameCore(void)
 	return ;
 }
 
-GameCore::GameCore(short width, short height) : _fed(false), _direction(eDir::Left)
+GameCore::GameCore(short width, short height, unsigned char obstacle = 5)
+	: _fed(false), _direction(eDir::Left)
 {
 	if (width < 10)
 		throw "width too small";
@@ -38,15 +39,17 @@ GameCore::GameCore(short width, short height) : _fed(false), _direction(eDir::Le
 	for (auto h = 0; h < this->_data._height; h++)
 		this->_data._map[h] = new short[this->_data._width]();
 	_buildTheWall();
-	_popFood();
+	_popElem(eNum::Food);
 	for(auto corps: this->_snake)
 		this->_updateSnake(corps, eNum::Snake);
-	return ;
+	for (int i = 0; i < obstacle; i++)
+		_popElem(eNum::Obstacle);
+	return;
 }
 
-GameCore &	GameCore::getGame(short width, short height)
+GameCore &	GameCore::getGame(short width, short height, unsigned char o)
 {
-	static	GameCore g = GameCore(width, height);
+	static	GameCore g = GameCore(width, height, o);
 
 	return g;
 }
@@ -116,14 +119,16 @@ bool GameCore::moveSnake(eDir input)
 		newHead.first < this->_data._height && newHead.first >= 0)
 	{
 		if ( this->_data._map[newHead.first][newHead.second] == eNum::Wall
+			|| this->_data._map[newHead.first][newHead.second] == eNum::Obstacle
 			|| (this->_data._map[newHead.first][newHead.second] == eNum::Snake
 		   	&& (newHead.first != (--this->_snake.end())->first
 				|| newHead.second != (--this->_snake.end())->second)))
 				return false;
 		if ( this->_data._map[newHead.first][newHead.second] == eNum::Food )
 		{
-			this->_popFood();
+			this->_popElem(eNum::Food);
 			onFood = true;
+			_data._score += 1000;
 		}
 	}
 
@@ -152,14 +157,14 @@ void	GameCore::_updateSnake(std::pair<short, short> & _snakePos, eNum form)
 		this->_data._map[_snakePos.first][_snakePos.second] = form;
 }
 
-bool	GameCore::_findPos(short y, short x, short limitY, short limitX)
+bool	GameCore::_findPos(short y, short x, short limitY, short limitX, eNum e)
 {
 	for (; y < limitY; y++)
 	{
 		for ( ; x < limitX; x++)
 			if (_data._map[y][x] == 0)
 			{
-				_data._map[y][x] = eNum::Food;
+				_data._map[y][x] = e;
 				return true;
 			}
 		x = 0;
@@ -167,12 +172,12 @@ bool	GameCore::_findPos(short y, short x, short limitY, short limitX)
 	return false;
 }
 
-void	GameCore::_popFood(void)
+void	GameCore::_popElem(eNum e)
 {
 	short x = std::rand() % (this->_data._width - 2) + 1;
 	short y = std::rand() % (this->_data._height - 2) + 1;
 
-	if (_findPos(y, x, this->_data._height, this->_data._width) == false)
-		if (_findPos(1, 1, this->_data._height, this->_data._width) == false)
+	if (_findPos(y, x, this->_data._height, this->_data._width, e) == false)
+		if (_findPos(1, 1, this->_data._height, this->_data._width, e) == false)
 			std::cout << "Winner !" << std::endl;
 }

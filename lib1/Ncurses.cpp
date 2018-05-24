@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/22 15:10:33 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 17:40:24 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	Ncurses::_init(short, short)
 	init_pair(eNum::Snake + 1, COLOR_RED, COLOR_RED);
 	init_pair(eNum::Food + 1, COLOR_CYAN, COLOR_CYAN);
 	init_pair(eNum::Head + 1, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(eNum::Obstacle + 1, COLOR_WHITE, COLOR_WHITE);
 }
 
 void	Ncurses::render(Data const & data) const

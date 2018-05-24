@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 14:39:10 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 17:22:08 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	Sfml::render(Data const & data) const
 	{
 		for (auto w = 0; w < data._width; w++)
 		{
+			if (data._map[h][w] == eNum::Obstacle)
+				rectangle.setFillColor(sf::Color(1, 40, 78));
 			if (data._map[h][w] == eNum::Blank)
 				rectangle.setFillColor(sf::Color(255, 255, 0));
 			if (data._map[h][w] == eNum::Wall)
@@ -86,7 +88,7 @@ void	Sfml::render(Data const & data) const
 			if (data._map[h][w] == eNum::Head)
 				rectangle.setFillColor(sf::Color(253, 109, 177));
 			if (data._map[h][w] == eNum::Food)
-				rectangle.setFillColor(sf::Color(0, 0, 0));
+				rectangle.setFillColor(sf::Color(1, 252, 235));
 			rectangle.setSize(sf::Vector2f(VALUE, VALUE));
 			rectangle.setPosition(w * VALUE, h * VALUE);
 			this->_window->draw(rectangle);

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/23 16:45:15 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 17:40:06 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	Sdl2::render(Data const & data) const
 			if (data._map[h][w] == eNum::Head)
 				SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 200);
 			if (data._map[h][w] == eNum::Food)
+				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
+			if (data._map[h][w] == eNum::Obstacle)
 				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
 			cases.x = w * 10;
 			cases.y = h * 10;

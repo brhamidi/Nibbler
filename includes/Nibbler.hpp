@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 15:01:12 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/21 15:02:25 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 17:16:56 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ struct Data
 	short		_width;
 	short		_height;
 	short ** 	_map;
-
 };
 
 enum eDir
@@ -29,7 +28,7 @@ enum eDir
 
 enum eNum
 {
-	Blank = 0, Wall, Food, Snake, Head
+	Blank = 0, Wall, Food, Snake, Head, Obstacle
 };
 
 #define RESET   "\033[0m"
