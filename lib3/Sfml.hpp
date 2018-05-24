@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 13:58:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/23 16:15:34 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 14:07:09 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "IGraphicLib.hpp"
 # include <SFML/Window.hpp>
 # include <SFML/Graphics.hpp>
+
+# define VALUE	15
 
 class Sfml : public IGraphicLib
 {

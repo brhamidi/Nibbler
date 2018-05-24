@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/23 16:54:48 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 14:39:10 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	Sfml::_stop(void)
 
 void	Sfml::_init(short x, short y) 
 {
-	this->_window = new sf::RenderWindow(sf::VideoMode(600, 800), "Nibbler");
-	this->_window->setSize(sf::Vector2u(x * 10, y * 10));
+	this->_window = new sf::RenderWindow(sf::VideoMode(x * VALUE, y * VALUE), "Nibbler");
 }
 
 eDir	Sfml::getEvent(void) const
@@ -64,6 +63,7 @@ eDir	Sfml::getEvent(void) const
 		if (tmp != direction)
 			break;
 	}
+	while ( this->_window->pollEvent(event) ) ;
 	return direction;
 }
 
@@ -87,8 +87,8 @@ void	Sfml::render(Data const & data) const
 				rectangle.setFillColor(sf::Color(253, 109, 177));
 			if (data._map[h][w] == eNum::Food)
 				rectangle.setFillColor(sf::Color(0, 0, 0));
-			rectangle.setSize(sf::Vector2f(20, 20));
-			rectangle.setPosition(w * 10, h * 10);
+			rectangle.setSize(sf::Vector2f(VALUE, VALUE));
+			rectangle.setPosition(w * VALUE, h * VALUE);
 			this->_window->draw(rectangle);
 		}
 	}
