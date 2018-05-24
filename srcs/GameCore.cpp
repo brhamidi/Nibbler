@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/24 18:21:19 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 19:31:28 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,7 @@ bool GameCore::moveSnake(eDir input)
 	if (this->_fed == false)
 	{
 		this->_updateSnake(*(std::next(this->_snake.end(), -1)), eNum::Blank);
-		if (this->_snake.size() > 0)
-			this->_snake.pop_back();
+		this->_snake.pop_back();
 	}
 	else
 		this->_fed = false;
