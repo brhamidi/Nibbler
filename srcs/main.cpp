@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 18:21:07 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 18:49:06 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ int		main(int ac, char *av[])
 		gettimeofday(&stop, NULL);
 		while (std::abs(stop.tv_usec - start.tv_usec) < (100000 - accTime))
 			gettimeofday(&stop, NULL);
-		if (accTime + 100 < 100000)
-			accTime += 100;
+		if (accTime + 100 < 50000)
+			accTime = core.getData()._score / 5;
 	}
 	return (0);
 }
