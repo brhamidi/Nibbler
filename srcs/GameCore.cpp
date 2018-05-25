@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/24 18:21:19 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:06:39 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ GameCore::~GameCore(void)
 	return ;
 }
 
-GameCore::GameCore(short width, short height, unsigned char obstacle = 5)
+GameCore::GameCore(short width, short height, short obstacle = 0)
 	: _fed(false), _direction(eDir::Left)
 {
 	if (width < 10)
@@ -47,7 +47,7 @@ GameCore::GameCore(short width, short height, unsigned char obstacle = 5)
 	return;
 }
 
-GameCore &	GameCore::getGame(short width, short height, unsigned char o)
+GameCore &	GameCore::getGame(short width, short height, short o)
 {
 	static	GameCore g = GameCore(width, height, o);
 

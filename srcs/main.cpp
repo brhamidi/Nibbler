@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 18:49:06 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:15:10 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	deleteLib(IGraphicLib *library, void *dl_handle)
 
 int		usage(const char *filename)
 {
-	std::cerr << "Usage: " << filename << " [ 10 <= X <= 170] [10 <= Y <= 70] [0 < Obstacle number < X * Y]" << std::endl;;
+	std::cerr << "Usage: " << filename <<
+		" [ 10 <= X <= 170] [10 <= Y <= 70] [0 < Obstacle number < X * Y]" << std::endl;;
 	return EXIT_FAILURE;
 }
 
@@ -66,17 +67,24 @@ int		main(int ac, char *av[])
 	std::srand(std::time(nullptr));
 	int		x;
 	int		y;
-	int		obstacle;
+	int		obstacle = 0;
 
-	if (ac != 4)
+	if (ac != 3 && ac != 4)
 		return usage(av[0]);
-	if (std::strlen(av[1]) > 4 || std::strlen(av[2]) > 4 || std::strlen(av[3]) > 4
-			|| ! str_is_digit(av[1]) || ! str_is_digit(av[2]) || ! str_is_digit(av[2]) )
+	if (std::strlen(av[1]) > 4 || std::strlen(av[2]) > 4
+			|| ! str_is_digit(av[1]) || ! str_is_digit(av[2]))
 		return usage(av[0]);
 	x = std::atoi(av[1]);
 	y = std::atoi(av[2]);
-	obstacle = std::atoi(av[3]);
-	if (x < 10 || x > 170 || y < 10 || y > 70 || ((x * y - (x * 2 + y * 2 + 4 + 1 )) <= obstacle ))
+	if (ac == 4)
+	{
+		if (std::strlen(av[3]) > 4 || ! str_is_digit(av[2]) )
+			return usage(av[0]);
+		obstacle = std::atoi(av[3]);
+		if ((x * y - (x * 2 + y * 2 + 4 + 1 )) <= obstacle )
+			return usage(av[0]);
+	}
+	if (x < 10 || x > 170 || y < 10 || y > 70)
 		return usage(av[0]);
 
 	void			*dl_handle;
