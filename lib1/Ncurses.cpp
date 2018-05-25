@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/24 17:40:24 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:39:36 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ eDir	Ncurses::getEvent(void) const
 		}
 		switch(c)
 		{
+			case KEY_DC:
+				direction = eDir::Exit;
+				break;
 			case KEY_UP:
 				direction = eDir::Up;
 				break;
@@ -88,7 +91,7 @@ eDir	Ncurses::getEvent(void) const
 			default:
 				break;
 		}
-		if (direction % 2 == tmp % 2)
+		if (direction != eDir::Exit && direction % 2 == tmp % 2)
 			direction = tmp;
 		if (tmp != direction)
 			break;
