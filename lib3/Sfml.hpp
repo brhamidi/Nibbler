@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 13:58:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 14:07:09 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:53:21 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Sfml : public IGraphicLib
 		~Sfml(void);
 
 		void	render(Data const &) const;
-		eDir	getEvent(void) const;
+		eDir *	getEvent(void) const;
 
 	private:
 		void	_init(short, short);

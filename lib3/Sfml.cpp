@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 17:22:08 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 17:00:06 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,60 @@ void	Sfml::_init(short x, short y)
 	this->_window = new sf::RenderWindow(sf::VideoMode(x * VALUE, y * VALUE), "Nibbler");
 }
 
-eDir	Sfml::getEvent(void) const
+eDir *	Sfml::getEvent(void) const
 {
-	static eDir	direction = eDir::Left;
-	eDir		tmp = direction;
-	sf::Event	event;
+	static eDir	direction[2] = {eDir::Left, eDir::Left};
+	eDir		tmp[2];
+	sf::Event 	event;
 
+	tmp[0] = direction[0];
+	tmp[1] = direction[1];
 	while ( this->_window->pollEvent(event) )
 	{
-    	switch (event.type)
-    	{
-			case sf::Event::Closed: direction = eDir::Exit; break;
-			case sf::Event::KeyPressed:
-				switch (event.key.code)
-				{
-					case sf::Keyboard::Left:  direction = eDir::Left; break;
-					case sf::Keyboard::Right: direction = eDir::Right; break;
-					case sf::Keyboard::Up:    direction = eDir::Up; break;
-					case sf::Keyboard::Down:  direction = eDir::Down; break;
-					default: break;
-				}
-				break;
-			default: break;
-    	}
-		if (direction % 2 == tmp % 2)
-			direction = tmp;
-		if (tmp != direction)
+		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break;
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+
+			switch (event.type)
+			{
+				case sf::Event::KeyPressed:
+					switch (event.key.code)
+					{
+						case sf::Keyboard::Left:  direction[0] = eDir::Left; break;
+						case sf::Keyboard::Right: direction[0] = eDir::Right; break;
+						case sf::Keyboard::Up:    direction[0] = eDir::Up; break;
+						case sf::Keyboard::Down:  direction[0] = eDir::Down; break;
+						default: break;
+					}
+					break;
+				default: break;
+			}
+			if (direction[0] % 2 == tmp[0] % 2)
+				direction[0] = tmp[0];
+		}
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+
+			switch (event.type)
+			{
+				case sf::Event::KeyPressed:
+					switch (event.key.code)
+					{
+						case sf::Keyboard::A:  direction[1] = eDir::Left; break;
+						case sf::Keyboard::D: direction[1] = eDir::Right; break;
+						case sf::Keyboard::W:    direction[1] = eDir::Up; break;
+						case sf::Keyboard::S:  direction[1] = eDir::Down; break;
+						default: break;
+					}
+					break;
+				default: break;
+			}
+			if (direction[1] % 2 == tmp[1] % 2)
+				direction[1] = tmp[1];
+		}
 	}
 	while ( this->_window->pollEvent(event) ) ;
 	return direction;

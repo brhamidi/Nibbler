@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 19:17:40 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 16:46:08 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,31 +69,54 @@ void	Sdl2::render(Data const & data) const
 	SDL_RenderPresent(this->_renderer);
 }
 
-eDir	Sdl2::getEvent(void) const
+eDir *	Sdl2::getEvent(void) const
 {
-	static eDir	direction = eDir::Left;
-	eDir		tmp = direction;
+	static eDir	direction[2] = {eDir::Left, eDir::Left};
+	eDir		tmp[2];
 	SDL_Event 	event;
 
+	tmp[0] = direction[0];
+	tmp[1] = direction[1];
 	while ( SDL_PollEvent(&event) == 1 )
 	{
-    	switch (event.type)
-    	{
-			case SDL_QUIT: direction = eDir::Exit; break;
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym)
-				{
-					case SDLK_LEFT:  direction = eDir::Left; break;
-					case SDLK_RIGHT: direction = eDir::Right; break;
-					case SDLK_UP:    direction = eDir::Up; break;
-					case SDLK_DOWN:  direction = eDir::Down; break;
-				}
-				break;
-    	}
-		if (direction % 2 == tmp % 2)
-			direction = tmp;
-		if (tmp != direction)
+		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break;
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+			switch (event.type)
+			{
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym)
+					{
+						case SDLK_LEFT:  direction[0] = eDir::Left; break;
+						case SDLK_RIGHT: direction[0] = eDir::Right; break;
+						case SDLK_UP:    direction[0] = eDir::Up; break;
+						case SDLK_DOWN:  direction[0] = eDir::Down; break;
+					}
+					break;
+			}
+			if (direction[0] % 2 == tmp[0] % 2)
+				direction[0] = tmp[0];
+		}
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+			switch (event.type)
+			{
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym)
+					{
+						case SDLK_a:	direction[1] = eDir::Left; break;
+						case SDLK_d:	direction[1] = eDir::Right; break;
+						case SDLK_w:	direction[1] = eDir::Up; break;
+						case SDLK_s:	direction[1] = eDir::Down; break;
+					}
+					break;
+			}
+			if (direction[1] % 2 == tmp[1] % 2)
+				direction[1] = tmp[1];
+		}
 	}
 	while (SDL_PollEvent (&event));
 	return direction;

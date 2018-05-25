@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/24 17:40:24 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:36:49 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,41 +57,73 @@ void	Ncurses::render(Data const & data) const
 	refresh();
 }
 
-eDir	Ncurses::getEvent(void) const
-{
-	static eDir	direction = eDir::Left;
-	int			c = eDir::Error;
-	eDir		tmp;
+#include <iostream>
 
+eDir * 	Ncurses::getEvent(void) const
+{
+	static eDir	direction[2] = {eDir::Left, eDir::Left };
+	int			c = eDir::Error;
+	eDir		tmp[2];
+	
+	tmp[0] = direction[0];
+	tmp[1] = direction[1];
 	while((c = getch()) != ERR)
 	{
-		tmp = direction;
 		if (c == eDir::Exit)
 		{
 			flushinp();
-			return eDir::Exit;
+			direction[0] = eDir::Exit;
+			direction[1] = eDir::Exit;
+			return direction;
 		}
-		switch(c)
-		{
-			case KEY_UP:
-				direction = eDir::Up;
-				break;
-			case KEY_RIGHT:
-				direction = eDir::Right;
-				break;
-			case KEY_DOWN:
-				direction = eDir::Down;
-				break;
-			case KEY_LEFT:
-				direction = eDir::Left;
-				break;
-			default:
-				break;
-		}
-		if (direction % 2 == tmp % 2)
-			direction = tmp;
-		if (tmp != direction)
+		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break;
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+			switch(c)
+			{
+				case KEY_UP:
+					direction[0] = eDir::Up;
+					break;
+				case KEY_RIGHT:
+					direction[0] = eDir::Right;
+					break;
+				case KEY_DOWN:
+					direction[0] = eDir::Down;
+					break;
+				case KEY_LEFT:
+					direction[0] = eDir::Left;
+					break;
+				default:
+					break;
+			}
+			if (direction[0] % 2 == tmp[0] % 2)
+				direction[0] = tmp[0];
+		}
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+			switch(c)
+			{
+				case 'w':
+					direction[1] = eDir::Up;
+					break;
+				case 'd':
+					direction[1] = eDir::Right;
+					break;
+				case 's':
+					direction[1] = eDir::Down;
+					break;
+				case 'a':
+					direction[1] = eDir::Left;
+					break;
+				default:
+					break;
+			}
+			if (direction[1] % 2 == tmp[1] % 2)
+				direction[1] = tmp[1];
+		}
 	}
 	flushinp();
 	return direction;

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:50:07 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/22 12:49:28 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:09:30 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class Ncurses : public IGraphicLib
 		~Ncurses(void);
 
 		void	render(Data const &) const;
-		eDir	getEvent(void) const;
+		eDir *	getEvent(void) const;
 
 	private:
 		void	_init(short, short);

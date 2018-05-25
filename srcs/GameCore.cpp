@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 15:02:31 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 16:23:03 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,12 @@ void	GameCore::_buildTheWall(void)
 	}
 }
 
-bool GameCore::moveSnake(eDir input)
+bool GameCore::moveSnake(eDir *input)
 {
-	if (!this->_movePlayer(input, this->_snake))
+	if (!this->_movePlayer(input[0], this->_snake))
 		return false;
 	else if (this->_p2)
-		return this->_movePlayer(input, this->_snake2);
+		return this->_movePlayer(input[1], this->_snake2);
 	return true;
 }
 

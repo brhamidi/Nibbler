@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 18:49:06 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:57:35 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int		main(int ac, char *av[])
 
 	void			*dl_handle;
 	struct timeval	stop, start;
-	eDir			direction;
+	eDir *			direction;
 	IGraphicLib		*library = getLib(&dl_handle, x, y);
 	int	accTime 	= 10;
 
@@ -95,7 +95,7 @@ int		main(int ac, char *av[])
 
 		direction = library->getEvent();
 
-		if (direction == eDir::Exit)
+		if (*direction == eDir::Exit)
 		{
 			deleteLib(library, dl_handle);
 			break ;
