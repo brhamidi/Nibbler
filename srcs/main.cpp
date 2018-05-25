@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 17:35:35 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 18:38:55 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		main(int ac, char *av[])
 	struct timeval	stop, start;
 	eDir			direction;
 	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib1.so");
-	int	accTime 	= 10;
+	int				accTime = 10;
 
 	GameCore & 		core = GameCore::getGame(x, y, obstacle);
 	while (1)

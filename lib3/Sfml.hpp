@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 13:58:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 14:07:09 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 18:25:52 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <SFML/Graphics.hpp>
 
 # define VALUE	15
+# define MENU	20
 
 class Sfml : public IGraphicLib
 {
@@ -33,6 +34,8 @@ class Sfml : public IGraphicLib
 		void	_stop(void);
 
 		sf::RenderWindow	*_window;
+		sf::Sprite			_sprite;
+		sf::Texture			_texture;
 
 };
 
