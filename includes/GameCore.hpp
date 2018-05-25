@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/24 18:21:30 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 15:01:17 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 #include <list>
 #include <iostream>
 #include "Nibbler.hpp"
+
+struct snakeData
+{
+	bool	fed;
+	eDir	direction;
+	std::list < std::pair <short, short > > snake;
+};
 
 class GameCore
 {
@@ -27,17 +34,19 @@ class GameCore
 		Data &	getData(void);
 
 	private:
-		GameCore(short, short, unsigned char);
+		GameCore(short, short, unsigned char, bool);
 		GameCore(void);
+		bool	_movePlayer(eDir, snakeData &);
+		void	_initSnake(snakeData);
 		bool	_findPos(short, short, short, short, eNum);
 		void	_buildTheWall(void);
 		void	_popElem(eNum);
 		void	_updateSnake(std::pair<short, short> &, eNum);
 
-		std::list< std::pair< short, short > >	_snake;
-		bool	_fed;
-		eDir	_direction;
-		Data	_data;
+		bool		_p2;
+		snakeData	_snake;
+		snakeData	_snake2;
+		Data		_data;
 };
 
 #endif
