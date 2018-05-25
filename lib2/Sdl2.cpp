@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/24 17:40:06 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/24 19:17:40 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	Sdl2::_init(short x, short y)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	this->_win = SDL_CreateWindow("Une this->_win SDL" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED ,  x * 10, y * 10, 0);
+	this->_win = SDL_CreateWindow("Une this->_win SDL" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED ,  x * 15, y * 15, 0);
 	this->_renderer = SDL_CreateRenderer(this->_win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
@@ -56,8 +56,9 @@ void	Sdl2::render(Data const & data) const
 				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
 			if (data._map[h][w] == eNum::Obstacle)
 				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
-			cases.x = w * 10;
-			cases.y = h * 10;
+			cases.x = w * 15;
+			cases.y = h * 15;
+			cases.w = cases.h = 15;
 			if(SDL_RenderFillRect(this->_renderer, &cases) < 0)
 			{
 				std::cerr << "Erreur lors des remplissages de rectangles: " << SDL_GetError() << std::endl;

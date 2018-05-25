@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 16:06:39 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 16:17:36 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ GameCore::GameCore(short width, short height, short obstacle = 0)
 	for (auto h = 0; h < this->_data._height; h++)
 		this->_data._map[h] = new short[this->_data._width]();
 	_buildTheWall();
-	_popElem(eNum::Food);
 	for(auto corps: this->_snake)
 		this->_updateSnake(corps, eNum::Snake);
+	_popElem(eNum::Food);
 	for (int i = 0; i < obstacle; i++)
 		_popElem(eNum::Obstacle);
 	return;
@@ -135,8 +135,7 @@ bool GameCore::moveSnake(eDir input)
 	if (this->_fed == false)
 	{
 		this->_updateSnake(*(std::next(this->_snake.end(), -1)), eNum::Blank);
-		if (this->_snake.size() > 0)
-			this->_snake.pop_back();
+		this->_snake.pop_back();
 	}
 	else
 		this->_fed = false;
