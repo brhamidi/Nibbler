@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/24 19:31:28 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 13:36:51 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ GameCore::GameCore(short width, short height, unsigned char obstacle = 5)
 	for (auto h = 0; h < this->_data._height; h++)
 		this->_data._map[h] = new short[this->_data._width]();
 	_buildTheWall();
-	_popElem(eNum::Food);
 	for(auto corps: this->_snake)
 		this->_updateSnake(corps, eNum::Snake);
+	_popElem(eNum::Food);
 	for (int i = 0; i < obstacle; i++)
 		_popElem(eNum::Obstacle);
 	return;
