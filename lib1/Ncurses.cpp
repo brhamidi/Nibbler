@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 16:36:49 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 19:59:45 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Ncurses::~Ncurses(void)
 
 Ncurses::Ncurses(short x, short y)
 {
+//	this->_keyFunction = {{KEY_DC, eDir::Exit}, {'1', eDir::Lib1}, {'2', eDir::Lib2}, {'3', eDir::Lib3}};
 	this->_init(x, y);
 }
 
@@ -57,25 +58,24 @@ void	Ncurses::render(Data const & data) const
 	refresh();
 }
 
-#include <iostream>
-
-eDir * 	Ncurses::getEvent(void) const
+void 	Ncurses::getEvent(eDir *direction) const
 {
-	static eDir	direction[2] = {eDir::Left, eDir::Left };
 	int			c = eDir::Error;
 	eDir		tmp[2];
-	
+
 	tmp[0] = direction[0];
 	tmp[1] = direction[1];
 	while((c = getch()) != ERR)
 	{
-		if (c == eDir::Exit)
-		{
-			flushinp();
-			direction[0] = eDir::Exit;
-			direction[1] = eDir::Exit;
-			return direction;
-		}
+		if (!direction[2])
+			switch (c)
+			{
+				case KEY_DC: direction[2] = eDir::Exit; break;
+				case '1': direction[2] = eDir::Lib1; break;
+				case '2': direction[2] = eDir::Lib2; break;
+				case '3': direction[2] = eDir::Lib3; break;
+				default: break;
+			}
 		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break;
 		if (tmp[0] == direction[0])
@@ -126,7 +126,6 @@ eDir * 	Ncurses::getEvent(void) const
 		}
 	}
 	flushinp();
-	return direction;
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)

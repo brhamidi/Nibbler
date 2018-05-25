@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 16:46:08 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 19:10:21 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ void	Sdl2::render(Data const & data) const
 	SDL_RenderPresent(this->_renderer);
 }
 
-eDir *	Sdl2::getEvent(void) const
+void	Sdl2::getEvent(eDir *direction) const
 {
-	static eDir	direction[2] = {eDir::Left, eDir::Left};
 	eDir		tmp[2];
 	SDL_Event 	event;
 
@@ -79,6 +78,15 @@ eDir *	Sdl2::getEvent(void) const
 	tmp[1] = direction[1];
 	while ( SDL_PollEvent(&event) == 1 )
 	{
+		if (!direction[2])
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_DELETE:  direction[2] = eDir::Exit; break;
+				case SDLK_1:  direction[2] = eDir::Lib1; break;
+				case SDLK_2:  direction[2] = eDir::Lib2; break;
+				case SDLK_3:  direction[2] = eDir::Lib3; break;
+				default: break;
+			}
 		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break;
 		if (tmp[0] == direction[0])
@@ -119,7 +127,6 @@ eDir *	Sdl2::getEvent(void) const
 		}
 	}
 	while (SDL_PollEvent (&event));
-	return direction;
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)

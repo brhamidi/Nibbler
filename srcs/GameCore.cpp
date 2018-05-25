@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 16:23:03 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 19:20:41 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	GameCore::_initSnake(snakeData snake)
 	snake.direction = eDir::Left;
 }
 
-GameCore &	GameCore::getGame(short width, short height, unsigned char o)
+GameCore &	GameCore::getGame(short width, short height, short o)
 {
 	static	GameCore g = GameCore(width, height, o);
 
@@ -140,7 +140,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake)
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-	if (input == eDir::Exit)
+	if (input > eDir::Left)
 		input = snake.direction;
 	if (input != eDir::Error)
 	{
@@ -159,11 +159,12 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake)
 	if (newHead.second < this->_data._width && newHead.second >= 0 &&
 		newHead.first < this->_data._height && newHead.first >= 0)
 	{
-		if ( this->_data._map[newHead.first][newHead.second] == eNum::Wall
-			|| this->_data._map[newHead.first][newHead.second] == eNum::Obstacle
-			|| (this->_data._map[newHead.first][newHead.second] == eNum::Snake
-		   	&& (newHead.first != (--(snake.snake.end()))->first
-				|| newHead.second != (--(snake.snake.end()))->second)))
+		if ( this->_data._map[newHead.first][newHead.second] != eNum::Blank
+				&& this->_data._map[newHead.first][newHead.second] != eNum::Food
+			   	&& (newHead.first != (--(this->_snake.snake.end()))->first
+				|| newHead.second != (--(this->_snake.snake.end()))->second)
+				&& (newHead.first != (--(this->_snake2.snake.end()))->first
+				|| newHead.second != (--(this->_snake2.snake.end()))->second))
 				return false;
 		if ( this->_data._map[newHead.first][newHead.second] == eNum::Food )
 		{

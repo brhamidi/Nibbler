@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 16:24:05 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 17:47:31 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ class GameCore
 {
 	public:
 		~GameCore(void);
-		static GameCore &	getGame(short, short, unsigned char);
 		bool	moveSnake(eDir*);
+		static GameCore &	getGame(short, short, short);
 		void	_printMap(void) const;
 		Data &	getData(void);
 
@@ -43,6 +43,8 @@ class GameCore
 		void	_popElem(eNum);
 		void	_updateSnake(std::pair<short, short> &, eNum);
 
+		bool		_fed;
+		eDir		_direction;
 		bool		_p2;
 		snakeData	_snake;
 		snakeData	_snake2;

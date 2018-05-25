@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:18:05 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 16:32:25 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 18:27:10 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class Sdl2 : public IGraphicLib
 		~Sdl2(void);
 
 		void	render(Data const &) const;
-		eDir *	getEvent(void) const;
+		void	getEvent(eDir *) const;
 
 	private:
 		SDL_Window		*_win;

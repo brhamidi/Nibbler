@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 17:00:06 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/25 19:10:46 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ void	Sfml::_init(short x, short y)
 	this->_window = new sf::RenderWindow(sf::VideoMode(x * VALUE, y * VALUE), "Nibbler");
 }
 
-eDir *	Sfml::getEvent(void) const
+void	Sfml::getEvent(eDir *direction) const
 {
-	static eDir	direction[2] = {eDir::Left, eDir::Left};
 	eDir		tmp[2];
 	sf::Event 	event;
 
@@ -46,7 +45,23 @@ eDir *	Sfml::getEvent(void) const
 	while ( this->_window->pollEvent(event) )
 	{
 		if (tmp[0] != direction[0] && tmp[1] != direction[1])
-			break;
+			break ;
+		if (!direction[2])
+ 		   	switch (event.type)
+	   	 	{
+				case sf::Event::Closed: direction[2] = eDir::Exit; break;
+				case sf::Event::KeyPressed:
+					switch (event.key.code)
+					{
+						case sf::Keyboard::Delete:  direction[2] = eDir::Exit; break;
+						case sf::Keyboard::Num1:  direction[2] = eDir::Lib1; break;
+						case sf::Keyboard::Num2:  direction[2] = eDir::Lib2; break;
+						case sf::Keyboard::Num3:  direction[2] = eDir::Lib3; break;
+						default: break;
+					}
+					break;
+				default: break;
+   		 	}
 		if (tmp[0] == direction[0])
 		{
 			tmp[0] = direction[0];
@@ -91,7 +106,6 @@ eDir *	Sfml::getEvent(void) const
 		}
 	}
 	while ( this->_window->pollEvent(event) ) ;
-	return direction;
 }
 
 void	Sfml::render(Data const & data) const
