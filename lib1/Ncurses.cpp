@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 16:39:36 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 17:36:28 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	Ncurses::render(Data const & data) const
 	}
 	refresh();
 }
-
+#include <iostream>
 eDir	Ncurses::getEvent(void) const
 {
 	static eDir	direction = eDir::Left;
@@ -65,6 +65,7 @@ eDir	Ncurses::getEvent(void) const
 
 	while((c = getch()) != ERR)
 	{
+		std::cout << c << std::endl;
 		tmp = direction;
 		if (c == eDir::Exit)
 		{
@@ -73,25 +74,19 @@ eDir	Ncurses::getEvent(void) const
 		}
 		switch(c)
 		{
-			case KEY_DC:
-				direction = eDir::Exit;
-				break;
-			case KEY_UP:
-				direction = eDir::Up;
-				break;
-			case KEY_RIGHT:
-				direction = eDir::Right;
-				break;
-			case KEY_DOWN:
-				direction = eDir::Down;
-				break;
-			case KEY_LEFT:
-				direction = eDir::Left;
-				break;
-			default:
-				break;
+			case KEY_DC: direction = eDir::Exit; break;
+			case KEY_UP: direction = eDir::Up; break;
+			case KEY_RIGHT: direction = eDir::Right; break;
+			case KEY_DOWN: direction = eDir::Down; break;
+			case KEY_LEFT: direction = eDir::Left;break;
+			case '1': return eDir::Lib1; break;
+			case '2': return eDir::Lib2; break;
+			case '3': return eDir::Lib3; break;
+			default: break;
 		}
-		if (direction != eDir::Exit && direction % 2 == tmp % 2)
+		if (direction > eDir::Left)
+			break ;
+		if (direction % 2 == tmp % 2)
 			direction = tmp;
 		if (tmp != direction)
 			break;

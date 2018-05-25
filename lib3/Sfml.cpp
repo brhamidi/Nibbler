@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 16:37:39 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 17:27:57 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,17 @@ eDir	Sfml::getEvent(void) const
 					case sf::Keyboard::Right: direction = eDir::Right; break;
 					case sf::Keyboard::Up:    direction = eDir::Up; break;
 					case sf::Keyboard::Down:  direction = eDir::Down; break;
+					case sf::Keyboard::Num1:  return eDir::Lib1; break;
+					case sf::Keyboard::Num2:  return eDir::Lib2; break;
+					case sf::Keyboard::Num3:  return eDir::Lib3; break;
 					default: break;
 				}
 				break;
 			default: break;
     	}
-		if (direction != eDir::Exit && direction % 2 == tmp % 2)
+		if (direction > eDir::Left)
+			break ;
+		if (direction % 2 == tmp % 2)
 			direction = tmp;
 		if (tmp != direction)
 			break;

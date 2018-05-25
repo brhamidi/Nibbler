@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 16:38:13 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 17:28:14 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,15 @@ eDir	Sdl2::getEvent(void) const
 					case SDLK_UP:    direction = eDir::Up; break;
 					case SDLK_DOWN:  direction = eDir::Down; break;
 					case SDLK_DELETE:  direction = eDir::Exit; break;
+					case SDLK_1:  return eDir::Lib1; break;
+					case SDLK_2:  return eDir::Lib2; break;
+					case SDLK_3:  return eDir::Lib3; break;
 				}
 				break;
     	}
-		if (direction != eDir::Exit && direction % 2 == tmp % 2)
+		if (direction > eDir::Left)
+			break ;
+		if (direction % 2 == tmp % 2)
 			direction = tmp;
 		if (tmp != direction)
 			break;

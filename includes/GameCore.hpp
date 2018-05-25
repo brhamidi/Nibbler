@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 16:06:35 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 17:20:02 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ class GameCore
 		bool	moveSnake(eDir);
 		void	_printMap(void) const;
 		Data &	getData(void);
+		bool	_fed;
+		eDir	_direction;
 
 	private:
 		GameCore(short, short, short);
@@ -35,8 +37,6 @@ class GameCore
 		void	_updateSnake(std::pair<short, short> &, eNum);
 
 		std::list< std::pair< short, short > >	_snake;
-		bool	_fed;
-		eDir	_direction;
 		Data	_data;
 };
 
