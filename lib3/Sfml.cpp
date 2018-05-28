@@ -6,12 +6,11 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 19:10:46 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/28 12:28:01 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Sfml.hpp"
-#include <iostream>
 
 Sfml::~Sfml(void)
 {
@@ -32,7 +31,10 @@ void	Sfml::_stop(void)
 
 void	Sfml::_init(short x, short y) 
 {
-	this->_window = new sf::RenderWindow(sf::VideoMode(x * VALUE, y * VALUE), "Nibbler");
+	this->_window = new sf::RenderWindow(sf::VideoMode( x * VALUE, (y + MENU) * VALUE), "Nibbler");
+	this->_texture.loadFromFile("lib3/img1.png", sf::IntRect(0, 0, x * VALUE + 13, MENU * VALUE));
+	this->_texture.setSmooth(true);
+	this->_sprite.setTexture(this->_texture);
 }
 
 void	Sfml::getEvent(eDir *direction) const
@@ -131,10 +133,11 @@ void	Sfml::render(Data const & data) const
 			if (data._map[h][w] == eNum::Food)
 				rectangle.setFillColor(sf::Color(1, 252, 235));
 			rectangle.setSize(sf::Vector2f(VALUE, VALUE));
-			rectangle.setPosition(w * VALUE, h * VALUE);
+			rectangle.setPosition(w * VALUE, (h + MENU) * VALUE);
 			this->_window->draw(rectangle);
 		}
 	}
+	this->_window->draw(this->_sprite);
 
 	this->_window->display();
 }
