@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/21 14:53:46 by bhamidi           #+#    #+#              #
-#    Updated: 2018/05/28 13:25:46 by msrun            ###   ########.fr        #
+#    Updated: 2018/05/28 13:42:56 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRC_PATH= ./
 OBJ_PATH= ./
 INCLUDE_PATH= ./
 
+INCLUDES_GAME=../includes/IGraphicLib.hpp	../includes/Nibbler.hpp
+
 OBJ = Sfml.o
 
 INCLUDE=Sfml.hpp
@@ -34,7 +36,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CXX) $(CXXFLAGS) $(OBJ) -shared -fPIC -o $@ $(LIBFLAGS)
 
-%.o: %.$(FILE_TYPE) $(INCLUDES) Makefile
+%.o: %.$(FILE_TYPE) $(INCLUDES) $(INCLUDES_GAME) Makefile
 	$(CXX) $(CXXFLAGS) $(INCLUDES_PATH) -c $< -o $@
 
 clean:

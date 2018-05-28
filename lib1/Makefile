@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/21 14:53:46 by bhamidi           #+#    #+#              #
-#    Updated: 2018/05/28 13:26:04 by msrun            ###   ########.fr        #
+#    Updated: 2018/05/28 13:42:24 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ FILE_TYPE=cpp
 SRC_PATH= ./
 OBJ_PATH= ./
 INCLUDE_PATH= ./
+
+INCLUDES_GAME=../includes/IGraphicLib.hpp	../includes/Nibbler.hpp
 
 OBJ=Ncurses.o
 
@@ -31,7 +33,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJ) -shared -fPIC -o $@ -lncurses -std=c++11
 
-%.o: %.$(FILE_TYPE) $(INCLUDES) Makefile
+%.o: %.$(FILE_TYPE) $(INCLUDES) $(INCLUDES_GAME) Makefile
 	$(CXX) $(CXXFLAGS) -I./../includes -c $< -o $@
 
 clean:
