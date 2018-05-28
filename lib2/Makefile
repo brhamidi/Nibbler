@@ -6,25 +6,37 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/21 14:53:46 by bhamidi           #+#    #+#              #
-#    Updated: 2018/05/22 12:20:58 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/28 13:41:44 by msrun            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+CXX= g++
+NAME=sdl2.so
+CXXFLAGS= -Werror -Wextra -Wall -std=c++11 -O2
+LIBFLAGS= -framework sdl2
+FILE_TYPE=cpp
 
-CXX			= g++
-NAME		= sdl2.so
-CXXFLAGS	= -Werror -Wextra -Wall -std=c++11 -O2
-LIBFLAGS 	= -framework sdl2
+SRC_PATH= ./
+OBJ_PATH= ./
+INCLUDE_PATH= ./
 
-OBJ 		= Sdl2.o
+INCLUDES_PATH=./../includes
+INCLUDES_GAME=../includes/IGraphicLib.hpp	../includes/Nibbler.hpp
+
+OBJ=Sdl2.o
+
+INCLUDE=Sdl2.hpp
+
+OBJS=$(addprefix $(OBJ_PATH), $(OBJ))
+INCLUDES=$(addprefix $(INCLUDE_PATH), $(INCLUDE))
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJ) -shared -fPIC -o $@ $(LIBFLAGS)
 
-%.o: %.cpp Makefile Sdl2.hpp
-	$(CXX) $(CXXFLAGS) -I./../includes -c $< -o $@
+%.o: %.$(FILE_TYPE) $(INCLUDES) $(INCLUDES_GAME) Makefile
+	$(CXX) $(CXXFLAGS) -I $(INCLUDES_PATH) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)
