@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 15:01:12 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 19:45:44 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/28 12:42:49 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ struct Data
 
 enum eDir
 {
-	Up = 0, Right, Down, Left, Exit = 32, Error = -1, Lib1 = 42, Lib2, Lib3
+	 Error = -1, Up = 0, Right, Down, Left, Exit, Lib1, Lib2, Lib3
 };
 
 enum eNum

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/28 12:28:41 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/28 12:44:43 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int		main(int ac, char *av[])
 		if (direction[2] >= eDir::Lib1)
 		{
 			deleteLib(library, dl_handle);
-			library = getLib(& dl_handle, x, y, libTab[direction[2] - 42]);
+			library = getLib(& dl_handle, x, y, libTab[direction[2] - eDir::Lib1]);
 			direction[2] = eDir::Up;
 		}
 		if (!(core.moveSnake(direction)))
