@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/05/25 16:54:20 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/05/28 19:26:57 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,10 @@ LIB3_PATH=lib3/
 LIB3_NAME=Sfml.so
 SYM3=lib3.so
 
+LIB4_PATH=lib4/
+LIB4_NAME=Glfw.so
+SYM4=lib4.so
+
 all: $(NAME) MAKELIBS
 
 $(NAME): $(OBJ_PATH) $(OBJS)
@@ -45,6 +49,7 @@ $(NAME): $(OBJ_PATH) $(OBJS)
 	@ln -fs $(LIB1_PATH)$(LIB1_NAME) $(SYM1)
 	@ln -fs $(LIB2_PATH)$(LIB2_NAME) $(SYM2)
 	@ln -fs $(LIB3_PATH)$(LIB3_NAME) $(SYM3)
+	@ln -fs $(LIB4_PATH)$(LIB4_NAME) $(SYM4)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.$(FILE_TYPE) $(INCLUDES) Makefile
 	$(CXX) $(CXXFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
@@ -53,6 +58,7 @@ MAKELIBS:
 	@make -C $(LIB1_PATH)
 	@make -C $(LIB2_PATH)
 	@make -C $(LIB3_PATH)
+	@make -C $(LIB4_PATH)
 
 $(OBJ_PATH):
 	@mkdir -p $@
@@ -61,15 +67,18 @@ clean:
 	make clean -C $(LIB1_PATH)
 	make clean -C $(LIB2_PATH)
 	make clean -C $(LIB3_PATH)
+	make clean -C $(LIB4_PATH)
 	rm -f $(SYM1)
 	rm -f $(SYM2)
 	rm -f $(SYM3)
+	rm -f $(SYM4)
 	rm -f $(OBJS)
 
 fclean : clean
 	make fclean -C $(LIB1_PATH)
 	make fclean -C $(LIB2_PATH)
 	make fclean -C $(LIB3_PATH)
+	make fclean -C $(LIB4_PATH)
 	rm -f $(NAME)
 
 re : fclean all

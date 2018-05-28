@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 18:38:55 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/28 18:35:38 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 #include "IGraphicLib.hpp"
 #include <dlfcn.h>
 
-const char *libTab [3] = {
+const char *libTab [4] = {
 	"lib1.so",
 	"lib2.so",
-	"lib3.so"
+	"lib3.so",
+	"lib4.so"
 };
 
 int		usage(const char *filename)
@@ -104,7 +105,7 @@ int		main(int ac, char *av[])
 	void			*dl_handle;
 	struct timeval	stop, start;
 	eDir			direction;
-	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib1.so");
+	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib4.so");
 	int				accTime = 10;
 
 	GameCore & 		core = GameCore::getGame(x, y, obstacle);
