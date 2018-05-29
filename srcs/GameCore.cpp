@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 19:20:41 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/29 13:12:43 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ GameCore::~GameCore(void)
 	return ;
 }
 
-GameCore::GameCore(short width, short height, unsigned char obstacle = 5, bool p2 = true)
+GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	: _p2(p2)
 {
 	if (width < 10)
@@ -78,9 +78,9 @@ void	GameCore::_initSnake(snakeData snake)
 	snake.direction = eDir::Left;
 }
 
-GameCore &	GameCore::getGame(short width, short height, short o)
+GameCore &	GameCore::getGame(short width, short height, short o, bool player)
 {
-	static	GameCore g = GameCore(width, height, o);
+	static	GameCore g = GameCore(width, height, o, player);
 
 	return g;
 }
@@ -161,10 +161,10 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake)
 	{
 		if ( this->_data._map[newHead.first][newHead.second] != eNum::Blank
 				&& this->_data._map[newHead.first][newHead.second] != eNum::Food
-			   	&& (newHead.first != (--(this->_snake.snake.end()))->first
-				|| newHead.second != (--(this->_snake.snake.end()))->second)
-				&& (newHead.first != (--(this->_snake2.snake.end()))->first
-				|| newHead.second != (--(this->_snake2.snake.end()))->second))
+			   	&& (newHead.first != (std::next(this->_snake2.snake.end(), -1))->first
+				|| newHead.second != (std::next(this->_snake2.snake.end(), -1))->second)
+				&& (newHead.first != (std::next(snake.snake.end(), -1))->first
+				|| newHead.second != (std::next(snake.snake.end(), -1))->second))
 				return false;
 		if ( this->_data._map[newHead.first][newHead.second] == eNum::Food )
 		{
@@ -176,7 +176,9 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake)
 
 	if (snake.fed == false)
 	{
-		this->_updateSnake(*(std::next(snake.snake.end(), -1)), eNum::Blank);
+		if (!(std::next(snake.snake.end(), -1)->first == this->_snake.snake.begin()->first
+				&& std::next(snake.snake.end(), -1)->second == this->_snake.snake.begin()->second))
+			this->_updateSnake(*(std::next(snake.snake.end(), -1)), eNum::Blank);
 		snake.snake.pop_back();
 	}
 	else

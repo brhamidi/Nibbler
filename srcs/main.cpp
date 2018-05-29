@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/28 12:44:43 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/29 15:18:44 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <cstring>
 #include "IGraphicLib.hpp"
 #include <dlfcn.h>
+#include <unistd.h>
 
 const char *libTab [3] = {
 	"lib1.so",
@@ -107,7 +108,7 @@ int		main(int ac, char *av[])
 	eDir			direction[3] = {eDir::Left, eDir::Left, eDir::Up};
 	int				accTime = 10;
 
-	GameCore & 		core = GameCore::getGame(x, y, obstacle);
+	GameCore & 		core = GameCore::getGame(x, y, obstacle, false);
 	while (1)
 	{
 		gettimeofday(&start, NULL);
@@ -137,8 +138,8 @@ int		main(int ac, char *av[])
 		library->render( core.getData() );
 
 		gettimeofday(&stop, NULL);
-		while (std::abs(stop.tv_usec - start.tv_usec) < (100000 - accTime))
-			gettimeofday(&stop, NULL);
+		if (((start.tv_usec > stop.tv_usec) ? 1000000 - start.tv_usec + stop.tv_usec : stop.tv_usec - start.tv_usec) < ( 100000 - accTime))
+			usleep((100000 - accTime) - ((start.tv_usec > stop.tv_usec) ? 1000000 - start.tv_usec + stop.tv_usec : stop.tv_usec - start.tv_usec));
 		if (accTime + 100 < 50000)
 			accTime = core.getData()._score / 5;
 	}

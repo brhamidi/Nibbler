@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 19:59:45 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/29 15:22:08 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void 	Ncurses::getEvent(eDir *direction) const
 				direction[1] = tmp[1];
 		}
 	}
-	flushinp();
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)

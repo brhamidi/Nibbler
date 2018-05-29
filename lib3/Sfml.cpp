@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/28 12:28:01 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/29 15:22:49 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	Sfml::getEvent(eDir *direction) const
 				direction[1] = tmp[1];
 		}
 	}
-	while ( this->_window->pollEvent(event) ) ;
 }
 
 void	Sfml::render(Data const & data) const

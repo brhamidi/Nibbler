@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 19:10:21 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/29 15:22:33 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ void	Sdl2::getEvent(eDir *direction) const
 				direction[1] = tmp[1];
 		}
 	}
-	while (SDL_PollEvent (&event));
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 17:47:31 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/29 13:13:51 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ class GameCore
 	public:
 		~GameCore(void);
 		bool	moveSnake(eDir*);
-		static GameCore &	getGame(short, short, short);
+		static GameCore &	getGame(short, short, short, bool);
 		void	_printMap(void) const;
 		Data &	getData(void);
 
 	private:
-		GameCore(short, short, unsigned char, bool);
+		GameCore(short, short, short, bool);
 		GameCore(void);
 		bool	_movePlayer(eDir, snakeData &);
 		void	_initSnake(snakeData);
