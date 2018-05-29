@@ -18,10 +18,11 @@
 #include <dlfcn.h>
 #include <unistd.h>
 
-const char *libTab [3] = {
+const char *libTab [4] = {
 	"lib1.so",
 	"lib2.so",
-	"lib3.so"
+	"lib3.so",
+	"lib4.so"
 };
 
 int		usage(const char *filename)
