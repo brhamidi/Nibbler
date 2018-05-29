@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 17:20:02 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/29 13:13:51 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,38 @@
 #include <iostream>
 #include "Nibbler.hpp"
 
+struct snakeData
+{
+	bool	fed;
+	eDir	direction;
+	std::list < std::pair <short, short > > snake;
+};
+
 class GameCore
 {
 	public:
 		~GameCore(void);
-		static GameCore &	getGame(short, short, short);
-		bool	moveSnake(eDir);
+		bool	moveSnake(eDir*);
+		static GameCore &	getGame(short, short, short, bool);
 		void	_printMap(void) const;
 		Data &	getData(void);
-		bool	_fed;
-		eDir	_direction;
 
 	private:
-		GameCore(short, short, short);
+		GameCore(short, short, short, bool);
 		GameCore(void);
+		bool	_movePlayer(eDir, snakeData &);
+		void	_initSnake(snakeData);
 		bool	_findPos(short, short, short, short, eNum);
 		void	_buildTheWall(void);
 		void	_popElem(eNum);
 		void	_updateSnake(std::pair<short, short> &, eNum);
 
-		std::list< std::pair< short, short > >	_snake;
-		Data	_data;
+		bool		_fed;
+		eDir		_direction;
+		bool		_p2;
+		snakeData	_snake;
+		snakeData	_snake2;
+		Data		_data;
 };
 
 #endif

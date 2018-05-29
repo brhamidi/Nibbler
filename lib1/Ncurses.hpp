@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:50:07 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/22 12:49:28 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/25 19:59:51 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <ncurses.h>
 # include "IGraphicLib.hpp"
-
+# include <map>
 class Ncurses : public IGraphicLib
 {
 	public:
@@ -23,12 +23,12 @@ class Ncurses : public IGraphicLib
 		~Ncurses(void);
 
 		void	render(Data const &) const;
-		eDir	getEvent(void) const;
+		void	getEvent(eDir *direction) const;
 
 	private:
 		void	_init(short, short);
 		void	_stop(void);
-
+	//	std::map < int, eDir > _keyFunction;
 };
 
 extern "C"

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 17:25:43 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/29 13:12:43 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,35 +21,66 @@ GameCore::~GameCore(void)
 	return ;
 }
 
-GameCore::GameCore(short width, short height, short obstacle = 0)
-	: _fed(false), _direction(eDir::Left)
+GameCore::GameCore(short width, short height, short obstacle, bool p2)
+	: _p2(p2)
 {
 	if (width < 10)
 		throw "width too small";
 	else if (height < 10)
 		throw "height too small";
-	this->_data._score = 0;
+
 	this->_data._width = width;
 	this->_data._height = height;
-	this->_snake = {
-			{height / 2, width / 2}, {height / 2, width / 2 + 1},
-			{height / 2, width / 2 + 2}, {height / 2, width / 2 + 3}
-		};
+
 	this->_data._map = new short * [this->_data._height];
 	for (auto h = 0; h < this->_data._height; h++)
 		this->_data._map[h] = new short[this->_data._width]();
+
+	this->_data._score = 0;
+
+	{
+		this->_snake.snake =
+		{{height / (p2 ? 3 : 2), width / 2}, {height / (p2 ? 3 : 2), width / 2 + 1},
+			{height / (p2 ? 3 : 2), width / 2 + 2}, {height / (p2 ? 3 : 2), width / 2 + 3}};
+		this->_initSnake(this->_snake);
+	}
+
+	if(p2)
+	{
+		this->_snake2.snake =
+		{{height * 2 / 3, width / 2}, {height * 2 / 3, width / 2 + 1},
+			{height * 2 / 3, width / 2 + 2}, {height * 2 / 3, width / 2 + 3}};
+		this->_initSnake(this->_snake2);
+	}
 	_buildTheWall();
-	for(auto corps: this->_snake)
+
+	for(auto corps : this->_snake.snake)
+	{
+		std::cout << corps.first << " " << corps.second << std::endl;
 		this->_updateSnake(corps, eNum::Snake);
+	}
+	this->_updateSnake(*this->_snake.snake.begin(), eNum::Head);
+	if (p2)
+	{
+		for(auto corps : this->_snake2.snake)
+			this->_updateSnake(corps, eNum::Snake);
+		this->_updateSnake(*this->_snake2.snake.begin(), eNum::Head);
+	}
 	_popElem(eNum::Food);
 	for (int i = 0; i < obstacle; i++)
 		_popElem(eNum::Obstacle);
 	return;
 }
 
-GameCore &	GameCore::getGame(short width, short height, short o)
+void	GameCore::_initSnake(snakeData snake)
 {
-	static	GameCore g = GameCore(width, height, o);
+	snake.fed = false;
+	snake.direction = eDir::Left;
+}
+
+GameCore &	GameCore::getGame(short width, short height, short o, bool player)
+{
+	static	GameCore g = GameCore(width, height, o, player);
 
 	return g;
 }
@@ -95,34 +126,45 @@ void	GameCore::_buildTheWall(void)
 	}
 }
 
-bool GameCore::moveSnake(eDir input)
+bool GameCore::moveSnake(eDir *input)
+{
+	if (!this->_movePlayer(input[0], this->_snake))
+		return false;
+	else if (this->_p2)
+		return this->_movePlayer(input[1], this->_snake2);
+	return true;
+}
+
+bool	GameCore::_movePlayer(eDir input, snakeData & snake)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
 	if (input > eDir::Left)
-		input = this->_direction;
+		input = snake.direction;
 	if (input != eDir::Error)
 	{
-		if(input % 2 != this->_direction % 2) //check if direction is not opposite
-			this->_direction = input;
+		if(input % 2 != snake.direction % 2) //check if direction is not opposite
+			snake.direction = input;
 	}
 
 	bool onFood = false;
+
 	std::pair <short, short> newHead =
 	{
-		this->_snake.begin()->first + getDirection[this->_direction].first,
-	   	this->_snake.begin()->second + getDirection[this->_direction].second
+		snake.snake.begin()->first + getDirection[snake.direction].first,
+	   	snake.snake.begin()->second + getDirection[snake.direction].second
 	};
 
 	if (newHead.second < this->_data._width && newHead.second >= 0 &&
 		newHead.first < this->_data._height && newHead.first >= 0)
 	{
-		if ( this->_data._map[newHead.first][newHead.second] == eNum::Wall
-			|| this->_data._map[newHead.first][newHead.second] == eNum::Obstacle
-			|| (this->_data._map[newHead.first][newHead.second] == eNum::Snake
-		   	&& (newHead.first != (--this->_snake.end())->first
-				|| newHead.second != (--this->_snake.end())->second)))
+		if ( this->_data._map[newHead.first][newHead.second] != eNum::Blank
+				&& this->_data._map[newHead.first][newHead.second] != eNum::Food
+			   	&& (newHead.first != (std::next(this->_snake2.snake.end(), -1))->first
+				|| newHead.second != (std::next(this->_snake2.snake.end(), -1))->second)
+				&& (newHead.first != (std::next(snake.snake.end(), -1))->first
+				|| newHead.second != (std::next(snake.snake.end(), -1))->second))
 				return false;
 		if ( this->_data._map[newHead.first][newHead.second] == eNum::Food )
 		{
@@ -132,20 +174,22 @@ bool GameCore::moveSnake(eDir input)
 		}
 	}
 
-	if (this->_fed == false)
+	if (snake.fed == false)
 	{
-		this->_updateSnake(*(std::next(this->_snake.end(), -1)), eNum::Blank);
-		this->_snake.pop_back();
+		if (!(std::next(snake.snake.end(), -1)->first == this->_snake.snake.begin()->first
+				&& std::next(snake.snake.end(), -1)->second == this->_snake.snake.begin()->second))
+			this->_updateSnake(*(std::next(snake.snake.end(), -1)), eNum::Blank);
+		snake.snake.pop_back();
 	}
 	else
-		this->_fed = false;
+		snake.fed = false;
 
-	this->_snake.push_front(newHead);
-	this->_updateSnake( * (this->_snake.begin()), eNum::Head );
-	this->_updateSnake( * std::next(this->_snake.begin()) , eNum::Snake );
+	snake.snake.push_front(newHead);
+	this->_updateSnake( * (snake.snake.begin()), eNum::Head );
+	this->_updateSnake( * std::next(snake.snake.begin()) , eNum::Snake );
 
 	if (onFood)
-		this->_fed = true;
+		snake.fed = true;
 	return true;
 }
 

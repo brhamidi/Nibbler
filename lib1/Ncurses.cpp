@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/25 17:36:28 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/29 15:22:08 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Ncurses::~Ncurses(void)
 
 Ncurses::Ncurses(short x, short y)
 {
+//	this->_keyFunction = {{KEY_DC, eDir::Exit}, {'1', eDir::Lib1}, {'2', eDir::Lib2}, {'3', eDir::Lib3}};
 	this->_init(x, y);
 }
 
@@ -56,43 +57,74 @@ void	Ncurses::render(Data const & data) const
 	}
 	refresh();
 }
-#include <iostream>
-eDir	Ncurses::getEvent(void) const
-{
-	static eDir	direction = eDir::Left;
-	int			c = eDir::Error;
-	eDir		tmp;
 
+void 	Ncurses::getEvent(eDir *direction) const
+{
+	int			c = eDir::Error;
+	eDir		tmp[2];
+
+	tmp[0] = direction[0];
+	tmp[1] = direction[1];
 	while((c = getch()) != ERR)
 	{
-		std::cout << c << std::endl;
-		tmp = direction;
-		if (c == eDir::Exit)
-		{
-			flushinp();
-			return eDir::Exit;
-		}
-		switch(c)
-		{
-			case KEY_DC: direction = eDir::Exit; break;
-			case KEY_UP: direction = eDir::Up; break;
-			case KEY_RIGHT: direction = eDir::Right; break;
-			case KEY_DOWN: direction = eDir::Down; break;
-			case KEY_LEFT: direction = eDir::Left;break;
-			case '1': return eDir::Lib1; break;
-			case '2': return eDir::Lib2; break;
-			case '3': return eDir::Lib3; break;
-			default: break;
-		}
-		if (direction > eDir::Left)
-			break ;
-		if (direction % 2 == tmp % 2)
-			direction = tmp;
-		if (tmp != direction)
+		if (!direction[2])
+			switch (c)
+			{
+				case KEY_DC: direction[2] = eDir::Exit; break;
+				case '1': direction[2] = eDir::Lib1; break;
+				case '2': direction[2] = eDir::Lib2; break;
+				case '3': direction[2] = eDir::Lib3; break;
+				default: break;
+			}
+		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break;
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+			switch(c)
+			{
+				case KEY_UP:
+					direction[0] = eDir::Up;
+					break;
+				case KEY_RIGHT:
+					direction[0] = eDir::Right;
+					break;
+				case KEY_DOWN:
+					direction[0] = eDir::Down;
+					break;
+				case KEY_LEFT:
+					direction[0] = eDir::Left;
+					break;
+				default:
+					break;
+			}
+			if (direction[0] % 2 == tmp[0] % 2)
+				direction[0] = tmp[0];
+		}
+		if (tmp[0] == direction[0])
+		{
+			tmp[0] = direction[0];
+			switch(c)
+			{
+				case 'w':
+					direction[1] = eDir::Up;
+					break;
+				case 'd':
+					direction[1] = eDir::Right;
+					break;
+				case 's':
+					direction[1] = eDir::Down;
+					break;
+				case 'a':
+					direction[1] = eDir::Left;
+					break;
+				default:
+					break;
+			}
+			if (direction[1] % 2 == tmp[1] % 2)
+				direction[1] = tmp[1];
+		}
 	}
-	flushinp();
-	return direction;
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)

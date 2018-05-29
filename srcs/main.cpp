@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/28 18:35:38 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/29 15:18:44 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <cstring>
 #include "IGraphicLib.hpp"
 #include <dlfcn.h>
+#include <unistd.h>
 
 const char *libTab [4] = {
 	"lib1.so",
@@ -104,28 +105,29 @@ int		main(int ac, char *av[])
 
 	void			*dl_handle;
 	struct timeval	stop, start;
-	eDir			direction;
-	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib4.so");
+	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib1.so");
+	eDir			direction[3] = {eDir::Left, eDir::Left, eDir::Up};
 	int				accTime = 10;
 
-	GameCore & 		core = GameCore::getGame(x, y, obstacle);
+	GameCore & 		core = GameCore::getGame(x, y, obstacle, false);
 	while (1)
 	{
 		gettimeofday(&start, NULL);
 
 		core.getData()._score += 5;
 
-		direction = library->getEvent();
+		library->getEvent(direction);
 
-		if (direction == eDir::Exit)
+		if (direction[2] == eDir::Exit)
 		{
 			deleteLib(library, dl_handle);
 			break ;
 		}
-		if (direction >= eDir::Lib1)
+		if (direction[2] >= eDir::Lib1)
 		{
 			deleteLib(library, dl_handle);
-			library = getLib(& dl_handle, x, y, libTab[direction - 42]);
+			library = getLib(& dl_handle, x, y, libTab[direction[2] - eDir::Lib1]);
+			direction[2] = eDir::Up;
 		}
 		if (!(core.moveSnake(direction)))
 		{
@@ -137,8 +139,8 @@ int		main(int ac, char *av[])
 		library->render( core.getData() );
 
 		gettimeofday(&stop, NULL);
-		while (std::abs(stop.tv_usec - start.tv_usec) < (100000 - accTime))
-			gettimeofday(&stop, NULL);
+		if (((start.tv_usec > stop.tv_usec) ? 1000000 - start.tv_usec + stop.tv_usec : stop.tv_usec - start.tv_usec) < ( 100000 - accTime))
+			usleep((100000 - accTime) - ((start.tv_usec > stop.tv_usec) ? 1000000 - start.tv_usec + stop.tv_usec : stop.tv_usec - start.tv_usec));
 		if (accTime + 100 < 50000)
 			accTime = core.getData()._score / 5;
 	}
