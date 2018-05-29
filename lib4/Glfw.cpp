@@ -24,12 +24,9 @@ void	Glfw::_init(short x, short y)
 	glfwMakeContextCurrent(_window);
 }
 
-eDir	Glfw::getEvent(void) const
+void	Glfw::getEvent(eDir *) const
 {
-	glfwPollEvents();
-	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			return eDir::Exit;
-	return eDir::Left;
+	;
 }
 
 void	Glfw::render(Data const &) const
