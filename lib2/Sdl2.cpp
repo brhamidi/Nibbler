@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/29 15:22:33 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/30 17:05:06 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	Sdl2::_init(short x, short y)
 	this->_renderer = SDL_CreateRenderer(this->_win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
-void	Sdl2::render(Data const & data) const
+void	Sdl2::render(Data const & data)
 {
 	SDL_Rect cases;
 	for (auto h = 0; h < data._height; h++)

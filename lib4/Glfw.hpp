@@ -14,7 +14,7 @@ class Glfw : public IGraphicLib
 		Glfw(short, short);
 		~Glfw(void);
 
-		void	render(Data const &) const;
+		void	render(Data const &);
 		void	getEvent(eDir *) const;
 
 	private:

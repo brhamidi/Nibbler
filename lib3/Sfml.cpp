@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/29 15:22:49 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/30 20:07:52 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ Sfml::~Sfml(void)
 }
 
 Sfml::Sfml(short x, short y)
-	: _window()
 {
 	this->_init(x, y);
 }
@@ -32,9 +31,46 @@ void	Sfml::_stop(void)
 void	Sfml::_init(short x, short y) 
 {
 	this->_window = new sf::RenderWindow(sf::VideoMode( x * VALUE, (y + MENU) * VALUE), "Nibbler");
-	this->_texture.loadFromFile("lib3/img1.png", sf::IntRect(0, 0, x * VALUE + 13, MENU * VALUE));
-	this->_texture.setSmooth(true);
-	this->_sprite.setTexture(this->_texture);
+
+	this->_font.loadFromFile("lib3/font.ttf");
+
+	this->_text.setFont(this->_font);
+	this->_text.setString("Score: ");
+	this->_text.setCharacterSize(40);
+	this->_text.setFillColor(sf::Color::White);
+
+	this->_ntext.setFont(this->_font);
+	this->_ntext.setCharacterSize(40);
+	this->_ntext.setFillColor(sf::Color::White);
+	this->_ntext.setPosition(sf::Vector2f(100, 0));
+
+	this->_snake.loadFromFile("lib3/snake.png");
+	this->_sSnake.setTexture(_snake);
+	this->_sSnake.setScale(sf::Vector2f(0.05, 0.05));
+
+	this->_head.loadFromFile("lib3/head.png");
+	this->_sHead.setTexture(_head);
+	this->_sHead.setScale(sf::Vector2f(0.15, 0.15));
+
+	this->_food.loadFromFile("lib3/food.png");
+	this->_sFood.setTexture(_food);
+	this->_sFood.setScale(sf::Vector2f(0.15, 0.15));
+
+	this->_wall.loadFromFile("lib3/fence.png");
+	this->_sWall.setTexture(_wall);
+	this->_sWall.setScale(sf::Vector2f(0.15, 0.15));
+
+
+	this->_obstacle.loadFromFile("lib3/obstacle.png");
+	this->_sObstacle.setTexture(_obstacle);
+	this->_sObstacle.setScale(sf::Vector2f(0.15, 0.15));
+
+	_map[eNum::Wall] = & this->_sWall;
+	_map[eNum::Obstacle] = & this->_sObstacle;
+	_map[eNum::Food] = & this->_sFood;
+	_map[eNum::Snake] = & this->_sSnake;
+	_map[eNum::Head] = & this->_sHead;
+
 }
 
 void	Sfml::getEvent(eDir *direction) const
@@ -109,36 +145,30 @@ void	Sfml::getEvent(eDir *direction) const
 	}
 }
 
-void	Sfml::render(Data const & data) const
+void	Sfml::render(Data const & data)
 {
+	sf::CircleShape rectangle(VALUE / 2);
+
 	this->_window->clear(sf::Color::Black);
 
-	sf::RectangleShape rectangle;
+
+	_ntext.setString(std::to_string(data._score));
 
 	for (auto h = 0; h < data._height; h++)
-	{
 		for (auto w = 0; w < data._width; w++)
-		{
-			if (data._map[h][w] == eNum::Obstacle)
-				rectangle.setFillColor(sf::Color(1, 40, 78));
-			if (data._map[h][w] == eNum::Blank)
-				rectangle.setFillColor(sf::Color(255, 255, 0));
-			if (data._map[h][w] == eNum::Wall)
-				rectangle.setFillColor(sf::Color(255, 0, 255));
-			if (data._map[h][w] == eNum::Snake)
-				rectangle.setFillColor(sf::Color(0, 0, 255));
-			if (data._map[h][w] == eNum::Head)
-				rectangle.setFillColor(sf::Color(253, 109, 177));
-			if (data._map[h][w] == eNum::Food)
-				rectangle.setFillColor(sf::Color(1, 252, 235));
-			rectangle.setSize(sf::Vector2f(VALUE, VALUE));
-			rectangle.setPosition(w * VALUE, (h + MENU) * VALUE);
-			this->_window->draw(rectangle);
-		}
-	}
-	this->_window->draw(this->_sprite);
+			if (data._map[h][w] != eNum::Blank)
+				_handle_object(w, h, _map[ data._map[h][w] ]);
+
+	this->_window->draw(_ntext);
+	this->_window->draw(_text);
 
 	this->_window->display();
+}
+
+void		Sfml::_handle_object(short w, short h, sf::Sprite * sprite)
+{
+	sprite->setPosition(w * VALUE - VALUE / 2, (h + MENU) * VALUE - VALUE / 2);
+	this->_window->draw(*sprite);
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)

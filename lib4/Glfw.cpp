@@ -29,7 +29,7 @@ void	Glfw::getEvent(eDir *) const
 	;
 }
 
-void	Glfw::render(Data const &) const
+void	Glfw::render(Data const &)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glfwSwapBuffers(_window);
