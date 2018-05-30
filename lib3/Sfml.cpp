@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/30 20:07:52 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/30 20:30:09 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	Sfml::_init(short x, short y)
 
 	this->_food.loadFromFile("lib3/food.png");
 	this->_sFood.setTexture(_food);
-	this->_sFood.setScale(sf::Vector2f(0.15, 0.15));
+	this->_sFood.setScale(sf::Vector2f(0.07, 0.07));
 
 	this->_wall.loadFromFile("lib3/fence.png");
 	this->_sWall.setTexture(_wall);
