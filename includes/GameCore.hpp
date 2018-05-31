@@ -6,16 +6,17 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/29 13:13:51 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 18:49:44 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAMECORE_HPP
 # define GAMECORE_HPP
 
-#include <list>
-#include <iostream>
-#include "Nibbler.hpp"
+# include <list>
+# include <iostream>
+# include "Nibbler.hpp"
+# include "IAudioLib.hpp"
 
 struct snakeData
 {
@@ -28,7 +29,7 @@ class GameCore
 {
 	public:
 		~GameCore(void);
-		bool	moveSnake(eDir*);
+		bool	moveSnake(eDir*, IAudioLib &);
 		static GameCore &	getGame(short, short, short, bool);
 		void	_printMap(void) const;
 		Data &	getData(void);
@@ -36,7 +37,7 @@ class GameCore
 	private:
 		GameCore(short, short, short, bool);
 		GameCore(void);
-		bool	_movePlayer(eDir, snakeData &);
+		bool	_movePlayer(eDir, snakeData &, IAudioLib & sound);
 		void	_initSnake(snakeData);
 		bool	_findPos(short, short, short, short, eNum);
 		void	_buildTheWall(void);

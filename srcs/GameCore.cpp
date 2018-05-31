@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/30 20:09:03 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/31 18:49:29 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,16 +123,16 @@ void	GameCore::_buildTheWall(void)
 	}
 }
 
-bool GameCore::moveSnake(eDir *input)
+bool GameCore::moveSnake(eDir *input, IAudioLib & sound)
 {
-	if (!this->_movePlayer(input[0], this->_snake))
+	if (!this->_movePlayer(input[0], this->_snake, sound))
 		return false;
 	else if (this->_p2)
-		return this->_movePlayer(input[1], this->_snake2);
+		return this->_movePlayer(input[1], this->_snake2, sound);
 	return true;
 }
 
-bool	GameCore::_movePlayer(eDir input, snakeData & snake)
+bool	GameCore::_movePlayer(eDir input, snakeData & snake, IAudioLib & sound)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -168,6 +168,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake)
 			this->_popElem(eNum::Food);
 			onFood = true;
 			_data._score += 1000;
+			sound.play();
 		}
 	}
 

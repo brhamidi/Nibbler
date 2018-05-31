@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 15:09:06 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/31 19:04:38 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ Sdl2::Sdl2(short x, short y)
 
 void	Sdl2::_stop(void)
 {
+	SDL_DestroyTexture(this->_msg);;
+	SDL_DestroyTexture(this->_nmsg);;
+	SDL_FreeSurface(this->_text_surface);
+	SDL_FreeSurface(this->_ntext_surface);
 	SDL_DestroyWindow(this->_win);
 
 	TTF_Quit();
@@ -107,6 +111,13 @@ void	Sdl2::getEvent(eDir *direction) const
 	tmp[1] = direction[1];
 	while ( SDL_PollEvent(&event) == 1 )
 	{
+		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
+		{
+			if (direction[3] == eDir::Space)
+				direction[3] = eDir::Up;
+			else
+				direction[3] = eDir::Space;
+		}
 		if (!direction[2])
 			switch (event.key.keysym.sym)
 			{

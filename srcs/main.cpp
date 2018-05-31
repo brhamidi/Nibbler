@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 16:47:55 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/31 18:45:55 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <ctime>
 #include <cstring>
 #include "IGraphicLib.hpp"
+#include "IAudioLib.hpp"
 #include <dlfcn.h>
 #include <unistd.h>
 
@@ -63,7 +64,6 @@ int		arg(int ac, char **av, int *x, int *y, int *obstacle)
 	return (0);
 }
 
-
 void	dlerror_wrapper(void)
 {
 	std::cerr << "Error: " << dlerror() << std::endl;
@@ -93,6 +93,29 @@ void	deleteLib(IGraphicLib *library, void *dl_handle)
 	dlclose(dl_handle);
 }
 
+void	deleteAudioLib(IAudioLib *library, void *dl_handle)
+{
+	void (*deleteAudioLib)(IAudioLib *);
+	deleteAudioLib = (void (*)(IAudioLib *)) dlsym(dl_handle, "deleteAudioLib");
+	if (!deleteAudioLib)
+		dlerror_wrapper();
+	deleteAudioLib(library);
+	dlclose(dl_handle);
+}
+
+IAudioLib	*getAudioLib(void **dl_handle)
+{
+	*dl_handle = dlopen("lib5.so", RTLD_LAZY | RTLD_LOCAL);
+	if (! *dl_handle)
+		dlerror_wrapper();
+	IAudioLib *(*createAudioLib)(void);
+	createAudioLib =
+		(IAudioLib *(*)(void)) dlsym(*dl_handle, "createAudioLib");
+	if (!createAudioLib)
+		dlerror_wrapper();
+	return createAudioLib();
+}
+
 int		main(int ac, char *av[])
 {
 	std::srand(std::time(nullptr));
@@ -104,8 +127,10 @@ int		main(int ac, char *av[])
 		return EXIT_FAILURE;
 
 	void			*dl_handle;
+	void			*audio_dl_handle;
 	struct timeval	stop, start;
 	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib3.so");
+	IAudioLib			*audio_library = getAudioLib(&audio_dl_handle);
 	eDir			direction[4] = {eDir::Left, eDir::Left, eDir::Up, eDir::Space};
 	int				accTime = 10;
 
@@ -120,6 +145,7 @@ int		main(int ac, char *av[])
 		if (direction[2] == eDir::Exit)
 		{
 			deleteLib(library, dl_handle);
+			deleteAudioLib(audio_library, audio_dl_handle);
 			break ;
 		}
 		else if (direction[2] >= eDir::Lib1 && direction[2] <= eDir::Lib3)
@@ -132,9 +158,10 @@ int		main(int ac, char *av[])
 
 		if (direction[3] != eDir::Space)
 		{
-			if (!(core.moveSnake(direction)))
+			if (!(core.moveSnake(direction, * audio_library)))
 			{
 				deleteLib(library, dl_handle);
+				deleteAudioLib(audio_library, audio_dl_handle);
 				std::cout << "Dead\n";
 				break;
 			}

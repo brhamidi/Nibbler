@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IGraphicLib.hpp                                    :+:      :+:    :+:   */
+/*   IAudioLib.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/18 16:28:58 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 18:43:11 by bhamidi          ###   ########.fr       */
+/*   Created: 2018/05/31 18:43:05 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/05/31 18:56:44 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IGRAPHICLIB_HPP
-# define IGRAPHICLIB_HPP
+#ifndef IAUDIOLIB_HPP
+# define IAUDIOLIB_HPP
 
 # include "Nibbler.hpp"
 
-class 	IGraphicLib
+class 	IAudioLib
 {
-	private:
-		virtual void	_init(short, short) = 0;
-		virtual void	_stop(void) = 0;
-
 	public:
-		virtual void	render(Data const &) = 0;
-		virtual void	getEvent(eDir *) const = 0;
+		virtual void	play(void) = 0;
 
-		virtual ~IGraphicLib(void) {}
+		virtual ~IAudioLib(void) {}
 };
 
 #endif
