@@ -6,14 +6,14 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/21 14:53:46 by bhamidi           #+#    #+#              #
-#    Updated: 2018/05/29 16:34:57 by msrun            ###   ########.fr        #
+#    Updated: 2018/05/31 13:41:53 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CXX				= g++
 NAME			= sdl2.so
 CXXFLAGS		= -Werror -Wextra -Wall -std=c++11 -O2
-LIBFLAGS		= -L $$HOME/.brew/lib -lSDL_ttf -lSDL2
+LIBFLAGS		= -L $$HOME/.brew/lib -lSDL2_ttf -lSDL2
 INCLUDES_PATH	= $$HOME/.brew/include -I ./../includes
 FILE_TYPE		= cpp
 

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/30 13:14:16 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/31 13:07:28 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		main(int ac, char *av[])
 
 	void			*dl_handle;
 	struct timeval	stop, start;
-	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib3.so");
+	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib2.so");
 	eDir			direction[3] = {eDir::Left, eDir::Left, eDir::Up};
 	int				accTime = 10;
 
