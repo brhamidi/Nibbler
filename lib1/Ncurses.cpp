@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/29 15:22:08 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 17:52:01 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	Ncurses::_init(short, short)
 	init_pair(eNum::Obstacle + 1, COLOR_WHITE, COLOR_WHITE);
 }
 
-void	Ncurses::render(Data const & data) const
+void	Ncurses::render(Data const & data)
 {
 	for (auto h = 0; h < data._height; h++)
 	{
@@ -58,7 +58,7 @@ void	Ncurses::render(Data const & data) const
 	refresh();
 }
 
-void 	Ncurses::getEvent(eDir *direction) const
+void 	Ncurses::getEvent(eDir *direction)
 {
 	int			c = eDir::Error;
 	eDir		tmp[2];

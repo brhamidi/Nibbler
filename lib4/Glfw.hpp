@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/31 17:13:42 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 19:33:13 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ class Glfw : public IGraphicLib
 
 		void	render(Data const &);
 		void	getEvent(eDir *);
-		eDir		_keycallback[3];
-		std::map < int, int > _directionMap;
+		eDir *	getKeycallback(void);
+		std::map <int, eDir > & getDirectionMap(void);
+		std::map <int, eDir > & getDirection2Map(void);
+		std::map <int, eDir > & getInteractionMap(void);
 
 	private:
 		void	_init(short, short);
@@ -48,6 +50,10 @@ class Glfw : public IGraphicLib
 		GLuint		*_program;
 		GLint		*_mvp_location;
 		vertexMap	*_vertices;
+		eDir		_keycallback[4];
+		std::map < int, eDir > _directionMap;
+		std::map < int, eDir > _direction2Map;
+		std::map < int, eDir > _interactionMap;
 };
 
 extern "C"

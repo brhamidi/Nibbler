@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 17:38:33 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 17:52:20 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,51 @@ Sdl2::Sdl2(short x, short y)
 void	Sdl2::_stop(void)
 {
 	SDL_DestroyWindow(this->_win);
+
+	TTF_Quit();
 	SDL_Quit();
 }
 
 void	Sdl2::_init(short x, short y) 
 {
 	SDL_Init(SDL_INIT_VIDEO);
+	TTF_Init();
 
-	this->_win = SDL_CreateWindow("Une this->_win SDL" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED ,  x * 15, y * 15, 0);
+	this->_win = SDL_CreateWindow("Nibbler @ 42" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED ,  x * 15, (y + MENU) * 15, 0);
 	this->_renderer = SDL_CreateRenderer(this->_win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+	// text
+	this->_font = TTF_OpenFont("lib2/font.ttf", 15);
+	this->_font_color = {255, 255, 255, 200};
+	this->_color_black = {0, 0, 0, 200};
+	this->_text_surface = TTF_RenderText_Shaded(this->_font, "Score:", this->_font_color, this->_color_black);
 }
 
-void	Sdl2::render(Data const & data) const
+void	Sdl2::render(Data const & data)
 {
 	SDL_Rect cases;
+
+	SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
+	SDL_RenderClear(this->_renderer);
+
+	this->_msg = SDL_CreateTextureFromSurface(this->_renderer, this->_text_surface);
+	SDL_Rect Message_rect;
+	Message_rect.x = 0;
+	Message_rect.y = 0;
+	Message_rect.w = 200;
+	Message_rect.h = 60;
+
+	this->_ntext_surface = TTF_RenderText_Solid(this->_font, std::to_string(data._score).c_str(), this->_font_color);
+	this->_nmsg = SDL_CreateTextureFromSurface(this->_renderer, this->_ntext_surface);
+	SDL_Rect nMessage_rect;
+	nMessage_rect.x = 0;
+	nMessage_rect.y = 50;
+	nMessage_rect.w = 200;
+	nMessage_rect.h = 60;
+
+	SDL_RenderCopy(this->_renderer, this->_msg, NULL, & Message_rect);
+	SDL_RenderCopy(this->_renderer, this->_nmsg, NULL, & nMessage_rect);
+
 	for (auto h = 0; h < data._height; h++)
 	{
 		for (auto w = 0; w < data._width; w++)
@@ -57,19 +88,17 @@ void	Sdl2::render(Data const & data) const
 			if (data._map[h][w] == eNum::Obstacle)
 				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
 			cases.x = w * 15;
-			cases.y = h * 15;
-			cases.w = cases.h = 15;
-			if(SDL_RenderFillRect(this->_renderer, &cases) < 0)
-			{
-				std::cerr << "Erreur lors des remplissages de rectangles: " << SDL_GetError() << std::endl;
-				throw "Error";
-			}
+			cases.y = (h + MENU) * 15;
+			cases.w = 15;
+			cases.h = 15;
+	
+			SDL_RenderFillRect(this->_renderer, &cases);
 		}
 	}
 	SDL_RenderPresent(this->_renderer);
 }
 
-void	Sdl2::getEvent(eDir *direction) const
+void	Sdl2::getEvent(eDir *direction)
 {
 	eDir		tmp[2];
 	SDL_Event 	event;

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/31 17:28:32 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 19:42:02 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,46 @@ void	key_callback(GLFWwindow* window, int key, int, int action, int)
 	static Glfw *obj = NULL;
 	if (!obj)
 		obj = reinterpret_cast<Glfw*>(glfwGetWindowUserPointer(window));
+	std::map <int , eDir> & directions = obj->getDirectionMap();
+	std::map <int , eDir> & directions2 = obj->getDirection2Map();
+	std::map <int , eDir> & interactions = obj->getInteractionMap();
+	eDir					*keyCallback = obj->getKeycallback();
     if (action == GLFW_PRESS)
 	{
-		if (key == GLFW_KEY_UP)
-			std::cout << "UP\n";
-		if (obj->_directionMap[key])
-			std::cout << key << std::endl;
-		else
-			std::cout << key << " rien\n";
+		if (directions[key] || key == GLFW_KEY_UP)
+			keyCallback[0] = directions[key];
+		else if (directions2[key] || key == GLFW_KEY_W)
+			keyCallback[1] = directions2[key];
+		else if (interactions[key])
+			keyCallback[2] = interactions[key];
+		else if (key == GLFW_KEY_SPACE)
+		{
+			if (keyCallback[3] == eDir::Space)
+				keyCallback[3] = eDir::Up;
+			else
+				keyCallback[3] = eDir::Space;
+		}
 	}
+}
+
+eDir	*Glfw::getKeycallback(void)
+{
+	return this->_keycallback;
+}
+
+std::map < int, eDir > &	Glfw::getDirection2Map(void)
+{
+	return this->_direction2Map;
+}
+
+std::map < int, eDir > &	Glfw::getDirectionMap(void)
+{
+	return this->_directionMap;
+}
+
+std::map < int, eDir > &	Glfw::getInteractionMap(void)
+{
+	return this->_interactionMap;
 }
 
 void	Glfw::_init(short x, short y) 
@@ -54,6 +85,16 @@ void	Glfw::_init(short x, short y)
 	this->_directionMap[GLFW_KEY_UP] = eDir::Up;
 	this->_directionMap[GLFW_KEY_DOWN] = eDir::Down;
 	this->_directionMap[GLFW_KEY_LEFT] = eDir::Left;
+
+	this->_direction2Map[GLFW_KEY_D] = eDir::Right;
+	this->_direction2Map[GLFW_KEY_W] = eDir::Up;
+	this->_direction2Map[GLFW_KEY_S] = eDir::Down;
+	this->_direction2Map[GLFW_KEY_A] = eDir::Left;
+
+	this->_interactionMap[GLFW_KEY_1] = eDir::Lib1;
+	this->_interactionMap[GLFW_KEY_2] = eDir::Lib2;
+	this->_interactionMap[GLFW_KEY_3] = eDir::Lib3;
+	this->_interactionMap[GLFW_KEY_DELETE] = eDir::Exit;
 
 	static const char* vertex_shader_text =
 		"uniform mat4 MVP;\n"
@@ -124,17 +165,19 @@ void	Glfw::getEvent(eDir *direction)
 	this->_keycallback[0] = direction[0];
 	this->_keycallback[1] = direction[1];
 	this->_keycallback[2] = direction[2];
+	this->_keycallback[3] = direction[3];
 	glfwPollEvents();
 	direction[0] = this->_keycallback[0];
 	direction[1] = this->_keycallback[1];
 	direction[2] = this->_keycallback[2];
+	direction[3] = this->_keycallback[3];
 }
 
 void	Glfw::_setVertice(int pos, vertexMap src, Data const & data)
 {
 	this->_vertices[pos] = {
 		2.0f * ((data._width * 1.f) / (data._height * 1.f)) * src.x / (data._width * 1.f) - 1.f * ((data._width * 1.f) / (data._height * 1.f)),
-		2.0f * src.y / (data._height * 1.f) - 1.f,
+		(2.0f * src.y / (data._height * 1.f) - 1.f) * -1.f,
 		src.r, src.g, src.b};
 }
 

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:18:05 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 18:27:10 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 17:52:29 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "IGraphicLib.hpp"
 # include <SDL2/SDL.h>
+# include <SDL2/SDL_ttf.h>
+
+# define MENU	8
 
 class Sdl2 : public IGraphicLib
 {
@@ -22,12 +25,19 @@ class Sdl2 : public IGraphicLib
 		Sdl2(short, short);
 		~Sdl2(void);
 
-		void	render(Data const &) const;
-		void	getEvent(eDir *) const;
+		void	render(Data const &);
+		void	getEvent(eDir *);
 
 	private:
 		SDL_Window		*_win;
 		SDL_Renderer	*_renderer;
+		TTF_Font		*_font;
+		SDL_Color		_font_color;
+		SDL_Color		_color_black;
+		SDL_Surface		*_text_surface;
+		SDL_Texture		*_msg;
+		SDL_Surface		*_ntext_surface;
+		SDL_Texture		*_nmsg;
 
 		void	_init(short, short);
 		void	_stop(void);

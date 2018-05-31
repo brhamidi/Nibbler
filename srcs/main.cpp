@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 17:36:02 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 19:20:32 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,15 @@ int		main(int ac, char *av[])
 
 	void			*dl_handle;
 	struct timeval	stop, start;
-	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib2.so");
-	eDir			direction[3] = {eDir::Left, eDir::Left, eDir::Nothing};
+	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib4.so");
+	eDir			direction[4] = {eDir::Left, eDir::Left, eDir::Up, eDir::Up};
 	int				accTime = 10;
 
 	GameCore & 		core = GameCore::getGame(x, y, obstacle, false);
+	library->render( core.getData() );
 	while (1)
 	{
 		gettimeofday(&start, NULL);
-
-		core.getData()._score += 5;
 
 		library->getEvent(direction);
 
@@ -123,22 +122,25 @@ int		main(int ac, char *av[])
 			deleteLib(library, dl_handle);
 			break ;
 		}
-		if (direction[2] >= eDir::Lib1)
+		else if (direction[2] >= eDir::Lib1 && direction[2] <= eDir::Lib3)
 		{
 			deleteLib(library, dl_handle);
-			std::cout << direction[2] - eDir::Lib1 << std::endl;
 			library = getLib(& dl_handle, x, y, libTab[direction[2] - eDir::Lib1]);
-			direction[2] = eDir::Nothing;
+			direction[2] = eDir::Up;
+			library->render( core.getData() );
 		}
-		if (!(core.moveSnake(direction)))
+
+		if (direction[3] != eDir::Space)
 		{
-			deleteLib(library, dl_handle);
-			std::cout << "Dead\n";
-			break;
+			if (!(core.moveSnake(direction)))
+			{
+				deleteLib(library, dl_handle);
+				std::cout << "Dead\n";
+				break;
+			}
+			core.getData()._score += 5;
+			library->render( core.getData() );
 		}
-
-		library->render( core.getData() );
-
 		gettimeofday(&stop, NULL);
 		if (((start.tv_usec > stop.tv_usec) ? 1000000 - start.tv_usec + stop.tv_usec : stop.tv_usec - start.tv_usec) < ( 100000 - accTime))
 			usleep((100000 - accTime) - ((start.tv_usec > stop.tv_usec) ? 1000000 - start.tv_usec + stop.tv_usec : stop.tv_usec - start.tv_usec));
