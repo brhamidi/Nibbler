@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/30 20:30:09 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/31 16:44:51 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,16 @@ void	Sfml::getEvent(eDir *direction) const
 	{
 		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break ;
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+		{
+			if (direction[3] == eDir::Space)
+				direction[3] = eDir::Up;
+			else
+				direction[3] = eDir::Space;
+		}
+		;
 		if (!direction[2])
+		{
  		   	switch (event.type)
 	   	 	{
 				case sf::Event::Closed: direction[2] = eDir::Exit; break;
@@ -100,6 +109,7 @@ void	Sfml::getEvent(eDir *direction) const
 					break;
 				default: break;
    		 	}
+		}
 		if (tmp[0] == direction[0])
 		{
 			tmp[0] = direction[0];
