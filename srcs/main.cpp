@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/29 15:18:44 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 17:36:02 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ int		main(int ac, char *av[])
 
 	void			*dl_handle;
 	struct timeval	stop, start;
-	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib1.so");
-	eDir			direction[3] = {eDir::Left, eDir::Left, eDir::Up};
+	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib2.so");
+	eDir			direction[3] = {eDir::Left, eDir::Left, eDir::Nothing};
 	int				accTime = 10;
 
 	GameCore & 		core = GameCore::getGame(x, y, obstacle, false);
@@ -126,8 +126,9 @@ int		main(int ac, char *av[])
 		if (direction[2] >= eDir::Lib1)
 		{
 			deleteLib(library, dl_handle);
+			std::cout << direction[2] - eDir::Lib1 << std::endl;
 			library = getLib(& dl_handle, x, y, libTab[direction[2] - eDir::Lib1]);
-			direction[2] = eDir::Up;
+			direction[2] = eDir::Nothing;
 		}
 		if (!(core.moveSnake(direction)))
 		{

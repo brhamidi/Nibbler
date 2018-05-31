@@ -6,12 +6,11 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/29 13:12:43 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/29 17:11:31 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GameCore.hpp"
-#include <iostream>
 
 GameCore::~GameCore(void)
 {
@@ -55,10 +54,7 @@ GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	_buildTheWall();
 
 	for(auto corps : this->_snake.snake)
-	{
-		std::cout << corps.first << " " << corps.second << std::endl;
 		this->_updateSnake(corps, eNum::Snake);
-	}
 	this->_updateSnake(*this->_snake.snake.begin(), eNum::Head);
 	if (p2)
 	{

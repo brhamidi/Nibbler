@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 16:28:58 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/25 18:27:19 by msrun            ###   ########.fr       */
+/*   Updated: 2018/05/31 15:49:35 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ class 	IGraphicLib
 		virtual void	_stop(void) = 0;
 
 	public:
-		virtual void	render(Data const &) const = 0;
-		virtual void	getEvent(eDir *) const = 0;
+		virtual void	render(Data const &) = 0;
+		virtual void	getEvent(eDir *) = 0;
 
 		virtual ~IGraphicLib(void) {}
 };

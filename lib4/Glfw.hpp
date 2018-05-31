@@ -1,12 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Glfw.hpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
+/*   Updated: 2018/05/31 17:13:42 by msrun            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef SFML_HPP
 # define SFML_HPP
 
 # include "IGraphicLib.hpp"
-#include <GLFW/glfw3.h>
+# include <GLFW/glfw3.h>
+# include "linmath.h"
+# include <map>
 
 # define VALUE	15
 # define MENU	20
+
+struct vertexMap
+{
+	float x, y;
+	float r, g, b;
+};
 
 class Glfw : public IGraphicLib
 {
@@ -14,15 +33,21 @@ class Glfw : public IGraphicLib
 		Glfw(short, short);
 		~Glfw(void);
 
-		void	render(Data const &) const;
-		void	getEvent(eDir *) const;
+		void	render(Data const &);
+		void	getEvent(eDir *);
+		eDir		_keycallback[3];
+		std::map < int, int > _directionMap;
 
 	private:
 		void	_init(short, short);
 		void	_stop(void);
+		void	_setVerticesDraw(int pos, vertexMap , Data const &);
+		void	_setVertice(int pos, vertexMap , Data const &);
 
-		GLFWwindow* _window;
-
+		GLFWwindow	*_window;
+		GLuint		*_program;
+		GLint		*_mvp_location;
+		vertexMap	*_vertices;
 };
 
 extern "C"
