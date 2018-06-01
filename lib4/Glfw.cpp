@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/31 19:42:02 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/01 14:05:53 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,49 +33,16 @@ void	Glfw::_stop(void)
 
 void	key_callback(GLFWwindow* window, int key, int, int action, int)
 {
-	static Glfw *obj = NULL;
-	if (!obj)
-		obj = reinterpret_cast<Glfw*>(glfwGetWindowUserPointer(window));
-	std::map <int , eDir> & directions = obj->getDirectionMap();
-	std::map <int , eDir> & directions2 = obj->getDirection2Map();
-	std::map <int , eDir> & interactions = obj->getInteractionMap();
-	eDir					*keyCallback = obj->getKeycallback();
+	static std::list < int > *eventPoll = NULL;
+	if (!eventPoll)
+		eventPoll = (reinterpret_cast<Glfw*>(glfwGetWindowUserPointer(window)))->getEventPoll();
     if (action == GLFW_PRESS)
-	{
-		if (directions[key] || key == GLFW_KEY_UP)
-			keyCallback[0] = directions[key];
-		else if (directions2[key] || key == GLFW_KEY_W)
-			keyCallback[1] = directions2[key];
-		else if (interactions[key])
-			keyCallback[2] = interactions[key];
-		else if (key == GLFW_KEY_SPACE)
-		{
-			if (keyCallback[3] == eDir::Space)
-				keyCallback[3] = eDir::Up;
-			else
-				keyCallback[3] = eDir::Space;
-		}
-	}
+		eventPoll->push_back(key);
 }
 
-eDir	*Glfw::getKeycallback(void)
+std::list < int > *Glfw::getEventPoll(void)
 {
-	return this->_keycallback;
-}
-
-std::map < int, eDir > &	Glfw::getDirection2Map(void)
-{
-	return this->_direction2Map;
-}
-
-std::map < int, eDir > &	Glfw::getDirectionMap(void)
-{
-	return this->_directionMap;
-}
-
-std::map < int, eDir > &	Glfw::getInteractionMap(void)
-{
-	return this->_interactionMap;
+	return &this->_eventPoll;
 }
 
 void	Glfw::_init(short x, short y) 
@@ -152,7 +119,7 @@ void	Glfw::_init(short x, short y)
 	vpos_location = glGetAttribLocation(*this->_program, "vPos");
 	vcol_location = glGetAttribLocation(*this->_program, "vCol");
 	glEnableVertexAttribArray(vpos_location);
-	glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
+	glVertexAttribPointer(vpos_location, 3, GL_FLOAT, GL_FALSE,
 			sizeof(float) * 5, (void*) 0);
 	glEnableVertexAttribArray(vcol_location);
 	glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
@@ -162,15 +129,38 @@ void	Glfw::_init(short x, short y)
 
 void	Glfw::getEvent(eDir *direction)
 {
-	this->_keycallback[0] = direction[0];
-	this->_keycallback[1] = direction[1];
-	this->_keycallback[2] = direction[2];
-	this->_keycallback[3] = direction[3];
 	glfwPollEvents();
-	direction[0] = this->_keycallback[0];
-	direction[1] = this->_keycallback[1];
-	direction[2] = this->_keycallback[2];
-	direction[3] = this->_keycallback[3];
+
+	eDir	tmp[2];
+	int		key;
+
+	tmp[0] = direction[0];
+	tmp[1] = direction[1];
+	while ( this->_eventPoll.size() != 0)
+	{
+		key = *this->_eventPoll.begin();
+		this->_eventPoll.pop_front();
+
+		if (direction[0] == tmp[0] && (this->_directionMap[key] || key == GLFW_KEY_UP))
+			direction[0] = this->_directionMap[key];
+		else if (direction[1] == tmp[1] && (this->_direction2Map[key] || key == GLFW_KEY_W))
+			direction[1] = this->_direction2Map[key];
+		else if (this->_interactionMap[key])
+			direction[2] = this->_interactionMap[key];
+		else if (key == GLFW_KEY_SPACE)
+		{
+			if (direction[3] == eDir::Space)
+				direction[3] = eDir::Up;
+			else
+				direction[3] = eDir::Space;
+		}
+		if (direction[0] % 2 == tmp[0] % 2)
+			direction[0] = tmp[0];
+		if (direction[1] % 2 == tmp[1] % 2)
+			direction[1] = tmp[1];
+		if (tmp[0] != direction[0] && tmp[1] != direction[1])
+			break;
+	}
 }
 
 void	Glfw::_setVertice(int pos, vertexMap src, Data const & data)
@@ -202,9 +192,9 @@ void	Glfw::render(Data const &data)
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT);
 	mat4x4_identity(m);
-	static float i = 1;
-	i += 0.01;
-//	mat4x4_rotate_Z(m, m, /*(float) glfwGetTime()*/i);
+	//static float i = 1;
+	//i += 0.01;
+//	mat4x4_rotate_Z(m, m, (float) glfwGetTime());
 	mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 	mat4x4_mul(mvp, p, m);
 	glUseProgram(*this->_program);
