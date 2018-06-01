@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/01 13:11:06 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/01 15:13:34 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SFML_HPP
 
 # include "IGraphicLib.hpp"
+# include <GL/glew.h>
 # include <GLFW/glfw3.h>
 # include "linmath.h"
 # include <map>
