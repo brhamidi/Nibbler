@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/01 20:52:06 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/04 13:57:44 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	key_callback(GLFWwindow* window, int key, int, int action, int)
 		Glfw	*obj = (reinterpret_cast<Glfw*>(glfwGetWindowUserPointer(window)));
 		eventPoll = obj->getEventPoll();
 	}
-	//segfault 
     if (action == GLFW_PRESS)
 		eventPoll->push_back(key);
 }
@@ -89,7 +88,7 @@ void	Glfw::_init(short x, short y)
 	glfwMakeContextCurrent(this->_window);
 	glfwSetKeyCallback(this->_window, key_callback);
 
-	glEnable(GL_DEPTH_TEST); // Depth Testing
+	glEnable(GL_DEPTH_TEST); // profondeur
 	glDepthFunc(GL_LEQUAL);
 	glDisable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -135,12 +134,12 @@ static void	setage(int x, int y, int z, GLfloat *vertice, Data const & data, ver
 {
 	static float percent = (data._width * 1.f) / (data._height * 1.f);
 
-	vertice[0] = ( ( ( ( (src.x / (data._width * 1.f) ) * 100.f ) * 2) - 100.0f + (x * (100.0f * (1.0f / data._width)) ) ) ) * percent;
+	vertice[0] = ( ( ( ( (src.x / (data._width * 1.f) ) * 10.f ) * 2) - 10.0f + (x * (10.0f * (1.0f / data._width)) ) ) ) * percent;
 
-	vertice[1] = ( ( ( (src.y / (data._height * 1.f) ) * 100.f ) * 2) - 100.0f + (y * (100.0f * (1.0f / data._height)) ) ) * -1.0f;
+	vertice[2] = ( ( ( (src.y / (data._height * 1.f) ) * 10.f ) * 2) - 10.0f + (y * (10.0f * (1.0f / data._height)) ) );
 
-	vertice[2] = z;
-}
+	vertice[1] = z * (10.0f * (1.0f / data._height)) * -1.0f ;
+}	
 
 void	Glfw::_setVertice(int pos, vertexMap src, Data const & data)
 {
@@ -186,9 +185,9 @@ void	Glfw::_setVertice(int pos, vertexMap src, Data const & data)
 	};
 
 
-		static float alpha = 0;
+//	static float alpha = 0;
 	//attempt to rotate cube
-//	glRotatef(alpha, 0, 0, 1);
+//	glRotatef(alpha, 1, 0, 0);
 
 	/* We have a color array and a vertex array */
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -203,22 +202,17 @@ void	Glfw::_setVertice(int pos, vertexMap src, Data const & data)
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-		alpha += 0.001;
+//	alpha += 0.01;
 
 }
 
 void	Glfw::_setVerticesDraw(int pos, vertexMap src, Data const & data)
 {
 	this->_setVertice(pos, {src.x, src.y + 1, src.r, src.g, src.b}, data);
-/*	this->_setVertice(pos + 1, {src.x, src.y, src.r, src.g, src.b}, data);
-	this->_setVertice(pos + 2, {src.x + 1, src.y, src.r, src.g, src.b}, data);
-	this->_setVertice(pos + 3, {src.x + 1, src.y + 1, src.r, src.g, src.b}, data);*/
-//	glDrawArrays(GL_QUADS, pos, 4);
 }
 
 void	Glfw::render(Data const &data)
 {
-	(void)data;
 	GLint windowWidth, windowHeight;
 	glfwGetWindowSize(this->_window, &windowWidth, &windowHeight);
 	glViewport(0, 0, windowWidth, windowHeight);
@@ -232,17 +226,14 @@ void	Glfw::render(Data const &data)
 	gluPerspective( 100, (double)windowWidth / (double)windowHeight, 0.1, 100);
 
 	glMatrixMode(GL_MODELVIEW_MATRIX);
-	glTranslatef(0, 0, -100); //camera ?
+	glTranslatef(0, -10, -20); //camera ?
 	for (auto h = 0; h < data._height; h++)
 		for (auto w = 0; w < data._width; w++)
-			if (data._map[h][w] == eNum::Snake ||data._map[h][w] == eNum::Wall || data._map[h][w] == eNum::Food)
+			if (data._map[h][w] == eNum::Head || data._map[h][w] == eNum::Snake || data._map[h][w] == eNum::Wall || data._map[h][w] == eNum::Food)
 				this->_setVerticesDraw(0, {w + 0.f, h + 0.f, 0.f, 0.f, 1.f}, data);
 
 	// Update Screen
 	glfwSwapBuffers(this->_window);
-
-	// Check for any input, or window movement
-	glfwPollEvents();
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)
