@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/01 15:13:34 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/04 18:46:35 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ struct vertexMap
 	float r, g, b;
 };
 
+struct dataInfo
+{
+	int h, w, x, y, view;
+};
+
 class Glfw : public IGraphicLib
 {
 	public:
@@ -42,15 +47,15 @@ class Glfw : public IGraphicLib
 	private:
 		void	_init(short, short);
 		void	_stop(void);
-		void	_setVerticesDraw(int pos, vertexMap , Data const &);
-		void	_setVertice(int pos, vertexMap , Data const &);
+		void	_setVerticesDraw(int pos, Data const &, int, dataInfo);
+		void	_setVertice(int pos, vertexMap, Data const &, int);
 
 		GLFWwindow	*_window;
 		GLuint		*_program;
 		GLint		*_mvp_location;
 		vertexMap	*_vertices;
-		std::map < int, eDir > _directionMap;
-		std::map < int, eDir > _direction2Map;
+		std::map < int, int > _directionMap;
+		std::map < int, int > _direction2Map;
 		std::map < int, eDir > _interactionMap;
 		std::list < int > _eventPoll;
 };

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/31 17:47:40 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/04 18:16:05 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 GameCore::~GameCore(void)
 {
-	for (auto h = 0; h < this->_data._height; h++)
-		delete [] this->_data._map[h];
-	delete [] this->_data._map;
+//	for (auto h = 0; h < this->_data._height; h++)
+//		delete [] this->_data._map[h];
+//	delete [] this->_data._map;
 	return ;
 }
 
@@ -124,6 +124,8 @@ void	GameCore::_buildTheWall(void)
 
 bool GameCore::moveSnake(eDir *input)
 {
+	this->_data._snakeDir = this->_snake.direction;
+	this->_data._snakeDir2 = this->_snake2.direction;
 	if (!this->_movePlayer(input[0], this->_snake))
 		return false;
 	else if (this->_p2)
