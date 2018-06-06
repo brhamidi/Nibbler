@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/04 18:16:05 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/05 13:09:06 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ GameCore::~GameCore(void)
 GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	: _p2(p2)
 {
+	this->_data._p2 = p2;
 	if (width < 10)
 		throw "width too small";
 	else if (height < 10)
@@ -60,7 +61,7 @@ GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	{
 		for(auto corps : this->_snake2.snake)
 			this->_updateSnake(corps, eNum::Snake);
-		this->_updateSnake(*this->_snake2.snake.begin(), eNum::Head);
+		this->_updateSnake(*this->_snake2.snake.begin(), eNum::Head2);
 	}
 	_popElem(eNum::Food);
 	for (int i = 0; i < obstacle; i++)
@@ -126,14 +127,14 @@ bool GameCore::moveSnake(eDir *input)
 {
 	this->_data._snakeDir = this->_snake.direction;
 	this->_data._snakeDir2 = this->_snake2.direction;
-	if (!this->_movePlayer(input[0], this->_snake))
+	if (!this->_movePlayer(input[0], this->_snake, eNum::Head))
 		return false;
 	else if (this->_p2)
-		return this->_movePlayer(input[1], this->_snake2);
+		return this->_movePlayer(input[1], this->_snake2, eNum::Head2);
 	return true;
 }
 
-bool	GameCore::_movePlayer(eDir input, snakeData & snake)
+bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -183,7 +184,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake)
 		snake.fed = false;
 
 	snake.snake.push_front(newHead);
-	this->_updateSnake( * (snake.snake.begin()), eNum::Head );
+	this->_updateSnake( * (snake.snake.begin()), head );
 	this->_updateSnake( * std::next(snake.snake.begin()) , eNum::Snake );
 
 	if (onFood)

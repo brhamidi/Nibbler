@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/04 18:44:18 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/06 17:13:04 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ Glfw::Glfw(short x, short y)
 void	Glfw::_stop(void)
 {
 	delete [] this->_vertices;
-	//glfwDestroyWindow(this->_window);
+	glfwDestroyWindow(this->_window);
 	glfwTerminate();
 }
 
@@ -75,7 +75,7 @@ void	Glfw::_init(short x, short y)
 	}
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 
-	this->_window = glfwCreateWindow(2000, 1000, "Nibbler", NULL, NULL);
+	this->_window = glfwCreateWindow(2000, 700, "Nibbler", NULL, NULL);
 	glfwSetWindowUserPointer(this->_window, this);
 
 	if(this->_window == NULL)
@@ -103,7 +103,7 @@ void	Glfw::getEvent(eDir *direction)
 
 	tmp[0] = direction[0];
 	tmp[1] = direction[1];
-	eDir	dir[4] = {eDir::Up, eDir::Right, eDir::Down, eDir::Left};
+	static eDir	dir[4] = {eDir::Up, eDir::Right, eDir::Down, eDir::Left};
 	while ( this->_eventPoll.size() != 0)
 	{
 		key = *this->_eventPoll.begin();
@@ -120,8 +120,17 @@ void	Glfw::getEvent(eDir *direction)
 			else if (direction[0] < eDir::Up)
 				direction[0] = eDir::Left;
 		}
-//		else if (direction[1] == tmp[1] && (this->_direction2Map[key] || key == GLFW_KEY_W))
-//			direction[1] = this->_direction2Map[key];
+		else if (direction[1] == tmp[1] && (this->_direction2Map[key]))
+		{
+			direction[1] =
+				(direction[1] + this->_direction2Map[key] < 0) ?
+				eDir::Left : ((direction[1] + this->_direction2Map[key] > 3) ?
+				eDir::Up : dir[direction[1] + this->_direction2Map[key]]);
+			if (direction[1] > eDir::Left)
+				direction[1] = eDir::Up;
+			else if (direction[1] < eDir::Up)
+				direction[1] = eDir::Left;
+		}
 		else if (this->_interactionMap[key])
 			direction[2] = this->_interactionMap[key];
 		else if (key == GLFW_KEY_SPACE)
@@ -148,43 +157,86 @@ static void	setage(int x, int y, int z, GLfloat *vertice, Data const & data, ver
 
 	vertice[2] = ( ( ( (src.y / (data._height * 1.f) ) * 10.f ) * 2) - 10.0f + (y * (10.0f * (1.0f / data._height)) ) );
 
-	vertice[1] = (z * (10.0f * (1.0f / data._height)) * -1.0f) < 0? 0 : (z * (10.0f * (1.0f / data._height)) * -1.0f) * 2;
-}	
+	vertice[1] = (z * (10.0f * (1.0f / data._height)) * -1.0f) < 0? 0 : (z * (10.0f * (1.0f / data._height)) * -1.0f);
+}
 
-void	Glfw::_setVertice(int pos, vertexMap src, Data const & data, int h)
+static void	setForMiniMap(int x, int y, int z, GLfloat *vertice, Data const & data, vertexMap src)
+{
+	vertice[(data._width < data._height ? 0 : 1)] = (src.x + x - ((data._width < data._height ? data._height : data._width) / 2)) * 0.1f * 2 + (data._width < data._height ? 0 : 20);
+
+	vertice[(data._width < data._height ? 1 : 0)] = (src.y + y - ((data._width < data._height ? data._height : data._width) / 2)) * 0.1f * (data._width < data._height ? 1 : -1) * 2 + (data._width < data._height ? 20 : 0);
+
+	vertice[2] = z * 0;
+}
+
+static void	setVerticeFloor(Data const & data, int h, GLfloat *vertices, vertexMap src)
+{
+	setage(-1, -1,  h, &vertices[0], data, src);
+	setage(-1,  1,  h, &vertices[3], data, src);
+	setage(1,  1,  h, &vertices[6], data, src);
+	setage(1, -1,  h, &vertices[9], data, src);
+}
+
+static void	setVerticesQuad(Data const & data, int h, GLfloat *vertices, vertexMap src,
+	void	(*fct)(int, int , int , GLfloat *, Data const &, vertexMap))
+{
+	fct(-1, -1, -h, &vertices[0], data, src);
+	fct(-1, -1,  h, &vertices[3], data, src);
+	fct(-1,  1,  h, &vertices[6], data, src);
+	fct(-1,  1, -h, &vertices[9], data, src);
+
+	fct(1, -1, -h, &vertices[12], data, src);
+	fct(1, -1,  h, &vertices[15], data, src);
+	fct(1,  1,  h, &vertices[18], data, src);
+	fct(1,  1, -h, &vertices[21], data, src);
+
+	fct(-1, -1, -h, &vertices[24], data, src);
+	fct(-1, -1,  h, &vertices[27], data, src);
+	fct(1, -1,  h, &vertices[30], data, src);
+	fct(1, -1, -h, &vertices[33], data, src);
+
+	fct(-1,  1, -h, &vertices[36], data, src);
+	fct(-1,  1,  h, &vertices[39], data, src);
+	fct(1,  1,  h, &vertices[42], data, src);
+	fct(1,  1, -h, &vertices[45], data, src);
+
+	fct(-1, -1, -h, &vertices[48], data, src);
+	fct(-1,  1, -h, &vertices[51], data, src);
+	fct(1,  1, -h, &vertices[54], data, src);
+	fct(1, -1, -h, &vertices[57], data, src);
+
+	fct(-1, -1,  h, &vertices[60], data, src);
+	fct(-1,  1,  h, &vertices[63], data, src);
+	fct(1,  1,  h, &vertices[66], data, src);
+	fct(1, -1,  h, &vertices[69], data, src);
+}
+
+void	Glfw::_printFloor(vertexMap src, Data const & data, int h)
+{
+	src.y += 1;
+	GLfloat vertices[12];
+	setVerticeFloor(data, h, vertices, src);
+	GLfloat colors[] =
+	{
+		0, 0, 1,   0, 0, 1,   0, 0, 1,   0, 0, 1,
+	};
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glColorPointer(3, GL_FLOAT, 0, colors);
+
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void	Glfw::_setVertice(vertexMap src, Data const & data, int h, void	(*fct)(int, int , int , GLfloat *, Data const &, vertexMap))
 {
 	src.y += 1;
 	GLfloat vertices[72];
-	setage(-1, -1, -h, &vertices[0], data, src);
-	setage(-1, -1,  h, &vertices[3], data, src);
-	setage(-1,  1,  h, &vertices[6], data, src);
-	setage(-1,  1, -h, &vertices[9], data, src);
-
-	setage(1, -1, -h, &vertices[12], data, src);
-	setage(1, -1,  h, &vertices[15], data, src);
-	setage(1,  1,  h, &vertices[18], data, src);
-	setage(1,  1, -h, &vertices[21], data, src);
-
-	setage(-1, -1, -h, &vertices[24], data, src);
-	setage(-1, -1,  h, &vertices[27], data, src);
-	setage(1, -1,  h, &vertices[30], data, src);
-	setage(1, -1, -h, &vertices[33], data, src);
-
-	setage(-1,  1, -h, &vertices[36], data, src);
-	setage(-1,  1,  h, &vertices[39], data, src);
-	setage(1,  1,  h, &vertices[42], data, src);
-	setage(1,  1, -h, &vertices[45], data, src);
-
-	setage(-1, -1, -h, &vertices[48], data, src);
-	setage(-1,  1, -h, &vertices[51], data, src);
-	setage(1,  1, -h, &vertices[54], data, src);
-	setage(1, -1, -h, &vertices[57], data, src);
-
-	setage(-1, -1,  h, &vertices[60], data, src);
-	setage(-1,  1,  h, &vertices[63], data, src);
-	setage(1,  1,  h, &vertices[66], data, src);
-	setage(1, -1,  h, &vertices[69], data, src);
-	
+	setVerticesQuad(data, h, vertices, src, fct);
 	GLfloat colors[] =
 	{
 		0, 0, 0,   0, 0, 1,   0, 1, 1,   0, 1, 0,
@@ -195,40 +247,52 @@ void	Glfw::_setVertice(int pos, vertexMap src, Data const & data, int h)
 		0, 0, 1,   0, 1, 1,   1, 1, 1,   1, 0, 1
 	};
 
-
-//	static float alpha = 0;
-	//attempt to rotate cube
-//	glRotatef(alpha, 1, 0, 0);
-
-	/* We have a color array and a vertex array */
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glColorPointer(3, GL_FLOAT, 0, colors);
 
-	/* Send data : 24 vertices */
 	glDrawArrays(GL_QUADS, 0, 24);
 
-	/* Cleanup states */
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
-
-//	alpha += 1.0001;
-
 }
 
-void	Glfw::_setVerticesDraw(int pos, Data const & data, int height, dataInfo infoPos)
+void	Glfw::_setVerticesDraw(Data const & data, int height, dataInfo infoPos)
 {
-	if (data._snakeDir == eDir::Up && infoPos.h - 4 <= infoPos.y)
-		this->_setVertice(pos, {-(infoPos.x - infoPos.w) + data._width / 2 + 0.f, infoPos.view - infoPos.y + data._height + 0.f, 0.f, 0.f, 1.f}, data, height);
-	else if (data._snakeDir == eDir::Down && infoPos.h + 4 >= infoPos.y)
-		this->_setVertice(pos, {(infoPos.x - infoPos.w) + data._width / 2 + 0.f, data._height - infoPos.view + 0.f, 0.f, 0.f, 1.f}, data, height);
-	else if (data._snakeDir == eDir::Right && infoPos.w + 4 >= infoPos.x)
-		this->_setVertice(pos, {-(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - infoPos.view + 0.f, 0.f, 0.f, 1.f}, data, height);
-	else if (data._snakeDir == eDir::Left && infoPos.w - 4 <= infoPos.x)
-		this->_setVertice(pos, {(infoPos.y - infoPos.h) + data._width / 2 + 0.f, infoPos.view - infoPos.x + data._height + 0.f, 0.f, 0.f, 1.f}, data, height);
+	eDir snakeDir = data._snakeDir;
 
-	//this->_setVertice(pos, {src.x, src.y + 1, src.r, src.g, src.b}, data, h);
+	if (snakeDir == eDir::Up && infoPos.h - 4 <= infoPos.y)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {-(infoPos.x - infoPos.w) + data._width / 2 + 0.f, infoPos.view - infoPos.y + data._height + 0.f, 0.f, 0.f, 1.f}, data, height);
+		else
+			this->_setVertice( {-(infoPos.x - infoPos.w) + data._width / 2 + 0.f, infoPos.view - infoPos.y + data._height + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
+	}
+	else if (snakeDir == eDir::Down && infoPos.h + 4 >= infoPos.y)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {(infoPos.x - infoPos.w) + data._width / 2 + 0.f,  data._height - infoPos.view + 6 + 0.f, 0.f, 0.f, 1.f}, data, height);
+		else
+			this->_setVertice( {(infoPos.x - infoPos.w) + data._width / 2 + 0.f,  data._height - infoPos.view + 6 + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
+	}
+	else if (snakeDir == eDir::Right && infoPos.w + 4 >= infoPos.x)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {-(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - infoPos.view + 5 + 0.f, 0.f, 0.f, 1.f}, data, height);
+		else
+			this->_setVertice( {-(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - infoPos.view + 5 + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
+	}
+	else if (snakeDir == eDir::Left && infoPos.w - 4 <= infoPos.x)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - (infoPos.x - infoPos.view) + 1 + 0.f, 0.f, 0.f, 1.f}, data, height);
+		else
+			this->_setVertice( {(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - (infoPos.x - infoPos.view) + 1 + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
+	}
+
+	if (data._map[infoPos.h][infoPos.w] != eNum::Blank)
+		this->_setVertice({infoPos.h + 0.f, infoPos.w + 0.f, 0.f, 0.f, 1.f}, data, 1, setForMiniMap);
 }
 
 void	Glfw::render(Data const &data)
@@ -243,7 +307,7 @@ void	Glfw::render(Data const &data)
 
 	glMatrixMode(GL_PROJECTION_MATRIX);
 	glLoadIdentity();
-	gluPerspective( 100, (double)windowWidth / (double)windowHeight, 0.1, 100);
+	gluPerspective( 100, 1/*(double)windowWidth / (double)windowHeight*/, 0.1, 100);
 
 	glMatrixMode(GL_MODELVIEW_MATRIX);
 	glTranslatef(0, -10, -20); //camera ?
@@ -251,22 +315,29 @@ void	Glfw::render(Data const &data)
 	int y = 0;
 	int x2 = 0;
 	int y2 = 0;
-	for (auto h = 0; h < data._height && !x && !x2; h++)
+	for (auto h = 0; h < data._height && (!x || !x2); h++)
 		for (auto w = 0; w < data._width; w++)
 		{
-			if (x && data._map[h][w] == eNum::Head)
+			if (data._map[h][w] == eNum::Head2)
 			{
 				x2 = w;
 				y2 = h;
 				break;
 			}
-			else if (!x && data._map[h][w] == eNum::Head)
+			if (data._map[h][w] == eNum::Head)
 			{
 				x = w;
 				y = h;
 				break;
 			}
 		}
+/*	for (int h = -100; h < 100; h++)
+	{
+		for (int w = -100; w < 100; w++)
+		{
+			this->_printFloor({h + 0.f, w + 0.f, 0, 0, 0}, data, 1);
+		}
+	}*/
 	int view = 0;
 	for (auto h = 0; h < data._height; h++)
 	{
@@ -277,9 +348,9 @@ void	Glfw::render(Data const &data)
 		for (auto w = 0; w < data._width; w++)
 		{
 			if (data._map[h][w] == eNum::Wall)
-				this->_setVerticesDraw(0, data, 10, {h, w, x, y, view});
-			if (data._map[h][w] == eNum::Head || data._map[h][w] == eNum::Snake || data._map[h][w] == eNum::Food)
-				this->_setVerticesDraw(0, data, 1, {h, w, x, y, view});
+				this->_setVerticesDraw(data, 10, {h, w, x, y, view});
+			else 
+				this->_setVerticesDraw(data, 1, {h, w, x, y, view});
 			if (data._snakeDir == eDir::Left && w - 4 <= x)
 				++view;
 			else if (data._snakeDir == eDir::Right && w + 4 >= x)
@@ -288,7 +359,26 @@ void	Glfw::render(Data const &data)
 	}
 	x = x2;
 	y = y2;
-
+	view = 0;
+/*	for (auto h = 0; h < data._height; h++)
+	{
+		if ((data._snakeDir2 == eDir::Up && h - 4 <= y) || (data._snakeDir2 == eDir::Down && h + 4 >= y))
+			++view;
+		else
+			view = 0;
+		for (auto w = 0; w < data._width; w++)
+		{
+			if (data._map[h][w] == eNum::Wall)
+				this->_setVerticesDraw(data, 10, {h, w, x, y, view}, true);
+			if (data._map[h][w] == eNum::Head || data._map[h][w] == eNum::Snake || data._map[h][w] == eNum::Food)
+				this->_setVerticesDraw(data, 1, {h, w, x, y, view}, true);
+			if (data._snakeDir2 == eDir::Left && w - 4 <= x)
+				++view;
+			else if (data._snakeDir2 == eDir::Right && w + 4 >= x)
+				++view;
+		}
+	}
+*/
 	// Update Screen
 	glfwSwapBuffers(this->_window);
 }

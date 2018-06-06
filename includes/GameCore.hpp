@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/29 13:13:51 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/05 13:00:19 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class GameCore
 	private:
 		GameCore(short, short, short, bool);
 		GameCore(void);
-		bool	_movePlayer(eDir, snakeData &);
+		bool	_movePlayer(eDir, snakeData &, eNum);
 		void	_initSnake(snakeData);
 		bool	_findPos(short, short, short, short, eNum);
 		void	_buildTheWall(void);

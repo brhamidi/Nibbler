@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/04 18:46:35 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/06 17:09:43 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ class Glfw : public IGraphicLib
 	private:
 		void	_init(short, short);
 		void	_stop(void);
-		void	_setVerticesDraw(int pos, Data const &, int, dataInfo);
-		void	_setVertice(int pos, vertexMap, Data const &, int);
+		void	_setVerticesDraw(Data const &, int, dataInfo);
+		void	_setVertice(vertexMap, Data const &, int, void	(*fct)(int, int , int , GLfloat *, Data const &, vertexMap));
+		void	_printMiniMap(void);
+		void	_printFloor(vertexMap src, Data const & data, int h);
 
 		GLFWwindow	*_window;
 		GLuint		*_program;
