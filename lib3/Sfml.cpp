@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 16:44:51 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/31 18:20:17 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	Sfml::_init(short x, short y)
 
 }
 
-void	Sfml::getEvent(eDir *direction) const
+void	Sfml::getEvent(eDir *direction)
 {
 	eDir		tmp[2];
 	sf::Event 	event;

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 18:45:55 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/06 13:38:55 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@
 #include <unistd.h>
 
 const char *libTab [4] = {
-	"lib1.so",
+	"lib4.so",
 	"lib2.so",
-	"lib3.so",
-	"lib4.so"
+	"lib3.so"
 };
 
 int		usage(const char *filename)
@@ -152,8 +151,8 @@ int		main(int ac, char *av[])
 		{
 			deleteLib(library, dl_handle);
 			library = getLib(& dl_handle, x, y, libTab[direction[2] - eDir::Lib1]);
-			library->render( core.getData() );
 			direction[2] = eDir::Up;
+			library->render( core.getData() );
 		}
 
 		if (direction[3] != eDir::Space)

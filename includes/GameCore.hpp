@@ -37,7 +37,8 @@ class GameCore
 	private:
 		GameCore(short, short, short, bool);
 		GameCore(void);
-		bool	_movePlayer(eDir, snakeData &, IAudioLib & sound);
+
+		bool	_movePlayer(eDir, snakeData &, eNum, IAudioLib & sound);
 		void	_initSnake(snakeData);
 		bool	_findPos(short, short, short, short, eNum);
 		void	_buildTheWall(void);

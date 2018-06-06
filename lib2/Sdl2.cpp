@@ -102,7 +102,7 @@ void	Sdl2::render(Data const & data)
 	SDL_RenderPresent(this->_renderer);
 }
 
-void	Sdl2::getEvent(eDir *direction) const
+void	Sdl2::getEvent(eDir *direction)
 {
 	eDir		tmp[2];
 	SDL_Event 	event;

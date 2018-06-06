@@ -6,12 +6,17 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 15:01:12 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 15:39:39 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/05 12:58:33 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NIBBLER_HPP
 # define NIBBLER_HPP
+
+enum eDir
+{
+	 Error = -1, Up, Right, Down, Left, Exit, Lib1, Lib2, Lib3, Space
+};
 
 struct Data
 {
@@ -19,16 +24,14 @@ struct Data
 	short		_width;
 	short		_height;
 	short ** 	_map;
-};
-
-enum eDir
-{
-	 Error = -1, Up = 0, Right, Down, Left, Exit, Lib1, Lib2, Lib3, Space
+	eDir		_snakeDir;
+	eDir		_snakeDir2;
+	bool		_p2;
 };
 
 enum eNum
 {
-	Blank = 0, Wall, Food, Snake, Head, Obstacle
+	Blank = 0, Wall, Food, Snake, Head, Obstacle, Head2
 };
 
 #define RESET   "\033[0m"

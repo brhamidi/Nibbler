@@ -23,7 +23,7 @@ class 	IGraphicLib
 
 	public:
 		virtual void	render(Data const &) = 0;
-		virtual void	getEvent(eDir *) const = 0;
+		virtual void	getEvent(eDir *) = 0;
 
 		virtual ~IGraphicLib(void) {}
 };

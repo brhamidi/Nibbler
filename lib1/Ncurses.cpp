@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:49:32 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/30 17:04:42 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/05/31 17:52:01 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	Ncurses::render(Data const & data)
 	refresh();
 }
 
-void 	Ncurses::getEvent(eDir *direction) const
+void 	Ncurses::getEvent(eDir *direction)
 {
 	int			c = eDir::Error;
 	eDir		tmp[2];

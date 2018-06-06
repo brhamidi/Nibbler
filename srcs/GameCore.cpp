@@ -6,24 +6,24 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/31 18:49:29 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/05 13:09:06 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GameCore.hpp"
-#include <iostream>
 
 GameCore::~GameCore(void)
 {
-	for (auto h = 0; h < this->_data._height; h++)
-		delete [] this->_data._map[h];
-	delete [] this->_data._map;
+//	for (auto h = 0; h < this->_data._height; h++)
+//		delete [] this->_data._map[h];
+//	delete [] this->_data._map;
 	return ;
 }
 
 GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	: _p2(p2)
 {
+	this->_data._p2 = p2;
 	if (width < 10)
 		throw "width too small";
 	else if (height < 10)
@@ -61,7 +61,7 @@ GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	{
 		for(auto corps : this->_snake2.snake)
 			this->_updateSnake(corps, eNum::Snake);
-		this->_updateSnake(*this->_snake2.snake.begin(), eNum::Head);
+		this->_updateSnake(*this->_snake2.snake.begin(), eNum::Head2);
 	}
 	_popElem(eNum::Food);
 	for (int i = 0; i < obstacle; i++)
@@ -125,14 +125,16 @@ void	GameCore::_buildTheWall(void)
 
 bool GameCore::moveSnake(eDir *input, IAudioLib & sound)
 {
-	if (!this->_movePlayer(input[0], this->_snake, sound))
+	this->_data._snakeDir = this->_snake.direction;
+	this->_data._snakeDir2 = this->_snake2.direction;
+	if (!this->_movePlayer(input[0], this->_snake, eNum::Head, sound))
 		return false;
 	else if (this->_p2)
-		return this->_movePlayer(input[1], this->_snake2, sound);
+		return this->_movePlayer(input[1], this->_snake2, eNum::Head2, sound);
 	return true;
 }
 
-bool	GameCore::_movePlayer(eDir input, snakeData & snake, IAudioLib & sound)
+bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib & sound)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -183,7 +185,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, IAudioLib & sound)
 		snake.fed = false;
 
 	snake.snake.push_front(newHead);
-	this->_updateSnake( * (snake.snake.begin()), eNum::Head );
+	this->_updateSnake( * (snake.snake.begin()), head );
 	this->_updateSnake( * std::next(snake.snake.begin()) , eNum::Snake );
 
 	if (onFood)
