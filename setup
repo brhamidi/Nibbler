@@ -1,0 +1,2 @@
+brew update
+brew install glew glfw sdl2 sdl2_ttf sfml
