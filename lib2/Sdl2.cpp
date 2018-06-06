@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 19:04:38 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/06 18:19:07 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ Sdl2::Sdl2(short x, short y)
 
 void	Sdl2::_stop(void)
 {
-	SDL_DestroyTexture(this->_msg);;
-	SDL_DestroyTexture(this->_nmsg);;
-	SDL_FreeSurface(this->_text_surface);
-	SDL_FreeSurface(this->_ntext_surface);
 	SDL_DestroyWindow(this->_win);
 
 	TTF_Quit();
@@ -47,7 +43,6 @@ void	Sdl2::_init(short x, short y)
 	this->_font = TTF_OpenFont("lib2/font.ttf", 15);
 	this->_font_color = {255, 255, 255, 200};
 	this->_color_black = {0, 0, 0, 200};
-	this->_text_surface = TTF_RenderText_Shaded(this->_font, "Score:", this->_font_color, this->_color_black);
 }
 
 void	Sdl2::render(Data const & data)
@@ -57,6 +52,7 @@ void	Sdl2::render(Data const & data)
 	SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
 	SDL_RenderClear(this->_renderer);
 
+	this->_text_surface = TTF_RenderText_Shaded(this->_font, "Score:", this->_font_color, this->_color_black);
 	this->_msg = SDL_CreateTextureFromSurface(this->_renderer, this->_text_surface);
 	SDL_Rect Message_rect;
 	Message_rect.x = 0;
@@ -100,6 +96,10 @@ void	Sdl2::render(Data const & data)
 		}
 	}
 	SDL_RenderPresent(this->_renderer);
+	SDL_DestroyTexture(this->_msg);;
+	SDL_DestroyTexture(this->_nmsg);;
+	SDL_FreeSurface(this->_text_surface);
+	SDL_FreeSurface(this->_ntext_surface);
 }
 
 void	Sdl2::getEvent(eDir *direction)
