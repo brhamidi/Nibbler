@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 18:20:17 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/06 19:56:21 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@ void	Sfml::_init(short x, short y)
 	this->_sFood.setTexture(_food);
 	this->_sFood.setScale(sf::Vector2f(0.07, 0.07));
 
+	this->_custom.loadFromFile("lib3/custom.png");
+	this->_sCustom.setTexture(_custom);
+	this->_sCustom.setScale(sf::Vector2f(0.3, 0.3));
+
 	this->_wall.loadFromFile("lib3/fence.png");
 	this->_sWall.setTexture(_wall);
 	this->_sWall.setScale(sf::Vector2f(0.15, 0.15));
@@ -70,7 +74,31 @@ void	Sfml::_init(short x, short y)
 	_map[eNum::Food] = & this->_sFood;
 	_map[eNum::Snake] = & this->_sSnake;
 	_map[eNum::Head] = & this->_sHead;
+	_map[eNum::Head2] = & this->_sHead;
+	_map[eNum::Custom] = & this->_sCustom;
 
+}
+
+void	Sfml::render(Data const & data)
+{
+	this->_window->clear(sf::Color::Black);
+
+	_ntext.setString(std::to_string(data._score));
+	for (auto h = 0; h < data._height; h++)
+		for (auto w = 0; w < data._width; w++)
+			if (data._map[h][w] != eNum::Blank)
+				_handle_object(w, h, _map[ data._map[h][w] ]);
+
+	this->_window->draw(_ntext);
+	this->_window->draw(_text);
+
+	this->_window->display();
+}
+
+void		Sfml::_handle_object(short w, short h, sf::Sprite * sprite)
+{
+	sprite->setPosition(w * VALUE - VALUE / 2, (h + MENU) * VALUE - VALUE / 2);
+	this->_window->draw(*sprite);
 }
 
 void	Sfml::getEvent(eDir *direction)
@@ -91,7 +119,6 @@ void	Sfml::getEvent(eDir *direction)
 			else
 				direction[3] = eDir::Space;
 		}
-		;
 		if (!direction[2])
 		{
  		   	switch (event.type)
@@ -153,32 +180,6 @@ void	Sfml::getEvent(eDir *direction)
 				direction[1] = tmp[1];
 		}
 	}
-}
-
-void	Sfml::render(Data const & data)
-{
-	sf::CircleShape rectangle(VALUE / 2);
-
-	this->_window->clear(sf::Color::Black);
-
-
-	_ntext.setString(std::to_string(data._score));
-
-	for (auto h = 0; h < data._height; h++)
-		for (auto w = 0; w < data._width; w++)
-			if (data._map[h][w] != eNum::Blank)
-				_handle_object(w, h, _map[ data._map[h][w] ]);
-
-	this->_window->draw(_ntext);
-	this->_window->draw(_text);
-
-	this->_window->display();
-}
-
-void		Sfml::_handle_object(short w, short h, sf::Sprite * sprite)
-{
-	sprite->setPosition(w * VALUE - VALUE / 2, (h + MENU) * VALUE - VALUE / 2);
-	this->_window->draw(*sprite);
 }
 
 IGraphicLib	*createGraphicLib(short x, short y)

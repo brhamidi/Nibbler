@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/05/31 18:49:44 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/06 20:11:30 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class GameCore
 		bool	moveSnake(eDir*, IAudioLib &);
 		static GameCore &	getGame(short, short, short, bool);
 		void	_printMap(void) const;
+		void	handle_custom(unsigned short *custom);
 		Data &	getData(void);
 
 	private:
@@ -40,7 +41,7 @@ class GameCore
 
 		bool	_movePlayer(eDir, snakeData &, eNum, IAudioLib & sound);
 		void	_initSnake(snakeData);
-		bool	_findPos(short, short, short, short, eNum);
+		bool	_findPos(short, short, short, short, eNum, eNum);
 		void	_buildTheWall(void);
 		void	_popElem(eNum);
 		void	_updateSnake(std::pair<short, short> &, eNum);

@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/05 13:09:06 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/06 20:16:02 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 GameCore::~GameCore(void)
 {
-//	for (auto h = 0; h < this->_data._height; h++)
-//		delete [] this->_data._map[h];
-//	delete [] this->_data._map;
+	for (auto h = 0; h < this->_data._height; h++)
+		delete [] this->_data._map[h];
+	delete [] this->_data._map;
 	return ;
 }
 
@@ -134,6 +134,18 @@ bool GameCore::moveSnake(eDir *input, IAudioLib & sound)
 	return true;
 }
 
+
+void	GameCore::handle_custom(unsigned short *custom)
+{
+	if (*custom == 100)
+		this->_popElem(eNum::Custom);
+	if (*custom == 120)
+	{
+		*custom = 0;
+		_findPos(0, 0, this->_data._height, this->_data._width, eNum::Custom, eNum::Blank);
+	}
+}
+
 bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib & sound)
 {
 	static const std::pair<char, char> getDirection[4] =
@@ -143,7 +155,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 		input = snake.direction;
 	if (input != eDir::Error)
 	{
-		if(input % 2 != snake.direction % 2) //check if direction is not opposite
+		if (input % 2 != snake.direction % 2) //check if direction is not opposite
 			snake.direction = input;
 	}
 
@@ -160,6 +172,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 	{
 		if ( this->_data._map[newHead.first][newHead.second] != eNum::Blank
 				&& this->_data._map[newHead.first][newHead.second] != eNum::Food
+				&& this->_data._map[newHead.first][newHead.second] != eNum::Custom
 			   	&& (newHead.first != (std::next(this->_snake2.snake.end(), -1))->first
 				|| newHead.second != (std::next(this->_snake2.snake.end(), -1))->second)
 				&& (newHead.first != (std::next(snake.snake.end(), -1))->first
@@ -170,6 +183,12 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 			this->_popElem(eNum::Food);
 			onFood = true;
 			_data._score += 1000;
+			sound.play();
+		}
+		else if ( this->_data._map[newHead.first][newHead.second] == eNum::Custom )
+		{
+			onFood = true;
+			_data._score += 5000;
 			sound.play();
 		}
 	}
@@ -200,12 +219,12 @@ void	GameCore::_updateSnake(std::pair<short, short> & _snakePos, eNum form)
 		this->_data._map[_snakePos.first][_snakePos.second] = form;
 }
 
-bool	GameCore::_findPos(short y, short x, short limitY, short limitX, eNum e)
+bool	GameCore::_findPos(short y, short x, short limitY, short limitX, eNum seek, eNum e)
 {
 	for (; y < limitY; y++)
 	{
 		for ( ; x < limitX; x++)
-			if (_data._map[y][x] == 0)
+			if (_data._map[y][x] == seek)
 			{
 				_data._map[y][x] = e;
 				return true;
@@ -220,7 +239,7 @@ void	GameCore::_popElem(eNum e)
 	short x = std::rand() % (this->_data._width - 2) + 1;
 	short y = std::rand() % (this->_data._height - 2) + 1;
 
-	if (_findPos(y, x, this->_data._height, this->_data._width, e) == false)
-		if (_findPos(1, 1, this->_data._height, this->_data._width, e) == false)
+	if (_findPos(y, x, this->_data._height, this->_data._width, eNum::Blank, e) == false)
+		if (_findPos(1, 1, this->_data._height, this->_data._width, eNum::Blank, e) == false)
 			std::cout << "Winner !" << std::endl;
 }

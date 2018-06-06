@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/06 13:38:55 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/06 20:15:29 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,10 @@ IAudioLib	*getAudioLib(void **dl_handle)
 int		main(int ac, char *av[])
 {
 	std::srand(std::time(nullptr));
-	int		x;
-	int		y;
-	int		obstacle = 0;
+	int				x;
+	int				y;
+	int				obstacle = 0;
+	unsigned short	custom = 0;
 	
 	if (arg(ac, av, &x, &y, &obstacle) == EXIT_FAILURE)
 		return EXIT_FAILURE;
@@ -164,6 +165,8 @@ int		main(int ac, char *av[])
 				std::cout << "Dead\n";
 				break;
 			}
+			core.handle_custom(& custom);
+			custom++;
 			core.getData()._score += 5;
 			library->render( core.getData() );
 		}
