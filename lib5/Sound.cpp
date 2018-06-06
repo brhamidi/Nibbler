@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IGraphicLib.hpp                                    :+:      :+:    :+:   */
+/*   Sound.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/18 16:28:58 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 18:43:11 by bhamidi          ###   ########.fr       */
+/*   Created: 2018/05/31 17:40:21 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/05/31 18:57:14 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IGRAPHICLIB_HPP
-# define IGRAPHICLIB_HPP
+#include "Sound.hpp"
 
-# include "Nibbler.hpp"
-
-class 	IGraphicLib
+Sound::Sound(void)
 {
-	private:
-		virtual void	_init(short, short) = 0;
-		virtual void	_stop(void) = 0;
+	this->_buffer.loadFromFile("lib5/sound.wav");
+	this->_sound.setBuffer(this->_buffer);
+}
+Sound::~Sound(void)
+{
+}
 
-	public:
-		virtual void	render(Data const &) = 0;
-		virtual void	getEvent(eDir *) = 0;
+void 	Sound::play(void)
+{
+	this->_sound.play();
+}
 
-		virtual ~IGraphicLib(void) {}
-};
+Sound	*createAudioLib(void)
+{
+	return new Sound();
+}
 
-#endif
+void	deleteAudioLib(Sound *audioLib)
+{
+	delete audioLib;
+}

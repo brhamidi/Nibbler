@@ -123,18 +123,18 @@ void	GameCore::_buildTheWall(void)
 	}
 }
 
-bool GameCore::moveSnake(eDir *input)
+bool GameCore::moveSnake(eDir *input, IAudioLib & sound)
 {
 	this->_data._snakeDir = this->_snake.direction;
 	this->_data._snakeDir2 = this->_snake2.direction;
-	if (!this->_movePlayer(input[0], this->_snake, eNum::Head))
+	if (!this->_movePlayer(input[0], this->_snake, eNum::Head, sound))
 		return false;
 	else if (this->_p2)
-		return this->_movePlayer(input[1], this->_snake2, eNum::Head2);
+		return this->_movePlayer(input[1], this->_snake2, eNum::Head2, sound);
 	return true;
 }
 
-bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head)
+bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib & sound)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -170,6 +170,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head)
 			this->_popElem(eNum::Food);
 			onFood = true;
 			_data._score += 1000;
+			sound.play();
 		}
 	}
 

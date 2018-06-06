@@ -1,31 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IGraphicLib.hpp                                    :+:      :+:    :+:   */
+/*   Sound.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/18 16:28:58 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 18:43:11 by bhamidi          ###   ########.fr       */
+/*   Created: 2018/05/31 17:40:16 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/05/31 18:54:23 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IGRAPHICLIB_HPP
-# define IGRAPHICLIB_HPP
+#ifndef SOUND_HPP
+# define SOUND_HPP
 
-# include "Nibbler.hpp"
+#include "IAudioLib.hpp"
+#include <SFML/Audio.hpp>
 
-class 	IGraphicLib
+class Sound : public IAudioLib
 {
 	private:
-		virtual void	_init(short, short) = 0;
-		virtual void	_stop(void) = 0;
+		sf::SoundBuffer	_buffer;
+		sf::Sound		_sound;
 
 	public:
-		virtual void	render(Data const &) = 0;
-		virtual void	getEvent(eDir *) = 0;
+		Sound(void);
+		~Sound(void);
 
-		virtual ~IGraphicLib(void) {}
+		void play(void);
 };
+
+extern "C"
+{
+	Sound	*createAudioLib(void);
+	void	deleteAudioLib(Sound *);
+}
 
 #endif
