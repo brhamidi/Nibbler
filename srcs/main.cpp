@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/06 20:15:29 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 13:47:06 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int		main(int ac, char *av[])
 	eDir			direction[4] = {eDir::Left, eDir::Left, eDir::Up, eDir::Space};
 	int				accTime = 10;
 
-	GameCore & 		core = GameCore::getGame(x, y, obstacle, false);
+	GameCore & 		core = GameCore::getGame(x, y, obstacle, true);
 	library->render( core.getData() );
 	while (1)
 	{

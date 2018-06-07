@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/06 19:56:21 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 14:06:39 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,17 @@ void	Sfml::_init(short x, short y)
 	this->_sSnake.setTexture(_snake);
 	this->_sSnake.setScale(sf::Vector2f(0.05, 0.05));
 
+	this->_snake2.loadFromFile("lib3/snake2.png");
+	this->_sSnake2.setTexture(_snake2);
+	this->_sSnake2.setScale(sf::Vector2f(0.35, 0.35));
+
 	this->_head.loadFromFile("lib3/head.png");
 	this->_sHead.setTexture(_head);
 	this->_sHead.setScale(sf::Vector2f(0.15, 0.15));
+
+	this->_head2.loadFromFile("lib3/head2.png");
+	this->_sHead2.setTexture(_head2);
+	this->_sHead2.setScale(sf::Vector2f(0.15, 0.15));
 
 	this->_food.loadFromFile("lib3/food.png");
 	this->_sFood.setTexture(_food);
@@ -74,8 +82,9 @@ void	Sfml::_init(short x, short y)
 	_map[eNum::Food] = & this->_sFood;
 	_map[eNum::Snake] = & this->_sSnake;
 	_map[eNum::Head] = & this->_sHead;
-	_map[eNum::Head2] = & this->_sHead;
+	_map[eNum::Head2] = & this->_sHead2;
 	_map[eNum::Custom] = & this->_sCustom;
+	_map[eNum::Snake2] = & this->_sSnake2;
 
 }
 

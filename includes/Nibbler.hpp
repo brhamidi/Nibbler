@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 15:01:12 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/06 19:45:20 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 13:53:22 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ struct Data
 
 enum eNum
 {
-	Blank = 0, Wall, Food, Snake, Head, Obstacle, Head2, Custom
+	Blank = 0, Wall, Food, Snake, Head, Obstacle, Head2, Custom, Snake2
 };
 
 #define RESET   "\033[0m"
