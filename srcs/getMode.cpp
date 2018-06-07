@@ -6,14 +6,15 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/07 15:13:32 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 15:33:40 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 15:44:38 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <ncurses.h>
+#include <iostream>
 
-bool get_mode(const char ** choice, int len)
+int		get_mode(const char ** choice, int len)
 {
     int i;
     int x, y;
@@ -54,7 +55,7 @@ bool get_mode(const char ** choice, int len)
             break;
         case KEY_DOWN:
             current++;
-            if(current >= len) current = 0;
+            if(current == len) current = 0;
             break;
         default:
             break;
