@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/07 14:02:55 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 15:49:47 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	GameCore::handle_custom(unsigned short *custom)
 {
 	if (*custom == 100)
 		this->_popElem(eNum::Custom);
-	if (*custom == 120)
+	if (*custom == 135)
 	{
 		*custom = 0;
 		_findPos(0, 0, this->_data._height, this->_data._width, eNum::Custom, eNum::Blank);
