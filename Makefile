@@ -6,7 +6,7 @@
 #    By: msrun <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/10 15:11:06 by msrun             #+#    #+#              #
-#    Updated: 2018/06/06 18:08:07 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/06/07 15:21:46 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC_PATH= srcs/
 OBJ_PATH= obj/
 INCLUDE_PATH= includes/
 
-OBJ=GameCore.o main.o
+OBJ=GameCore.o main.o getMode.o
 
 INCLUDE=GameCore.hpp IGraphicLib.hpp Nibbler.hpp
 
@@ -46,7 +46,7 @@ SYM5=lib5.so
 all: $(NAME) MAKELIBS
 
 $(NAME): $(OBJ_PATH) $(OBJS)
-	$(CXX) $(OBJS) $(CXXFLAGS) -o $@ -Wl,-rpath,$$HOME/.brew/lib
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $@ -Wl,-rpath,$$HOME/.brew/lib -lncurses
 	@ln -fs $(LIB2_PATH)$(LIB2_NAME) $(SYM2)
 	@ln -fs $(LIB3_PATH)$(LIB3_NAME) $(SYM3)
 	@ln -fs $(LIB4_PATH)$(LIB4_NAME) $(SYM4)

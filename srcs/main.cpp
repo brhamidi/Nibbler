@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 13:47:06 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 15:30:26 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,19 @@ const char *libTab [4] = {
 	"lib2.so",
 	"lib3.so"
 };
+
+const char *modeTab [2] = {
+	"Single Player",
+	"Multi Player"
+};
+
+const char *libNameTab [3] = {
+	"OpenGl",
+	"SDL",
+	"SFML"
+};
+
+bool get_mode(const char ** choice, int len);
 
 int		usage(const char *filename)
 {
@@ -129,12 +142,14 @@ int		main(int ac, char *av[])
 	void			*dl_handle;
 	void			*audio_dl_handle;
 	struct timeval	stop, start;
-	IGraphicLib		*library = getLib(&dl_handle, x, y, "lib3.so");
-	IAudioLib			*audio_library = getAudioLib(&audio_dl_handle);
+	IAudioLib		*audio_library = getAudioLib(&audio_dl_handle);
 	eDir			direction[4] = {eDir::Left, eDir::Left, eDir::Up, eDir::Space};
 	int				accTime = 10;
 
-	GameCore & 		core = GameCore::getGame(x, y, obstacle, true);
+	int				mode = get_mode(modeTab, 2);
+	int				libIndex = get_mode(libNameTab, 3);
+	IGraphicLib		*library = getLib(&dl_handle, x, y, libTab[libIndex]);
+	GameCore & 		core = GameCore::getGame(x, y, obstacle, mode);
 	library->render( core.getData() );
 	while (1)
 	{
