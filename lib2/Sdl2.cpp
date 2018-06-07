@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 14:09:47 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 16:04:13 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	Sdl2::_init(short x, short y)
 
 	// text
 	this->_font = TTF_OpenFont("lib2/font.ttf", 15);
-	this->_font_color = {255, 255, 255, 200};
+	this->_font_color = {121, 255, 77, 200};
 	this->_color_black = {0, 0, 0, 200};
 }
 
@@ -60,7 +60,7 @@ void	Sdl2::render(Data const & data)
 	Message_rect.w = 200;
 	Message_rect.h = 60;
 
-	this->_ntext_surface = TTF_RenderText_Solid(this->_font, std::to_string(data._score).c_str(), this->_font_color);
+	this->_ntext_surface = TTF_RenderText_Shaded(this->_font, std::to_string(data._score).c_str(), this->_font_color, this->_color_black);
 	this->_nmsg = SDL_CreateTextureFromSurface(this->_renderer, this->_ntext_surface);
 	SDL_Rect nMessage_rect;
 	nMessage_rect.x = 0;
