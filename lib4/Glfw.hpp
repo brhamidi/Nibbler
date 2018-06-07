@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/06 17:09:43 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/07 18:22:26 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "linmath.h"
 # include <map>
 # include <list>
+# include <iostream>
+# include <vector>
 
 # define VALUE	15
 # define MENU	20
@@ -48,9 +50,13 @@ class Glfw : public IGraphicLib
 		void	_init(short, short);
 		void	_stop(void);
 		void	_setVerticesDraw(Data const &, int, dataInfo);
-		void	_setVertice(vertexMap, Data const &, int, void	(*fct)(int, int , int , GLfloat *, Data const &, vertexMap));
+		void	_setVertice(vertexMap, Data const &, int, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap));
 		void	_printMiniMap(void);
 		void	_printFloor(vertexMap src, Data const & data, int h);
+		void	_printScore(int);
+		void	_setScoreVertice(vertexMap src, int h, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap), float offx, float offy);
+		void	_printScoreNumber(int, float, float);
+		void	_printString(std::string str, float, float);
 
 		GLFWwindow	*_window;
 		GLuint		*_program;
@@ -60,6 +66,9 @@ class Glfw : public IGraphicLib
 		std::map < int, int > _direction2Map;
 		std::map < int, eDir > _interactionMap;
 		std::list < int > _eventPoll;
+		std::string	_nibbler;
+		std::string	_score;
+		std::string _number[10];
 };
 
 extern "C"

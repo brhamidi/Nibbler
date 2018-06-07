@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/05 13:09:06 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/07 12:39:44 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 GameCore::~GameCore(void)
 {
-//	for (auto h = 0; h < this->_data._height; h++)
-//		delete [] this->_data._map[h];
-//	delete [] this->_data._map;
+	for (auto h = 0; h < this->_data._height; h++)
+		delete [] this->_data._map[h];
+	delete [] this->_data._map;
 	return ;
 }
 
@@ -24,6 +24,7 @@ GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	: _p2(p2)
 {
 	this->_data._p2 = p2;
+	this->_data._snakeDir = eDir::Left;
 	if (width < 10)
 		throw "width too small";
 	else if (height < 10)
@@ -125,8 +126,6 @@ void	GameCore::_buildTheWall(void)
 
 bool GameCore::moveSnake(eDir *input, IAudioLib & sound)
 {
-	this->_data._snakeDir = this->_snake.direction;
-	this->_data._snakeDir2 = this->_snake2.direction;
 	if (!this->_movePlayer(input[0], this->_snake, eNum::Head, sound))
 		return false;
 	else if (this->_p2)
@@ -190,6 +189,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 
 	if (onFood)
 		snake.fed = true;
+	this->_data._snakeDir = this->_snake.direction;
 	return true;
 }
 
