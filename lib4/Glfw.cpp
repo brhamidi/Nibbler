@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/07 19:04:05 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/08 19:02:14 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,99 @@ Glfw::~Glfw(void)
 	this->_stop();
 }
 
+static void	FillArray(GLfloat *array, float *src, int size)
+{
+	for (int i = 0; i < size; i++)
+		array[i] = src[i];
+}
+
 Glfw::Glfw(short x, short y)
 	: _window(NULL)
 {
 	this->_init(x, y);
+	{
+		float color[] = {
+			0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565,
+			0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565,
+			0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565,
+			0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565,
+			0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565,
+			0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565
+	   	};
+		FillArray(this->_WallColor, color, 48);
+	}
+	{
+		float color[] = {
+			0.764, 0.254, 0.254,	0.184, 0, 0.678,		0.184, 0, 0.678,		0.611, 0.050, 0.152,		
+			0.764, 0.254, 0.254,	0.184, 0, 0.678,		0.184, 0, 0.678,		0.611, 0.050, 0.152,		
+			0.764, 0.254, 0.254,	0.184, 0, 0.678,		0.184, 0, 0.678,		0.611, 0.050, 0.152,		
+			0.611, 0.050, 0.152,	0.764, 0.254, 0.254,	0.611, 0.050, 0.152,	0.764, 0.254, 0.254
+		};
+		FillArray(this->_ObstacleColor, color, 48);
+	}
+	{
+		float color[] = {
+			0, 0.678, 0.141,	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,	0.219, 0.356, 0.023,
+			0, 0.678, 0.141,	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,	0.219, 0.356, 0.023,
+			0, 0.678, 0.141,	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,	0.219, 0.356, 0.023,
+			0, 0.678, 0.141,	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,	0.219, 0.356, 0.023
+		};
+		FillArray(this->_SnakeColor, color, 48);
+	}
+	{
+		float color[] = {
+			0, 0.678, 0.141,	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,	0.219, 0.356, 0.023,
+			0, 0.678, 0.141,	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,	0.219, 0.356, 0.023,
+			0, 0.678, 0.141,	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,	0.219, 0.356, 0.023,
+			1, 0.917, 0.078, 	0.023, 0.356, 0.094,	0.023, 0.356, 0.352,		1, 0.917, 0.078,
+		};
+		FillArray(this->_SnakeHColor, color, 48);
+	}
+	{
+		float color[] = {
+			0.078, 0.125, 1,	0.313, 0.078, 1,	0.078, 0.533, 1,	0.121, 0.345, 0.917,
+			0.078, 0.125, 1,	0.313, 0.078, 1,	0.078, 0.533, 1,	0.121, 0.345, 0.917,
+			0.078, 0.125, 1,	0.313, 0.078, 1,	0.078, 0.533, 1,	0.121, 0.345, 0.917,
+			0.078, 0.125, 1,	0.313, 0.078, 1,	0.078, 0.533, 1,	0.121, 0.345, 0.917
+		};
+		FillArray(this->_Snake2Color, color, 48);
+	}
+	{
+		float color[] = {
+			0.121, 0.917, 0.709,	0.572, 0.949, 0.850,	0.572, 0.901, 0.949,	0.572, 0.772, 0.949,
+			0.121, 0.917, 0.709,	0.572, 0.949, 0.850,	0.572, 0.901, 0.949,	0.572, 0.772, 0.949,
+			0.121, 0.917, 0.709,	0.572, 0.949, 0.850,	0.572, 0.901, 0.949,	0.572, 0.772, 0.949,
+			0.121, 0.917, 0.709,	0.572, 0.949, 0.850,	0.572, 0.901, 0.949,	0.572, 0.772, 0.949
+		};
+		FillArray(this->_SnakeH2Color, color, 48);
+	}
+	{
+		float color[] = {
+			0.949, 0.572, 0.858,	0.356, 0.003, 0.270,	0.843, 0.415, 0.741,	0.749, 0.415, 0.843,
+			0.949, 0.572, 0.858,	0.356, 0.003, 0.270,	0.843, 0.415, 0.741,	0.749, 0.415, 0.843,
+			0.949, 0.572, 0.858,	0.356, 0.003, 0.270,	0.843, 0.415, 0.741,	0.749, 0.415, 0.843,
+			0.949, 0.572, 0.858,	0.749, 0.415, 0.843,	0.949, 0.572, 0.858,	0.749, 0.415, 0.843
+		};
+		FillArray(this->_BonusColor, color, 48);
+	}
+	{
+		float color[] = {
+			0.960, 0.317, 0.301,	0.921, 0.023, 0,	0.811, 0.380, 0.266,	0.905, 0.050, 0.301,
+			0.960, 0.317, 0.301,	0.921, 0.023, 0,	0.811, 0.380, 0.266,	0.905, 0.050, 0.301,
+			0.960, 0.317, 0.301,	0.921, 0.023, 0,	0.811, 0.380, 0.266,	0.905, 0.050, 0.301,
+			0.960, 0.317, 0.301,	0.921, 0.023, 0,	0.811, 0.380, 0.266,	0.905, 0.050, 0.301
+		};
+		FillArray(this->_FoodColor, color, 48);
+	}
+
+/*
+		0, 0, 0,   0, 0, 1,   0, 1, 1,   0, 1, 0,
+		1, 0, 0,   1, 0, 1,   1, 1, 1,   1, 1, 0,
+		0, 0, 0,   0, 0, 1,   1, 0, 1,   1, 0, 0,
+		0, 1, 0,   0, 1, 1,   1, 1, 1,   1, 1, 0,
+		0, 0, 0,   0, 1, 0,   1, 1, 0,   1, 0, 0,
+		0, 0, 1,   0, 1, 1,   1, 1, 1,   1, 0, 1
+*/
 
 	this->_nibbler =
 		"1111111000011001111111111100111111111110001100000000001111111110000111111111\n"
@@ -136,6 +225,29 @@ Glfw::Glfw(short x, short y)
 		"0110000011\n"
 		"0011111110\n";
 
+	this->_pickColor[0] = this->_WallColor;
+	this->_pickColor[1] = this->_FoodColor;
+	this->_pickColor[2] = this->_SnakeColor;
+	this->_pickColor[3] = this->_SnakeHColor;
+	this->_pickColor[4] = this->_ObstacleColor;
+	this->_pickColor[5] = this->_SnakeH2Color;
+	this->_pickColor[6] = this->_BonusColor;
+	this->_pickColor[7] = this->_Snake2Color;
+
+	this->_lengthObj[0] = 0;
+	this->_lengthObj[1] = 10;
+	this->_lengthObj[2] = 2;
+	this->_lengthObj[3] = 3;
+	this->_lengthObj[4] = 3;
+	this->_lengthObj[5] = 20;
+	this->_lengthObj[6] = 3;
+	this->_lengthObj[7] = 3;
+	this->_lengthObj[8] = 4;
+
+	this->_printer[0] = &Glfw::_printUp;
+	this->_printer[1] = &Glfw::_printRight;
+	this->_printer[2] = &Glfw::_printDown;
+	this->_printer[3] = &Glfw::_printLeft;
 }
 
 void	Glfw::_stop(void)
@@ -203,6 +315,20 @@ void	Glfw::_init(short x, short y)
 	glCullFace(GL_BACK);
 }
 
+static void	checkDir(eDir & direction)
+{
+	if (direction > eDir::Left)
+		direction = eDir::Up;
+	else if (direction < eDir::Up)
+		direction = eDir::Left;
+}
+
+static void	checkPossibleDir(eDir & direction, eDir src)
+{
+	if (direction % 2 == src % 2)
+		direction = src;
+}
+
 void	Glfw::getEvent(eDir *direction)
 {
 	glfwPollEvents();
@@ -213,48 +339,38 @@ void	Glfw::getEvent(eDir *direction)
 	tmp[0] = direction[0];
 	tmp[1] = direction[1];
 	static eDir	dir[4] = {eDir::Up, eDir::Right, eDir::Down, eDir::Left};
-	while ( this->_eventPoll.size() != 0)
+	while ((tmp[0] == direction[0] || tmp[1] == direction[1])  && this->_eventPoll.size() != 0)
 	{
 		key = *this->_eventPoll.begin();
 		this->_eventPoll.pop_front();
 
-		if (direction[0] == tmp[0] && (this->_directionMap[key]))
+		if (direction[3] != eDir::Space && direction[0] == tmp[0] && (this->_directionMap[key]))
 		{
 			direction[0] =
 				(direction[0] + this->_directionMap[key] < 0) ?
-				   	eDir::Left : ((direction[0] + this->_directionMap[key] > 3) ?
-						   	eDir::Up : dir[direction[0] + this->_directionMap[key]]);
-			if (direction[0] > eDir::Left)
-				direction[0] = eDir::Up;
-			else if (direction[0] < eDir::Up)
-				direction[0] = eDir::Left;
-		}
-		else if (direction[1] == tmp[1] && (this->_direction2Map[key]))
+				eDir::Left : ((direction[0] + this->_directionMap[key] > 3) ?
+						eDir::Up : dir[direction[0] + this->_directionMap[key]]);
+			checkDir(direction[0]);
+		}//check input for p1
+		else if (direction[3] != eDir::Space && direction[1] == tmp[1] && (this->_direction2Map[key]))
 		{
 			direction[1] =
 				(direction[1] + this->_direction2Map[key] < 0) ?
 				eDir::Left : ((direction[1] + this->_direction2Map[key] > 3) ?
-				eDir::Up : dir[direction[1] + this->_direction2Map[key]]);
-			if (direction[1] > eDir::Left)
-				direction[1] = eDir::Up;
-			else if (direction[1] < eDir::Up)
-				direction[1] = eDir::Left;
-		}
-		else if (this->_interactionMap[key])
+						eDir::Up : dir[direction[1] + this->_direction2Map[key]]);
+			checkDir(direction[1]);
+		}//check input for p2
+		else if (this->_interactionMap[key]) //check to change lib
 			direction[2] = this->_interactionMap[key];
-		else if (key == GLFW_KEY_SPACE)
+		else if (key == GLFW_KEY_SPACE) //check to un/pause
 		{
 			if (direction[3] == eDir::Space)
 				direction[3] = eDir::Up;
 			else
 				direction[3] = eDir::Space;
 		}
-		if (direction[0] % 2 == tmp[0] % 2)
-			direction[0] = tmp[0];
-		if (direction[1] % 2 == tmp[1] % 2)
-			direction[1] = tmp[1];
-		if (tmp[0] != direction[0] && tmp[1] != direction[1])
-			break;
+		checkPossibleDir(direction[0], tmp[0]);
+		checkPossibleDir(direction[1], tmp[1]);
 	}
 }
 
@@ -280,9 +396,9 @@ static void	setScore(float x, float y, int z, GLfloat *vertice, vertexMap src, f
 
 static void	setForMiniMap(float x, float y, int z, GLfloat *vertice, Data const & data, vertexMap src)
 {
-	vertice[(data._width < data._height ? 0 : 1)] = (src.x + x - ((data._width < data._height ? data._height : data._width) / 2)) * 0.1f * -2 + (data._width < data._height ? 0 : 20);
+	vertice[(data._width < data._height ? 0 : 1)] = (src.x + x - ((data._width < data._height ? data._height : data._width) / 2)) * 0.1f * - 2 / (data._width < data._height ? 2 : 1) + (data._width < data._height ? 0 : 20);
 
-	vertice[(data._width < data._height ? 1 : 0)] = (src.y + y - ((data._width < data._height ? data._height : data._width) / 2)) * 0.1f * (data._width < data._height ? 1 : -1) * -2 + (data._width < data._height ? 20 : 0);
+	vertice[(data._width < data._height ? 1 : 0)] = (src.y + y - ((data._width < data._height ? data._height : data._width) / 2)) * 0.1f * (data._width < data._height ? 1 : -1) * -2 / (data._width < data._height ? 1 : 2) + (data._width < data._height ? 20 : 0);
 
 	vertice[2] = z * 0;
 }
@@ -295,12 +411,12 @@ static void	setVerticeSquareScore(int h, GLfloat *vertices, vertexMap src, float
 	setScore(len, -len,  h, &vertices[9], src, offx, offy);
 }
 
-static void	setVerticeSquare(Data const & data, int h, GLfloat *vertices, vertexMap src, float len)
+static void	setVerticeSquare(Data const & data, GLfloat *vertices, vertexMap src, float len)
 {
-	setage(-len, -len,  h, &vertices[0], data, src);
-	setage(-len,  len,  h, &vertices[3], data, src);
-	setage(len,  len,  h, &vertices[6], data, src);
-	setage(len, -len,  h, &vertices[9], data, src);
+	setage(-len, -len,  0, &vertices[0], data, src);
+	setage(-len,  len,  0, &vertices[3], data, src);
+	setage(len,  len,  0, &vertices[6], data, src);
+	setage(len, -len,  0, &vertices[9], data, src);
 }
 
 static void	setVerticesQuad(Data const & data, int h, GLfloat *vertices, vertexMap src,
@@ -309,75 +425,55 @@ static void	setVerticesQuad(Data const & data, int h, GLfloat *vertices, vertexM
 	fct(-1, -1, -h, &vertices[0], data, src);
 	fct(-1, -1,  h, &vertices[3], data, src);
 	fct(-1,  1,  h, &vertices[6], data, src);
-	fct(-1,  1, -h, &vertices[9], data, src);
+	fct(-1,  1, -h, &vertices[9], data, src); //left 
+
 
 	fct(1, -1, -h, &vertices[12], data, src);
 	fct(1, -1,  h, &vertices[15], data, src);
 	fct(1,  1,  h, &vertices[18], data, src);
-	fct(1,  1, -h, &vertices[21], data, src);
+	fct(1,  1, -h, &vertices[21], data, src); // right
 
-	fct(-1, -1, -h, &vertices[24], data, src);
+/*	fct(-1, -1, -h, &vertices[24], data, src);
 	fct(-1, -1,  h, &vertices[27], data, src);
 	fct(1, -1,  h, &vertices[30], data, src);
-	fct(1, -1, -h, &vertices[33], data, src);
+	fct(1, -1, -h, &vertices[33], data, src); //Up
+*/
+	fct(-1,  1, -h, &vertices[24], data, src);
+	fct(-1,  1,  h, &vertices[27], data, src);
+	fct(1,  1,  h, &vertices[30], data, src);
+	fct(1,  1, -h, &vertices[33], data, src); //Down
 
-	fct(-1,  1, -h, &vertices[36], data, src);
+	fct(-1, -1, -h, &vertices[36], data, src);
+	fct(-1,  1, -h, &vertices[39], data, src);
+	fct(1,  1, -h, &vertices[42], data, src);
+	fct(1, -1, -h, &vertices[45], data, src); // Bot
+
+/*	fct(-1, -1,  h, &vertices[36], data, src);
 	fct(-1,  1,  h, &vertices[39], data, src);
 	fct(1,  1,  h, &vertices[42], data, src);
-	fct(1,  1, -h, &vertices[45], data, src);
+	fct(1, -1,  h, &vertices[45], data, src); //Top
+*/
 
-	fct(-1, -1, -h, &vertices[48], data, src);
-	fct(-1,  1, -h, &vertices[51], data, src);
-	fct(1,  1, -h, &vertices[54], data, src);
-	fct(1, -1, -h, &vertices[57], data, src);
-
-	fct(-1, -1,  h, &vertices[60], data, src);
-	fct(-1,  1,  h, &vertices[63], data, src);
-	fct(1,  1,  h, &vertices[66], data, src);
-	fct(1, -1,  h, &vertices[69], data, src);
 }
 
-void	Glfw::_printFloor(vertexMap src, Data const & data, int h)
+static void	setFloorColorArray(GLfloat *dst, int x, int y, Data const & data, int size)
+{
+	for (int i = 0; i < 4 * size; i++)
+	{
+		dst[i * 3] = (y * 0.123475f) * (1 / (data._height * 0.123475f));
+	   	dst[i * 3 + 1] = (x * 0.14879f) * (1 / (data._width * 0.14879f));
+	   	dst[i * 3 + 2] = (y * 0.147893f) * (1 / (data._height * 0.147893f));
+	}
+}
+
+void	Glfw::_printFloor(vertexMap src, Data const & data, int x, int y)
 {
 	src.y += 1;
 	GLfloat vertices[12];
-	setVerticeSquare(data, h, vertices, src, 0.9);
+	setVerticeSquare(data, vertices, src, 1);
 
-/*	static float r = 0, g = 0.5, b = 1;
-	static bool rb = false, gb = true,bb = false;
-	if (rb)
-		r += 0.00001;
-	else
-		r -= 0.00001;
-	if (r >= 1)
-		r = false;
-	else if (r <= 0)
-		r = true;
-	if (gb)
-		g += 0.00001;
-	else
-		g -= 0.00001;
-	if (g >= 1)
-		g = false;
-	else if (g <= 0)
-		g = true;
-	if (bb)
-		b += 0.00001;
-	else
-		b -= 0.00001;
-	if (b >= 1)
-		b = false;
-	else if (b <= 0)
-		b = true;
-*/
-
-
-	GLfloat colors[] =
-	{
-		1, 0, 1,   0, 1, 1,   0.1, 0.5, 0.7,   0, 0, 1,
-		0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565, //gray
-		0, 0, 1,   0, 0, 1,   0, 0, 1,   0, 0, 1, // blue
-	};
+	GLfloat colors[12];
+	setFloorColorArray(colors, x, y, data, 1);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -433,9 +529,6 @@ void	Glfw::_setScoreVertice(vertexMap src, int h, void (*fct)(float, float , int
 	GLfloat colors[] =
 	{
 		1,0,0, 0,1,0, 0,0,1, 0,0,0,
-		1, 0, 1,   0, 1, 1,   1, 1, 1,   0, 0, 1,
-		0.502, 0.502, 0.502,   0.827, 0.827, 0.827,   0.184, 0.310, 0.310,   0.439, 0.502, 0.565, //gray
-		0, 0, 1,   0, 0, 1,   0, 0, 1,   0, 0, 1, // blue
 	};
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -449,71 +542,88 @@ void	Glfw::_setScoreVertice(vertexMap src, int h, void (*fct)(float, float , int
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void	Glfw::_setVertice(vertexMap src, Data const & data, int h, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap))
+void	Glfw::_setVertice(vertexMap src, Data const & data, int h, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap), GLfloat* colors)
 {
 	src.y += 1;
-	GLfloat vertices[72];
+	GLfloat vertices[48];
 	setVerticesQuad(data, h, vertices, src, fct);
-	GLfloat colors[] =
-	{
-		0, 0, 0,   0, 0, 1,   0, 1, 1,   0, 1, 0,
-		1, 0, 0,   1, 0, 1,   1, 1, 1,   1, 1, 0,
-		0, 0, 0,   0, 0, 1,   1, 0, 1,   1, 0, 0,
-		0, 1, 0,   0, 1, 1,   1, 1, 1,   1, 1, 0,
-		0, 0, 0,   0, 1, 0,   1, 1, 0,   1, 0, 0,
-		0, 0, 1,   0, 1, 1,   1, 1, 1,   1, 0, 1
-	};
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glColorPointer(3, GL_FLOAT, 0, colors);
 
-	glDrawArrays(GL_QUADS, 0, 24);
+	glDrawArrays(GL_QUADS, 0, 16);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+
+void	Glfw::_printUp(Data const & data, int height, dataInfo infoPos)
+{
+	if (infoPos.h - 4 <= infoPos.y)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {-(infoPos.x - infoPos.w) + data._width / 2 + 0.f, infoPos.view - infoPos.y + data._height + 0.f, 0.f, 0.f, 1.f}, data, infoPos.w, infoPos.h);
+		else
+			this->_setVertice( {-(infoPos.x - infoPos.w) + data._width / 2 + 0.f, infoPos.view - infoPos.y + data._height + 0.f, 0.f, 0.f, 1.f}, data, height, setage, this->_pickColor[data._map[infoPos.h][infoPos.w] - 1]);
+	}
+}
+
+void	Glfw::_printDown(Data const & data, int height, dataInfo infoPos)
+{
+	if (infoPos.h + 4 >= infoPos.y)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {(infoPos.x - infoPos.w) + data._width / 2 + 0.f,  data._height - infoPos.view + 6 + 0.f, 0.f, 0.f, 1.f}, data, infoPos.w, infoPos.h);
+		else
+			this->_setVertice( {(infoPos.x - infoPos.w) + data._width / 2 + 0.f,  data._height - infoPos.view + 6 + 0.f, 0.f, 0.f, 1.f}, data, height, setage, this->_pickColor[data._map[infoPos.h][infoPos.w] - 1]);
+	}
+}
+
+void	Glfw::_printRight(Data const & data, int height, dataInfo infoPos)
+{
+	if (infoPos.w + 4 >= infoPos.x)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {-(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - infoPos.view + 5 + 0.f, 0.f, 0.f, 1.f}, data, infoPos.w, infoPos.h);
+		else
+			this->_setVertice( {-(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - infoPos.view + 5 + 0.f, 0.f, 0.f, 1.f}, data, height, setage, this->_pickColor[data._map[infoPos.h][infoPos.w] - 1]);
+	}
+}
+
+void	Glfw::_printLeft(Data const & data, int height, dataInfo infoPos)
+{
+	if (infoPos.w - 4 <= infoPos.x)
+	{
+		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
+			this->_printFloor( {(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - (infoPos.x - infoPos.view) + 1 + 0.f, 0.f, 0.f, 1.f}, data, infoPos.w, infoPos.h);
+		else
+			this->_setVertice( {(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - (infoPos.x - infoPos.view) + 1 + 0.f, 0.f, 0.f, 1.f}, data, height, setage, this->_pickColor[data._map[infoPos.h][infoPos.w] - 1]);
+	}
+}
+
 void	Glfw::_setVerticesDraw(Data const & data, int height, dataInfo infoPos)
 {
-	eDir snakeDir = data._snakeDir;
-
-	if (snakeDir == eDir::Up && infoPos.h - 4 <= infoPos.y)
-	{
-		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
-			this->_printFloor( {-(infoPos.x - infoPos.w) + data._width / 2 + 0.f, infoPos.view - infoPos.y + data._height + 0.f, 0.f, 0.f, 1.f}, data, height);
-		else
-			this->_setVertice( {-(infoPos.x - infoPos.w) + data._width / 2 + 0.f, infoPos.view - infoPos.y + data._height + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
-	}
-	else if (snakeDir == eDir::Down && infoPos.h + 4 >= infoPos.y)
-	{
-		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
-			this->_printFloor( {(infoPos.x - infoPos.w) + data._width / 2 + 0.f,  data._height - infoPos.view + 6 + 0.f, 0.f, 0.f, 1.f}, data, height);
-		else
-			this->_setVertice( {(infoPos.x - infoPos.w) + data._width / 2 + 0.f,  data._height - infoPos.view + 6 + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
-	}
-	else if (snakeDir == eDir::Right && infoPos.w + 4 >= infoPos.x)
-	{
-		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
-			this->_printFloor( {-(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - infoPos.view + 5 + 0.f, 0.f, 0.f, 1.f}, data, height);
-		else
-			this->_setVertice( {-(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - infoPos.view + 5 + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
-	}
-	else if (snakeDir == eDir::Left && infoPos.w - 4 <= infoPos.x)
-	{
-		if (data._map[infoPos.h][infoPos.w] == eNum::Blank)
-			this->_printFloor( {(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - (infoPos.x - infoPos.view) + 1 + 0.f, 0.f, 0.f, 1.f}, data, height);
-		else
-			this->_setVertice( {(infoPos.y - infoPos.h) + data._width / 2 + 0.f, data._height - (infoPos.x - infoPos.view) + 1 + 0.f, 0.f, 0.f, 1.f}, data, height, setage);
-	}
+	(this->*_printer[data._snakeDir])(data, height, infoPos);
 
 	if (data._map[infoPos.h][infoPos.w] != eNum::Blank)
-		this->_setVertice({infoPos.h + 0.f, infoPos.w + 0.f, 0.f, 0.f, 1.f}, data, 1, setForMiniMap);
+		this->_setVertice({infoPos.h + 0.f, infoPos.w + 0.f, 0.f, 0.f, 1.f}, data, 1, setForMiniMap, this->_pickColor[data._map[infoPos.h][infoPos.w] - 1]);
+	else
+	{
+		static GLfloat colors[48];
+		setFloorColorArray(colors, infoPos.w, infoPos.h, data, 4);
+		this->_setVertice({infoPos.h + 0.f, infoPos.w + 0.f, 0.f, 0.f, 1.f}, data, 1, setForMiniMap, colors);
+	}
 }
 
 void	Glfw::render(Data const &data)
 {
+	int x = 0;
+	int y = 0;
+	int view = 0;
+
 	GLint windowWidth, windowHeight;
 	glfwGetWindowSize(this->_window, &windowWidth, &windowHeight);
 	glViewport(0, 0, windowWidth, windowHeight);
@@ -524,12 +634,10 @@ void	Glfw::render(Data const &data)
 
 	glMatrixMode(GL_PROJECTION_MATRIX);
 	glLoadIdentity();
-	gluPerspective( 100, 1/*(double)windowWidth / (double)windowHeight*/, 0.1, 100);
+	gluPerspective( 100, 1, 0.1, 100);
 
 	glMatrixMode(GL_MODELVIEW_MATRIX);
-	glTranslatef(0, -10, -20); //camera ?
-	int x = 0;
-	int y = 0;
+	glTranslatef(0, -10, -20); //camera
 	for (auto h = 0; h < data._height && !x; h++)
 		for (auto w = 0; w < data._width; w++)
 		{
@@ -540,8 +648,7 @@ void	Glfw::render(Data const &data)
 				break;
 			}
 		}
-	int view = 0;
-
+	view = 0;
 	this->_printScore(data._score);
 
 	for (auto h = 0; h < data._height; h++)
@@ -552,10 +659,7 @@ void	Glfw::render(Data const &data)
 			view = 0;
 		for (auto w = 0; w < data._width; w++)
 		{
-			if (data._map[h][w] == eNum::Wall)
-				this->_setVerticesDraw(data, 10, {h, w, x, y, view});
-			else
-				this->_setVerticesDraw(data, 1, {h, w, x, y, view});
+			this->_setVerticesDraw(data, this->_lengthObj[data._map[h][w]], {h, w, x, y, view});
 			if (data._snakeDir == eDir::Left && w - 4 <= x)
 				++view;
 			else if (data._snakeDir == eDir::Right && w + 4 >= x)

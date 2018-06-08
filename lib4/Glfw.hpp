@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/07 18:22:26 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/08 18:18:50 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,18 @@ class Glfw : public IGraphicLib
 		void	_init(short, short);
 		void	_stop(void);
 		void	_setVerticesDraw(Data const &, int, dataInfo);
-		void	_setVertice(vertexMap, Data const &, int, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap));
+		void	_setVertice(vertexMap, Data const &, int, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap), GLfloat*);
 		void	_printMiniMap(void);
-		void	_printFloor(vertexMap src, Data const & data, int h);
+		void	_printFloor(vertexMap src, Data const & data, int, int);
 		void	_printScore(int);
 		void	_setScoreVertice(vertexMap src, int h, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap), float offx, float offy);
 		void	_printScoreNumber(int, float, float);
 		void	_printString(std::string str, float, float);
+
+		void	_printUp(Data const &, int, dataInfo);
+		void	_printDown(Data const &, int, dataInfo);
+		void	_printRight(Data const &, int, dataInfo);
+		void	_printLeft(Data const &, int, dataInfo);
 
 		GLFWwindow	*_window;
 		GLuint		*_program;
@@ -66,9 +71,23 @@ class Glfw : public IGraphicLib
 		std::map < int, int > _direction2Map;
 		std::map < int, eDir > _interactionMap;
 		std::list < int > _eventPoll;
+
 		std::string	_nibbler;
 		std::string	_score;
 		std::string _number[10];
+
+		GLfloat		_WallColor[48];
+		GLfloat		_ObstacleColor[48];
+		GLfloat		_SnakeHColor[48];
+		GLfloat		_SnakeColor[48];
+		GLfloat		_FoodColor[48];
+		GLfloat		_BonusColor[48];
+		GLfloat		_Snake2Color[48];
+		GLfloat		_SnakeH2Color[48];
+		GLfloat		*_pickColor[8];
+		float		_lengthObj[9];
+
+		void	((Glfw::*_printer[4]))(Data const &, int, dataInfo);
 };
 
 extern "C"
