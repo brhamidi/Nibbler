@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 15:11:32 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 15:59:13 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	Sdl2::_init(short x, short y)
 	this->_renderColors[eNum::Head] = {255, 0, 0, 200};
 	this->_renderColors[eNum::Head2] = {255, 255, 0, 200};
 	this->_renderColors[eNum::Snake2] = {255, 129, 0, 200};
-	this->_renderColors[eNum::Food] = {0, 0, 255, 200};
-	this->_renderColors[eNum::Obstacle] = {0, 0, 255, 200};
+	this->_renderColors[eNum::Food] = {255, 163, 26, 200};
+	this->_renderColors[eNum::Obstacle] = {255, 255, 255, 200};
 	this->_renderColors[eNum::Custom] = {179, 67, 221, 200};
 
 	this->_libMap[SDLK_DELETE] = eDir::Exit;
@@ -113,6 +113,16 @@ void	Sdl2::render(Data const & data)
 	SDL_FreeSurface(this->_ntext_surface);
 }
 
+void	Sdl2::_checkEvent(eDir tmp, eDir & direction,  SDL_Event event, std::map < int, eDir> & map) const
+{
+	if (tmp == direction && event.type == SDL_KEYDOWN && (map[event.key.keysym.sym] || event.key.keysym.sym == SDLK_UP))
+	{
+		direction = map[event.key.keysym.sym];
+		if (direction % 2 == tmp % 2)
+			direction = tmp;
+	}
+}
+
 void	Sdl2::getEvent(eDir *direction)
 {
 	eDir		tmp[2];
@@ -133,19 +143,8 @@ void	Sdl2::getEvent(eDir *direction)
 		if (!direction[2] && this->_libMap[event.key.keysym.sym])
 			direction[2] = this->_libMap[event.key.keysym.sym];
 
-		if (tmp[0] == direction[0] && event.type == SDL_KEYDOWN && (this->_snake1Map[event.key.keysym.sym] || event.key.keysym.sym == SDLK_UP))
-		{
-			direction[0] = this->_snake1Map[event.key.keysym.sym];
-			if (direction[0] % 2 == tmp[0] % 2)
-				direction[0] = tmp[0];
-		}
-
-		if (tmp[1] == direction[1] && event.type == SDL_KEYDOWN && (this->_snake2Map[event.key.keysym.sym] || event.key.keysym.sym == SDLK_w))
-		{
-			direction[1] = this->_snake2Map[event.key.keysym.sym];
-			if (direction[1] % 2 == tmp[1] % 2)
-				direction[1] = tmp[1];
-		}
+		this->_checkEvent(tmp[0], direction[0], event, this->_snake1Map);
+		this->_checkEvent(tmp[1], direction[1], event, this->_snake2Map);
 	}
 }
 

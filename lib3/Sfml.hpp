@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 13:58:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 14:05:51 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 14:45:15 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ class Sfml : public IGraphicLib
 		void	_stop(void);
 		void	_handle_object(short, short, sf::Sprite *);
 
+		std::map<int, eDir > 		 _dir;
+		std::map<int, eDir > 		 _interaction;
 		std::map<int, sf::Sprite * > _map;
 		sf::RenderWindow			*_window;
 		sf::Texture					_texture;

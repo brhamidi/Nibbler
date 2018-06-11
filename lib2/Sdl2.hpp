@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:18:05 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 14:49:29 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 15:56:30 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Sdl2 : public IGraphicLib
 
 		void	_init(short, short);
 		void	_stop(void);
+		void	_checkEvent(eDir tmp, eDir & direction,  SDL_Event event, std::map < int, eDir> & map) const;
 };
 
 extern "C"
