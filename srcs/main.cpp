@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 16:36:10 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 16:40:46 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ int		main(int ac, char *av[])
 				} catch (std::runtime_error & e) {
 					std::cout << "Runtime Error: " << e.what() << std::endl;
 				}
-				std::cout << "Score: " << core.getData()._score << "\nDEAD\n";
+				std::cout << "Score: " << core.getData()._score << "\nGAME OVER !\n";
 				break;
 			}
 			core.handle_custom(& custom);
