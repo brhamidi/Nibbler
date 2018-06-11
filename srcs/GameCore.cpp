@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/07 15:49:47 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 13:33:36 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	: _p2(p2)
 {
 	this->_data._p2 = p2;
+	this->_data._snakeDir = eDir::Left;
 	if (width < 10)
 		throw "width too small";
 	else if (height < 10)
@@ -185,6 +186,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, eNum body, 
 
 	if (onFood)
 		snake.fed = true;
+	this->_data._snakeDir = this->_snake.direction;
 	return true;
 }
 

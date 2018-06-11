@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/21 15:01:12 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 13:53:22 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 13:33:37 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ struct Data
 	short		_height;
 	short ** 	_map;
 	eDir		_snakeDir;
-	eDir		_snakeDir2;
 	bool		_p2;
 };
 
