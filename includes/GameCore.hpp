@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:21:35 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/07 14:01:59 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 17:10:35 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ class GameCore
 	private:
 		GameCore(short, short, short, bool);
 		GameCore(void);
+		GameCore & operator=(GameCore const &);
+		GameCore(GameCore const &);
 
 		bool	_movePlayer(eDir, snakeData &, eNum, eNum, IAudioLib & sound);
 		void	_initSnake(snakeData);

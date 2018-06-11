@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 13:58:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 16:14:56 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 17:15:07 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ class Sfml : public IGraphicLib
 		void	getEvent(eDir *);
 
 	private:
+		Sfml(Sfml const &);
+		Sfml & operator=(Sfml const &);
+
 		void	_init(short, short);
 		void	_stop(void);
 		void	_handle_object(short, short, sf::Sprite *);

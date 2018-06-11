@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:18:05 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 15:56:30 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 17:13:06 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ class Sdl2 : public IGraphicLib
 		void	getEvent(eDir *);
 
 	private:
+		Sdl2(Sdl2 const &);
+		Sdl2 & operator=(Sdl2 const &);
+
 		SDL_Window		*_win;
 		SDL_Renderer	*_renderer;
 		TTF_Font		*_font;

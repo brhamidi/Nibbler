@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 16:35:17 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 17:40:48 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ Sdl2::Sdl2(short x, short y)
 
 void	Sdl2::_stop(void)
 {
+	SDL_DestroyRenderer(this->_renderer); 
 	SDL_DestroyWindow(this->_win);
 
+	TTF_CloseFont(this->_font);
 	TTF_Quit();
 	SDL_Quit();
 }
