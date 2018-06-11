@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 16:04:13 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 15:11:32 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,28 @@ void	Sdl2::_init(short x, short y)
 	this->_font = TTF_OpenFont("lib2/font.ttf", 15);
 	this->_font_color = {121, 255, 77, 200};
 	this->_color_black = {0, 0, 0, 200};
+	this->_renderColors[eNum::Blank] = {0, 0, 0, 200};
+	this->_renderColors[eNum::Wall] = {255, 255, 0, 200};
+	this->_renderColors[eNum::Snake] = {0, 255, 0, 200};
+	this->_renderColors[eNum::Head] = {255, 0, 0, 200};
+	this->_renderColors[eNum::Head2] = {255, 255, 0, 200};
+	this->_renderColors[eNum::Snake2] = {255, 129, 0, 200};
+	this->_renderColors[eNum::Food] = {0, 0, 255, 200};
+	this->_renderColors[eNum::Obstacle] = {0, 0, 255, 200};
+	this->_renderColors[eNum::Custom] = {179, 67, 221, 200};
+
+	this->_libMap[SDLK_DELETE] = eDir::Exit;
+	this->_libMap[SDLK_1] = eDir::Lib1;
+	this->_libMap[SDLK_2] = eDir::Lib2;
+	this->_libMap[SDLK_3] = eDir::Lib3;
+	this->_snake1Map[SDLK_LEFT] = eDir::Left;
+	this->_snake1Map[SDLK_RIGHT] = eDir::Right;
+	this->_snake1Map[SDLK_UP] = eDir::Up;
+	this->_snake1Map[SDLK_DOWN] = eDir::Down;
+	this->_snake2Map[SDLK_a] = eDir::Left;
+	this->_snake2Map[SDLK_d] = eDir::Right;
+	this->_snake2Map[SDLK_w] = eDir::Up;
+	this->_snake2Map[SDLK_s] = eDir::Down;
 }
 
 void	Sdl2::render(Data const & data)
@@ -75,24 +97,7 @@ void	Sdl2::render(Data const & data)
 	{
 		for (auto w = 0; w < data._width; w++)
 		{
-			if (data._map[h][w] == eNum::Blank)
-				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 200);
-			if (data._map[h][w] == eNum::Wall)
-				SDL_SetRenderDrawColor(this->_renderer, 255, 255, 0, 200);
-			if (data._map[h][w] == eNum::Snake)
-				SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 200);
-			if (data._map[h][w] == eNum::Head)
-				SDL_SetRenderDrawColor(this->_renderer, 255, 0, 0, 200);
-			if (data._map[h][w] == eNum::Head2)
-				SDL_SetRenderDrawColor(this->_renderer, 255, 255, 0, 200);
-			if (data._map[h][w] == eNum::Snake2)
-				SDL_SetRenderDrawColor(this->_renderer, 255, 129, 0, 200);
-			if (data._map[h][w] == eNum::Food)
-				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
-			if (data._map[h][w] == eNum::Obstacle)
-				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
-			if (data._map[h][w] == eNum::Custom)
-				SDL_SetRenderDrawColor(this->_renderer, 179, 67, 221, 200);
+			SDL_SetRenderDrawColor(this->_renderer, this->_renderColors[data._map[h][w]].r, this->_renderColors[data._map[h][w]].g, this->_renderColors[data._map[h][w]].b, this->_renderColors[data._map[h][w]].a);
 			cases.x = w * 15;
 			cases.y = (h + MENU) * 15;
 			cases.w = 15;
@@ -115,7 +120,7 @@ void	Sdl2::getEvent(eDir *direction)
 
 	tmp[0] = direction[0];
 	tmp[1] = direction[1];
-	while ( SDL_PollEvent(&event) == 1 )
+	while ((tmp[0] == direction[0] || tmp[1] == direction[1]) && SDL_PollEvent(&event) == 1 )
 	{
 		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
 		{
@@ -124,50 +129,20 @@ void	Sdl2::getEvent(eDir *direction)
 			else
 				direction[3] = eDir::Space;
 		}
-		if (!direction[2])
-			switch (event.key.keysym.sym)
-			{
-				case SDLK_DELETE:  direction[2] = eDir::Exit; break;
-				case SDLK_1:  direction[2] = eDir::Lib1; break;
-				case SDLK_2:  direction[2] = eDir::Lib2; break;
-				case SDLK_3:  direction[2] = eDir::Lib3; break;
-				default: break;
-			}
-		if (tmp[0] != direction[0] && tmp[1] != direction[1])
-			break;
-		if (tmp[0] == direction[0])
+
+		if (!direction[2] && this->_libMap[event.key.keysym.sym])
+			direction[2] = this->_libMap[event.key.keysym.sym];
+
+		if (tmp[0] == direction[0] && event.type == SDL_KEYDOWN && (this->_snake1Map[event.key.keysym.sym] || event.key.keysym.sym == SDLK_UP))
 		{
-			tmp[0] = direction[0];
-			switch (event.type)
-			{
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym)
-					{
-						case SDLK_LEFT:  direction[0] = eDir::Left; break;
-						case SDLK_RIGHT: direction[0] = eDir::Right; break;
-						case SDLK_UP:    direction[0] = eDir::Up; break;
-						case SDLK_DOWN:  direction[0] = eDir::Down; break;
-					}
-					break;
-			}
+			direction[0] = this->_snake1Map[event.key.keysym.sym];
 			if (direction[0] % 2 == tmp[0] % 2)
 				direction[0] = tmp[0];
 		}
-		if (tmp[0] == direction[0])
+
+		if (tmp[1] == direction[1] && event.type == SDL_KEYDOWN && (this->_snake2Map[event.key.keysym.sym] || event.key.keysym.sym == SDLK_w))
 		{
-			tmp[0] = direction[0];
-			switch (event.type)
-			{
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym)
-					{
-						case SDLK_a:	direction[1] = eDir::Left; break;
-						case SDLK_d:	direction[1] = eDir::Right; break;
-						case SDLK_w:	direction[1] = eDir::Up; break;
-						case SDLK_s:	direction[1] = eDir::Down; break;
-					}
-					break;
-			}
+			direction[1] = this->_snake2Map[event.key.keysym.sym];
 			if (direction[1] % 2 == tmp[1] % 2)
 				direction[1] = tmp[1];
 		}

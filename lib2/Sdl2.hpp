@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:18:05 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 17:52:29 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 14:49:29 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "IGraphicLib.hpp"
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_ttf.h>
+# include <map>
 
 # define MENU	8
 
@@ -39,9 +40,13 @@ class Sdl2 : public IGraphicLib
 		SDL_Surface		*_ntext_surface;
 		SDL_Texture		*_nmsg;
 
+		SDL_Color	_renderColors[eNum::Snake2 + 1];
+		std::map < int, eDir > _libMap;
+		std::map < int, eDir > _snake1Map;
+		std::map < int, eDir > _snake2Map;
+
 		void	_init(short, short);
 		void	_stop(void);
-
 };
 
 extern "C"

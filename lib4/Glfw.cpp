@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/11 13:30:31 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 13:50:27 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,10 +239,10 @@ Glfw::Glfw(short x, short y)
 	this->_lengthObj[2] = 2;
 	this->_lengthObj[3] = 3;
 	this->_lengthObj[4] = 3;
-	this->_lengthObj[5] = 200;
+	this->_lengthObj[5] = 20;
 	this->_lengthObj[6] = 3;
-	this->_lengthObj[7] = 3;
-	this->_lengthObj[8] = 4;
+	this->_lengthObj[7] = 4;
+	this->_lengthObj[8] = 3;
 
 	this->_printer[0] = &Glfw::_printUp;
 	this->_printer[1] = &Glfw::_printRight;

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 15:44:46 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 14:27:00 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ int		main(int ac, char *av[])
 
 	int				mode = get_mode(modeTab, 2);
 	int				libIndex = get_mode(libNameTab, 3);
-	std::cout << libIndex << std::endl;
 	IGraphicLib		*library = getLib(&dl_handle, x, y, libTab[libIndex]);
 	GameCore & 		core = GameCore::getGame(x, y, obstacle, mode);
 	library->render( core.getData() );
