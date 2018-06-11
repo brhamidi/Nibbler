@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 19:04:38 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/07 16:04:13 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ Sdl2::Sdl2(short x, short y)
 
 void	Sdl2::_stop(void)
 {
-	SDL_DestroyTexture(this->_msg);;
-	SDL_DestroyTexture(this->_nmsg);;
-	SDL_FreeSurface(this->_text_surface);
-	SDL_FreeSurface(this->_ntext_surface);
 	SDL_DestroyWindow(this->_win);
 
 	TTF_Quit();
@@ -45,9 +41,8 @@ void	Sdl2::_init(short x, short y)
 
 	// text
 	this->_font = TTF_OpenFont("lib2/font.ttf", 15);
-	this->_font_color = {255, 255, 255, 200};
+	this->_font_color = {121, 255, 77, 200};
 	this->_color_black = {0, 0, 0, 200};
-	this->_text_surface = TTF_RenderText_Shaded(this->_font, "Score:", this->_font_color, this->_color_black);
 }
 
 void	Sdl2::render(Data const & data)
@@ -57,6 +52,7 @@ void	Sdl2::render(Data const & data)
 	SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
 	SDL_RenderClear(this->_renderer);
 
+	this->_text_surface = TTF_RenderText_Shaded(this->_font, "Score:", this->_font_color, this->_color_black);
 	this->_msg = SDL_CreateTextureFromSurface(this->_renderer, this->_text_surface);
 	SDL_Rect Message_rect;
 	Message_rect.x = 0;
@@ -64,7 +60,7 @@ void	Sdl2::render(Data const & data)
 	Message_rect.w = 200;
 	Message_rect.h = 60;
 
-	this->_ntext_surface = TTF_RenderText_Solid(this->_font, std::to_string(data._score).c_str(), this->_font_color);
+	this->_ntext_surface = TTF_RenderText_Shaded(this->_font, std::to_string(data._score).c_str(), this->_font_color, this->_color_black);
 	this->_nmsg = SDL_CreateTextureFromSurface(this->_renderer, this->_ntext_surface);
 	SDL_Rect nMessage_rect;
 	nMessage_rect.x = 0;
@@ -86,11 +82,17 @@ void	Sdl2::render(Data const & data)
 			if (data._map[h][w] == eNum::Snake)
 				SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 200);
 			if (data._map[h][w] == eNum::Head)
-				SDL_SetRenderDrawColor(this->_renderer, 0, 255, 0, 200);
+				SDL_SetRenderDrawColor(this->_renderer, 255, 0, 0, 200);
+			if (data._map[h][w] == eNum::Head2)
+				SDL_SetRenderDrawColor(this->_renderer, 255, 255, 0, 200);
+			if (data._map[h][w] == eNum::Snake2)
+				SDL_SetRenderDrawColor(this->_renderer, 255, 129, 0, 200);
 			if (data._map[h][w] == eNum::Food)
 				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
 			if (data._map[h][w] == eNum::Obstacle)
 				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
+			if (data._map[h][w] == eNum::Custom)
+				SDL_SetRenderDrawColor(this->_renderer, 179, 67, 221, 200);
 			cases.x = w * 15;
 			cases.y = (h + MENU) * 15;
 			cases.w = 15;
@@ -100,6 +102,10 @@ void	Sdl2::render(Data const & data)
 		}
 	}
 	SDL_RenderPresent(this->_renderer);
+	SDL_DestroyTexture(this->_msg);;
+	SDL_DestroyTexture(this->_nmsg);;
+	SDL_FreeSurface(this->_text_surface);
+	SDL_FreeSurface(this->_ntext_surface);
 }
 
 void	Sdl2::getEvent(eDir *direction)

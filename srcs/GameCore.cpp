@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/07 12:39:44 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 13:33:36 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ GameCore::GameCore(short width, short height, short obstacle, bool p2)
 	if (p2)
 	{
 		for(auto corps : this->_snake2.snake)
-			this->_updateSnake(corps, eNum::Snake);
+			this->_updateSnake(corps, eNum::Snake2);
 		this->_updateSnake(*this->_snake2.snake.begin(), eNum::Head2);
 	}
 	_popElem(eNum::Food);
@@ -88,28 +88,6 @@ Data &	GameCore::getData(void)
 	return this->_data;
 }
 
-void	GameCore::_printMap(void) const
-{
-	for (auto h = 0; h < this->_data._height; h++)
-	{
-		std::cout << std::endl;
-		for (auto w = 0; w < this->_data._width; w++)
-		{
-			if (_data._map[h][w] == eNum::Head )
-				std::cout << CYAN << "  " << RESET;
-			if (_data._map[h][w] == eNum::Snake )
-				std::cout << GREEN << "  " << RESET;
-			if (_data._map[h][w] == eNum::Food )
-				std::cout << YELLOW << "  " << RESET;
-			if (_data._map[h][w] == eNum::Wall )
-				std::cout << RED << "  " << RESET;
-			if (_data._map[h][w] == eNum::Blank )
-				std::cout << BLACK << "  " << RESET;
-		}
-	}
-	std::cout << std::endl;
-}
-
 void	GameCore::_buildTheWall(void)
 {
 	for (int i = 0; i < this->_data._width; i++)
@@ -123,17 +101,29 @@ void	GameCore::_buildTheWall(void)
 		this->_data._map[i][this->_data._width - 1] = eNum::Wall;
 	}
 }
+void	GameCore::handle_custom(unsigned short *custom)
+{
+	if (*custom == 100)
+		this->_popElem(eNum::Custom);
+	if (*custom == 135)
+	{
+		*custom = 0;
+		_findPos(0, 0, this->_data._height, this->_data._width, eNum::Custom, eNum::Blank);
+	}
+}
 
 bool GameCore::moveSnake(eDir *input, IAudioLib & sound)
 {
-	if (!this->_movePlayer(input[0], this->_snake, eNum::Head, sound))
+	this->_data._snakeDir = this->_snake.direction;
+	this->_data._snakeDir2 = this->_snake2.direction;
+	if (!this->_movePlayer(input[0], this->_snake, eNum::Head, eNum::Snake, sound))
 		return false;
 	else if (this->_p2)
-		return this->_movePlayer(input[1], this->_snake2, eNum::Head2, sound);
+		return this->_movePlayer(input[1], this->_snake2, eNum::Head2, eNum::Snake2, sound);
 	return true;
 }
 
-bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib & sound)
+bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, eNum body, IAudioLib & sound)
 {
 	static const std::pair<char, char> getDirection[4] =
 	{{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -142,7 +132,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 		input = snake.direction;
 	if (input != eDir::Error)
 	{
-		if(input % 2 != snake.direction % 2) //check if direction is not opposite
+		if (input % 2 != snake.direction % 2) //check if direction is not opposite
 			snake.direction = input;
 	}
 
@@ -159,6 +149,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 	{
 		if ( this->_data._map[newHead.first][newHead.second] != eNum::Blank
 				&& this->_data._map[newHead.first][newHead.second] != eNum::Food
+				&& this->_data._map[newHead.first][newHead.second] != eNum::Custom
 			   	&& (newHead.first != (std::next(this->_snake2.snake.end(), -1))->first
 				|| newHead.second != (std::next(this->_snake2.snake.end(), -1))->second)
 				&& (newHead.first != (std::next(snake.snake.end(), -1))->first
@@ -169,6 +160,12 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 			this->_popElem(eNum::Food);
 			onFood = true;
 			_data._score += 1000;
+			sound.play();
+		}
+		else if ( this->_data._map[newHead.first][newHead.second] == eNum::Custom )
+		{
+			onFood = true;
+			_data._score += 5000;
 			sound.play();
 		}
 	}
@@ -185,7 +182,7 @@ bool	GameCore::_movePlayer(eDir input, snakeData & snake, eNum head, IAudioLib &
 
 	snake.snake.push_front(newHead);
 	this->_updateSnake( * (snake.snake.begin()), head );
-	this->_updateSnake( * std::next(snake.snake.begin()) , eNum::Snake );
+	this->_updateSnake( * std::next(snake.snake.begin()) , body );
 
 	if (onFood)
 		snake.fed = true;
@@ -200,12 +197,12 @@ void	GameCore::_updateSnake(std::pair<short, short> & _snakePos, eNum form)
 		this->_data._map[_snakePos.first][_snakePos.second] = form;
 }
 
-bool	GameCore::_findPos(short y, short x, short limitY, short limitX, eNum e)
+bool	GameCore::_findPos(short y, short x, short limitY, short limitX, eNum seek, eNum e)
 {
 	for (; y < limitY; y++)
 	{
 		for ( ; x < limitX; x++)
-			if (_data._map[y][x] == 0)
+			if (_data._map[y][x] == seek)
 			{
 				_data._map[y][x] = e;
 				return true;
@@ -220,7 +217,7 @@ void	GameCore::_popElem(eNum e)
 	short x = std::rand() % (this->_data._width - 2) + 1;
 	short y = std::rand() % (this->_data._height - 2) + 1;
 
-	if (_findPos(y, x, this->_data._height, this->_data._width, e) == false)
-		if (_findPos(1, 1, this->_data._height, this->_data._width, e) == false)
+	if (_findPos(y, x, this->_data._height, this->_data._width, eNum::Blank, e) == false)
+		if (_findPos(1, 1, this->_data._height, this->_data._width, eNum::Blank, e) == false)
 			std::cout << "Winner !" << std::endl;
 }

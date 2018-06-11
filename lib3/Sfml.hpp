@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 13:58:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/05/31 17:59:12 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/07 14:05:51 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,15 @@ class Sfml : public IGraphicLib
 		sf::Text					_ntext;
 
 		sf::Texture					_head;
+		sf::Texture					_head2;
 		sf::Sprite					_sHead;
+		sf::Sprite					_sHead2;
 		sf::Texture					_snake;
 		sf::Sprite					_sSnake;
+		sf::Texture					_snake2;
+		sf::Sprite					_sSnake2;
+		sf::Texture					_custom;
+		sf::Sprite					_sCustom;
 		sf::Texture					_food;
 		sf::Sprite					_sFood;
 		sf::Texture					_obstacle;
