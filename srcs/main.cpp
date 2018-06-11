@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 13:56:33 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 14:51:47 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ int		main(int ac, char *av[])
 
 	int				mode = get_mode(modeTab, 2);
 	int				libIndex = get_mode(libNameTab, 3);
-	std::cout << libIndex << std::endl;
 	IGraphicLib		*library = getLib(&dl_handle, x, y, libTab[libIndex]);
 	GameCore & 		core = GameCore::getGame(x, y, obstacle, mode);
 	library->render( core.getData() );
@@ -178,7 +177,7 @@ int		main(int ac, char *av[])
 			{
 				deleteLib(library, dl_handle);
 				deleteAudioLib(audio_library, audio_dl_handle);
-				std::cout << "Dead\n";
+				std::cout << "Score: " << core.getData()._score << "\nDEAD\n";
 				break;
 			}
 			core.handle_custom(& custom);
