@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/10 16:32:47 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/11 13:33:36 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 13:38:11 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ void	GameCore::handle_custom(unsigned short *custom)
 bool GameCore::moveSnake(eDir *input, IAudioLib & sound)
 {
 	this->_data._snakeDir = this->_snake.direction;
-	this->_data._snakeDir2 = this->_snake2.direction;
 	if (!this->_movePlayer(input[0], this->_snake, eNum::Head, eNum::Snake, sound))
 		return false;
 	else if (this->_p2)
