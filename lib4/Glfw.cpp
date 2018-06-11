@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/11 13:50:27 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 17:00:28 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,6 +329,20 @@ static void	checkPossibleDir(eDir & direction, eDir src)
 		direction = src;
 }
 
+void	Glfw::_checkEvent(eDir &direction, eDir tmp, std::map < int, int > map, int key) const
+{
+	static eDir	dir[4] = {eDir::Up, eDir::Right, eDir::Down, eDir::Left};
+
+	if (direction == tmp && (map[key]))
+	{
+		direction =
+			(direction + map[key] < 0) ?
+			eDir::Left : ((direction + map[key] > 3) ?
+					eDir::Up : dir[direction + map[key]]);
+		checkDir(direction);
+	}
+}
+
 void	Glfw::getEvent(eDir *direction)
 {
 	glfwPollEvents();
@@ -338,30 +352,21 @@ void	Glfw::getEvent(eDir *direction)
 
 	tmp[0] = direction[0];
 	tmp[1] = direction[1];
-	static eDir	dir[4] = {eDir::Up, eDir::Right, eDir::Down, eDir::Left};
+
 	while ((tmp[0] == direction[0] || tmp[1] == direction[1])  && this->_eventPoll.size() != 0)
 	{
 		key = *this->_eventPoll.begin();
 		this->_eventPoll.pop_front();
 
-		if (direction[3] != eDir::Space && direction[0] == tmp[0] && (this->_directionMap[key]))
+		if (direction[3] != eDir::Space)
 		{
-			direction[0] =
-				(direction[0] + this->_directionMap[key] < 0) ?
-				eDir::Left : ((direction[0] + this->_directionMap[key] > 3) ?
-						eDir::Up : dir[direction[0] + this->_directionMap[key]]);
-			checkDir(direction[0]);
-		}//check input for p1
-		else if (direction[3] != eDir::Space && direction[1] == tmp[1] && (this->_direction2Map[key]))
-		{
-			direction[1] =
-				(direction[1] + this->_direction2Map[key] < 0) ?
-				eDir::Left : ((direction[1] + this->_direction2Map[key] > 3) ?
-						eDir::Up : dir[direction[1] + this->_direction2Map[key]]);
-			checkDir(direction[1]);
-		}//check input for p2
-		else if (this->_interactionMap[key]) //check to change lib
+			_checkEvent(direction[0], tmp[0], this->_directionMap, key);	//p1
+			_checkEvent(direction[1], tmp[1], this->_direction2Map, key);	//p2
+		}
+		
+		if (this->_interactionMap[key]) //check to change lib
 			direction[2] = this->_interactionMap[key];
+
 		else if (key == GLFW_KEY_SPACE) //check to un/pause
 		{
 			if (direction[3] == eDir::Space)

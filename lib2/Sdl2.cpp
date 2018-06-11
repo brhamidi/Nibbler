@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 15:59:13 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 16:35:17 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	Sdl2::render(Data const & data)
 
 void	Sdl2::_checkEvent(eDir tmp, eDir & direction,  SDL_Event event, std::map < int, eDir> & map) const
 {
-	if (tmp == direction && event.type == SDL_KEYDOWN && (map[event.key.keysym.sym] || event.key.keysym.sym == SDLK_UP))
+	if (tmp == direction && event.type == SDL_KEYDOWN && map.find(event.key.keysym.sym) != map.end())
 	{
 		direction = map[event.key.keysym.sym];
 		if (direction % 2 == tmp % 2)
@@ -130,6 +130,7 @@ void	Sdl2::getEvent(eDir *direction)
 
 	tmp[0] = direction[0];
 	tmp[1] = direction[1];
+
 	while ((tmp[0] == direction[0] || tmp[1] == direction[1]) && SDL_PollEvent(&event) == 1 )
 	{
 		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
@@ -143,8 +144,11 @@ void	Sdl2::getEvent(eDir *direction)
 		if (!direction[2] && this->_libMap[event.key.keysym.sym])
 			direction[2] = this->_libMap[event.key.keysym.sym];
 
-		this->_checkEvent(tmp[0], direction[0], event, this->_snake1Map);
-		this->_checkEvent(tmp[1], direction[1], event, this->_snake2Map);
+		if (direction[3] != eDir::Space)
+		{
+			this->_checkEvent(tmp[0], direction[0], event, this->_snake1Map);
+			this->_checkEvent(tmp[1], direction[1], event, this->_snake2Map);
+		}
 	}
 }
 

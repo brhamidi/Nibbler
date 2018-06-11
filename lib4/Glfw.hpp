@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/11 13:30:47 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 16:53:21 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ class Glfw : public IGraphicLib
 		void	_printDown(Data const &, int, dataInfo);
 		void	_printRight(Data const &, int, dataInfo);
 		void	_printLeft(Data const &, int, dataInfo);
+
+		void	_checkEvent(eDir &direction, eDir tmp, std::map < int, int > map, int key) const;
 
 		GLFWwindow	*_window;
 		GLuint		*_program;

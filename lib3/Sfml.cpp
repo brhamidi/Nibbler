@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/23 14:00:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 14:46:54 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 16:35:22 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ void	Sfml::_init(short x, short y)
 	this->_dir[sf::Keyboard::Up] = eDir::Up;
 	this->_dir[sf::Keyboard::Down] = eDir::Down;
 
-	this->_dir[sf::Keyboard::A] = eDir::Left;
-	this->_dir[sf::Keyboard::D] = eDir::Right;
-	this->_dir[sf::Keyboard::W] = eDir::Up;
-	this->_dir[sf::Keyboard::S] = eDir::Down;
+	this->_dir2[sf::Keyboard::A] = eDir::Left;
+	this->_dir2[sf::Keyboard::D] = eDir::Right;
+	this->_dir2[sf::Keyboard::W] = eDir::Up;
+	this->_dir2[sf::Keyboard::S] = eDir::Down;
 
 	this->_interaction[sf::Keyboard::Num1] = eDir::Lib1;
 	this->_interaction[sf::Keyboard::Num2] = eDir::Lib2;
@@ -124,6 +124,17 @@ void		Sfml::_handle_object(short w, short h, sf::Sprite * sprite)
 	this->_window->draw(*sprite);
 }
 
+
+void	Sfml::_checkEvent(eDir tmp, eDir & direction,  sf::Event event, std::map < int, eDir> & map) const
+{
+	if (tmp == direction && event.type == sf::Event::KeyPressed && map.find(event.key.code) != map.end())
+	{
+		direction = map[event.key.code];
+		if (direction % 2 == tmp % 2)
+			direction = tmp;
+	}
+}
+
 void	Sfml::getEvent(eDir *direction)
 {
 	eDir		tmp[2];
@@ -131,10 +142,9 @@ void	Sfml::getEvent(eDir *direction)
 
 	tmp[0] = direction[0];
 	tmp[1] = direction[1];
-	while ( this->_window->pollEvent(event) )
+
+	while ((tmp[0] == direction[0] || tmp[1] == direction[1]) && this->_window->pollEvent(event) )
 	{
-		if (tmp[0] != direction[0] && tmp[1] != direction[1])
-			break ;
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 		{
 			if (direction[3] == eDir::Space)
@@ -142,24 +152,14 @@ void	Sfml::getEvent(eDir *direction)
 			else
 				direction[3] = eDir::Space;
 		}
-		if (!direction[2])
+
+		if (!direction[2] && event.type == sf::Event::KeyPressed)
+			direction[2] = this->_interaction[event.key.code];
+
+		if (direction[3] != eDir::Space)
 		{
-			if (event.type == sf::Event::KeyPressed)
-				direction[2] = this->_interaction[event.key.code];
-		}
-		if (tmp[0] == direction[0] && direction[3] != eDir::Space)
-		{
-			if (event.type == sf::Event::KeyPressed)
-				direction[0] = this->_dir[event.key.code];
-			if (direction[0] % 2 == tmp[0] % 2)
-				direction[0] = tmp[0];
-		}
-		if (tmp[0] == direction[0] && direction[3] != eDir::Space)
-		{
-			if (event.type == sf::Event::KeyPressed)
-				direction[1] = this->_dir[event.key.code];
-			if (direction[1] % 2 == tmp[1] % 2)
-				direction[1] = tmp[1];
+			this->_checkEvent(tmp[0], direction[0], event, this->_dir);
+			this->_checkEvent(tmp[1], direction[1], event, this->_dir2);
 		}
 	}
 }
