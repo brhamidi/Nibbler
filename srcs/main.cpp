@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 16:40:46 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 17:59:10 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,14 +147,21 @@ int		main(int ac, char *av[])
 	int				accTime = 10;
 	int				mode = get_mode(modeTab, 2);
 	int				libIndex = get_mode(libNameTab, 3);
-	IAudioLib		*audio_library;
-	IGraphicLib		*library;
+	IAudioLib		*audio_library = NULL;
+	IGraphicLib		*library = NULL;
 
 	try {
 		audio_library = getAudioLib(&audio_dl_handle);
 		library = getLib(&dl_handle, x, y, libTab[libIndex]);
 	} catch (std::runtime_error & e) {
-		std::cout << "Runtime Error: " << e.what() << std::endl;
+		if (!audio_library)
+			try {
+				deleteLib(library, dl_handle);
+			} catch (std::runtime_error & e) {
+			std::cerr << "Runtime Error: " << e.what() << std::endl;
+			std::exit(1);
+			}
+		std::cerr << "Runtime Error: " << e.what() << std::endl;
 		std::exit(1);
 	}
 	GameCore & 		core = GameCore::getGame(x, y, obstacle, mode);
@@ -179,7 +186,7 @@ int		main(int ac, char *av[])
 				direction[2] = eDir::Up;
 				library->render( core.getData() );
 			} catch (std::runtime_error & e) {
-				std::cout << "Runtime Error: " << e.what() << std::endl;
+				std::cerr << "Runtime Error: " << e.what() << std::endl;
 				break;
 			}
 		}
@@ -192,7 +199,7 @@ int		main(int ac, char *av[])
 					deleteLib(library, dl_handle);
 					deleteAudioLib(audio_library, audio_dl_handle);
 				} catch (std::runtime_error & e) {
-					std::cout << "Runtime Error: " << e.what() << std::endl;
+					std::cerr << "Runtime Error: " << e.what() << std::endl;
 				}
 				std::cout << "Score: " << core.getData()._score << "\nGAME OVER !\n";
 				break;
