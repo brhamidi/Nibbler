@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:16:39 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 16:04:13 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 13:57:10 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void	Sdl2::render(Data const & data)
 			if (data._map[h][w] == eNum::Snake2)
 				SDL_SetRenderDrawColor(this->_renderer, 255, 129, 0, 200);
 			if (data._map[h][w] == eNum::Food)
-				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
+				SDL_SetRenderDrawColor(this->_renderer, 255, 163, 26, 200);
 			if (data._map[h][w] == eNum::Obstacle)
-				SDL_SetRenderDrawColor(this->_renderer, 0, 0, 255, 200);
+				SDL_SetRenderDrawColor(this->_renderer, 255, 255, 255, 200);
 			if (data._map[h][w] == eNum::Custom)
 				SDL_SetRenderDrawColor(this->_renderer, 179, 67, 221, 200);
 			cases.x = w * 15;
@@ -135,9 +135,8 @@ void	Sdl2::getEvent(eDir *direction)
 			}
 		if (tmp[0] != direction[0] && tmp[1] != direction[1])
 			break;
-		if (tmp[0] == direction[0])
+		if (tmp[0] == direction[0] && direction[3] != eDir::Space)
 		{
-			tmp[0] = direction[0];
 			switch (event.type)
 			{
 				case SDL_KEYDOWN:
@@ -153,9 +152,8 @@ void	Sdl2::getEvent(eDir *direction)
 			if (direction[0] % 2 == tmp[0] % 2)
 				direction[0] = tmp[0];
 		}
-		if (tmp[0] == direction[0])
+		if (tmp[0] == direction[0] && direction[3] != eDir::Space)
 		{
-			tmp[0] = direction[0];
 			switch (event.type)
 			{
 				case SDL_KEYDOWN:

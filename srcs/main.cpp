@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/07 15:44:46 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/06/11 13:56:33 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		get_mode(const char ** choice, int len);
 int		usage(const char *filename)
 {
 	std::cerr << "Usage: " << filename <<
-		" [ 10 <= X <= 170] [10 <= Y <= 70] [0 < Obstacle number < X * Y]" << std::endl;;
+		" [ 15 <= X <= 70] [15 <= Y <= 50] [0 < Obstacle number < X * Y]" << std::endl;;
 	return EXIT_FAILURE;
 }
 
@@ -71,7 +71,7 @@ int		arg(int ac, char **av, int *x, int *y, int *obstacle)
 		if ((*x * *y - (*x * 2 + *y * 2 + 4 + 1 )) <= *obstacle )
 			return usage(av[0]);
 	}
-	if (*x < 10 || *x > 170 || *y < 10 || *y > 70)
+	if (*x < 15 || *x >70  || *y < 15 || *y > 50)
 		return usage(av[0]);
 	return (0);
 }
