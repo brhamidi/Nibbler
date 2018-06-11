@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/16 14:22:27 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/06/11 15:54:25 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 16:36:10 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "IAudioLib.hpp"
 #include <dlfcn.h>
 #include <unistd.h>
+#include <exception>
 
 const char *libTab [4] = {
 	"lib4.so",
@@ -76,22 +77,22 @@ int		arg(int ac, char **av, int *x, int *y, int *obstacle)
 	return (0);
 }
 
-void	dlerror_wrapper(void)
+void	dlerror_wrapper(const std::string msg)
 {
-	std::cerr << "Error: " << dlerror() << std::endl;
-	exit(EXIT_FAILURE);
+	std::cerr << "dlerror() " << dlerror() << std::endl;
+	throw (std::runtime_error(msg));
 }
 
 IGraphicLib	*getLib(void **dl_handle, short x, short y, const char *libname)
 {
 	*dl_handle = dlopen(libname, RTLD_LAZY | RTLD_LOCAL);
 	if (! *dl_handle)
-		dlerror_wrapper();
+		dlerror_wrapper("failed to open library");
 	IGraphicLib *(*createGraphicLib)(short, short);
 	createGraphicLib =
 		(IGraphicLib *(*)(short, short)) dlsym(*dl_handle, "createGraphicLib");
 	if (!createGraphicLib)
-		dlerror_wrapper();
+		dlerror_wrapper("failed to load symbol");
 	return createGraphicLib(x, y);
 }
 
@@ -100,7 +101,7 @@ void	deleteLib(IGraphicLib *library, void *dl_handle)
 	void (*deleteGraphicLib)(IGraphicLib *);
 	deleteGraphicLib = (void (*)(IGraphicLib *)) dlsym(dl_handle, "deleteGraphicLib");
 	if (!deleteGraphicLib)
-		dlerror_wrapper();
+		dlerror_wrapper("failed to load symbol");
 	deleteGraphicLib(library);
 	dlclose(dl_handle);
 }
@@ -110,7 +111,7 @@ void	deleteAudioLib(IAudioLib *library, void *dl_handle)
 	void (*deleteAudioLib)(IAudioLib *);
 	deleteAudioLib = (void (*)(IAudioLib *)) dlsym(dl_handle, "deleteAudioLib");
 	if (!deleteAudioLib)
-		dlerror_wrapper();
+		dlerror_wrapper("failed to load symbol");
 	deleteAudioLib(library);
 	dlclose(dl_handle);
 }
@@ -119,12 +120,12 @@ IAudioLib	*getAudioLib(void **dl_handle)
 {
 	*dl_handle = dlopen("lib5.so", RTLD_LAZY | RTLD_LOCAL);
 	if (! *dl_handle)
-		dlerror_wrapper();
+		dlerror_wrapper("failed to open library");
 	IAudioLib *(*createAudioLib)(void);
 	createAudioLib =
 		(IAudioLib *(*)(void)) dlsym(*dl_handle, "createAudioLib");
 	if (!createAudioLib)
-		dlerror_wrapper();
+		dlerror_wrapper("failed to load symbol");
 	return createAudioLib();
 }
 
@@ -142,13 +143,20 @@ int		main(int ac, char *av[])
 	void			*dl_handle;
 	void			*audio_dl_handle;
 	struct timeval	stop, start;
-	IAudioLib		*audio_library = getAudioLib(&audio_dl_handle);
 	eDir			direction[4] = {eDir::Left, eDir::Left, eDir::Up, eDir::Space};
 	int				accTime = 10;
-
 	int				mode = get_mode(modeTab, 2);
 	int				libIndex = get_mode(libNameTab, 3);
-	IGraphicLib		*library = getLib(&dl_handle, x, y, libTab[libIndex]);
+	IAudioLib		*audio_library;
+	IGraphicLib		*library;
+
+	try {
+		audio_library = getAudioLib(&audio_dl_handle);
+		library = getLib(&dl_handle, x, y, libTab[libIndex]);
+	} catch (std::runtime_error & e) {
+		std::cout << "Runtime Error: " << e.what() << std::endl;
+		std::exit(1);
+	}
 	GameCore & 		core = GameCore::getGame(x, y, obstacle, mode);
 	library->render( core.getData() );
 	while (1)
@@ -165,18 +173,27 @@ int		main(int ac, char *av[])
 		}
 		else if (direction[2] >= eDir::Lib1 && direction[2] <= eDir::Lib3)
 		{
-			deleteLib(library, dl_handle);
-			library = getLib(& dl_handle, x, y, libTab[direction[2] - eDir::Lib1]);
-			direction[2] = eDir::Up;
-			library->render( core.getData() );
+			try {
+				deleteLib(library, dl_handle);
+				library = getLib(& dl_handle, x, y, libTab[direction[2] - eDir::Lib1]);
+				direction[2] = eDir::Up;
+				library->render( core.getData() );
+			} catch (std::runtime_error & e) {
+				std::cout << "Runtime Error: " << e.what() << std::endl;
+				break;
+			}
 		}
 
 		if (direction[3] != eDir::Space)
 		{
 			if (!(core.moveSnake(direction, * audio_library)))
 			{
-				deleteLib(library, dl_handle);
-				deleteAudioLib(audio_library, audio_dl_handle);
+				try {
+					deleteLib(library, dl_handle);
+					deleteAudioLib(audio_library, audio_dl_handle);
+				} catch (std::runtime_error & e) {
+					std::cout << "Runtime Error: " << e.what() << std::endl;
+				}
 				std::cout << "Score: " << core.getData()._score << "\nDEAD\n";
 				break;
 			}
