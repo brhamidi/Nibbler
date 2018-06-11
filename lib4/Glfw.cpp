@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/11 17:00:28 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 18:07:31 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,6 @@ Glfw::Glfw(short x, short y)
 		};
 		FillArray(this->_FoodColor, color, 48);
 	}
-
-/*
-		0, 0, 0,   0, 0, 1,   0, 1, 1,   0, 1, 0,
-		1, 0, 0,   1, 0, 1,   1, 1, 1,   1, 1, 0,
-		0, 0, 0,   0, 0, 1,   1, 0, 1,   1, 0, 0,
-		0, 1, 0,   0, 1, 1,   1, 1, 1,   1, 1, 0,
-		0, 0, 0,   0, 1, 0,   1, 1, 0,   1, 0, 0,
-		0, 0, 1,   0, 1, 1,   1, 1, 1,   1, 0, 1
-*/
 
 	this->_nibbler =
 		"1111111000011001111111111100111111111110001100000000001111111110000111111111\n"
@@ -252,7 +243,6 @@ Glfw::Glfw(short x, short y)
 
 void	Glfw::_stop(void)
 {
-	delete [] this->_vertices;
 	glfwDestroyWindow(this->_window);
 	glfwTerminate();
 }
@@ -274,10 +264,8 @@ std::list < int > *Glfw::getEventPoll(void)
 	return &this->_eventPoll;
 }
 
-void	Glfw::_init(short x, short y)
+void	Glfw::_init(short, short)
 {
-	this->_vertices = new vertexMap[x * y * 4]();
-
 	this->_directionMap[GLFW_KEY_RIGHT] = 1;
 	this->_directionMap[GLFW_KEY_LEFT] = -1;
 
