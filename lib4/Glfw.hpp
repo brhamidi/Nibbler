@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/11 16:53:21 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 17:14:50 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ class Glfw : public IGraphicLib
 		std::list <int> *getEventPoll(void);
 
 	private:
+		Glfw(Glfw const &);
+		Glfw & operator=(Glfw const &);
+
 		void	_init(short, short);
 		void	_stop(void);
 		void	_setVerticesDraw(Data const &, int, dataInfo);
