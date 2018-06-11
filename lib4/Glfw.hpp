@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:15 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/08 18:18:50 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 13:30:47 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ class Glfw : public IGraphicLib
 		void	_printMiniMap(void);
 		void	_printFloor(vertexMap src, Data const & data, int, int);
 		void	_printScore(int);
-		void	_setScoreVertice(vertexMap src, int h, void	(*fct)(float, float , int , GLfloat *, Data const &, vertexMap), float offx, float offy);
+		void	_setScoreVertice(vertexMap src, int h, float offx, float offy);
 		void	_printScoreNumber(int, float, float);
 		void	_printString(std::string str, float, float);
 

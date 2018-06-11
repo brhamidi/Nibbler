@@ -6,7 +6,7 @@
 /*   By: msrun <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/29 17:12:10 by msrun             #+#    #+#             */
-/*   Updated: 2018/06/08 19:02:14 by msrun            ###   ########.fr       */
+/*   Updated: 2018/06/11 13:30:31 by msrun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +239,7 @@ Glfw::Glfw(short x, short y)
 	this->_lengthObj[2] = 2;
 	this->_lengthObj[3] = 3;
 	this->_lengthObj[4] = 3;
-	this->_lengthObj[5] = 20;
+	this->_lengthObj[5] = 200;
 	this->_lengthObj[6] = 3;
 	this->_lengthObj[7] = 3;
 	this->_lengthObj[8] = 4;
@@ -500,7 +500,7 @@ void	Glfw::_printString(std::string str, float offx, float offy)
 		else
 		{
 			if (c != '0')
-				_setScoreVertice({h * 2 + 0.f, w * 2 + 0.f , 0.f, 0.f, 1.f}, 1, setForMiniMap, offx, offy);
+				_setScoreVertice({h * 2 + 0.f, w * 2 + 0.f , 0.f, 0.f, 1.f}, 1, offx, offy);
 			w++;
 		}
 	}
@@ -521,7 +521,7 @@ void	Glfw::_printScore(int score)
 }
 
 
-void	Glfw::_setScoreVertice(vertexMap src, int h, void (*fct)(float, float , int , GLfloat *, Data const &, vertexMap), float offx, float offy)
+void	Glfw::_setScoreVertice(vertexMap src, int h, float offx, float offy)
 {
 	src.y += 1;
 	GLfloat vertices[12];
