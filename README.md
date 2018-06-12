@@ -4,11 +4,7 @@ Version of the game Snake, with 3 different GUIs. These GUIs being shared librar
 
 ### Prerequisites
 
-brew install on Home directory
-
-```
-Give examples
-```
+brew installed on Home directory
 
 ### Installing
 
@@ -17,7 +13,7 @@ make
 
 ## Authors
 
-* **Matthias srun** - ***Brahim Hamidi* - [](https://github.com/Matthias-Srun)
+* **Matthias srun** - **Brahim Hamidi** * - [Msrun](https://github.com/Matthias-Srun)
 
 ## License
 
