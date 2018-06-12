@@ -12,7 +12,7 @@ Give examples
 
 ### Installing
 
-./setup
+./setup </br>
 make
 
 ## Authors
@@ -21,4 +21,4 @@ make
 
 ## License
 
-This project is licensed under the GPL 3 License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GPL 3 License - see the [LICENSE](LICENSE) file for details
