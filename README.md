@@ -11,6 +11,12 @@ brew installed on Home directory
 ./setup </br>
 make
 
+## Example
+
+![Sfml Mode](https://raw.githubusercontent.com/brhamidi/Nibbler/master/img/imgSfml.png)
+![Opengl Mode](https://raw.githubusercontent.com/brhamidi/Nibbler/master/img/imgOpengl.png)
+![Sdl2 Mode](https://raw.githubusercontent.com/brhamidi/Nibbler/master/img/imgSdl.png)
+
 ## Authors
 
 * **Matthias srun** - **Brahim Hamidi** - [Msrun](https://github.com/Matthias-Srun)
