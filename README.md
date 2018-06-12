@@ -13,7 +13,7 @@ make
 
 ## Authors
 
-* **Matthias srun** - **Brahim Hamidi** * - [Msrun](https://github.com/Matthias-Srun)
+* **Matthias srun** - **Brahim Hamidi** - [Msrun](https://github.com/Matthias-Srun)
 
 ## License
 
