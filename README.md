@@ -12,9 +12,11 @@ brew installed on Home directory
 make
 
 ## Example
-
+**SFML**</br>
 ![Sfml Mode](https://raw.githubusercontent.com/brhamidi/Nibbler/master/img/imgSfml.png)
+</br>**OPENGL**</br>
 ![Opengl Mode](https://raw.githubusercontent.com/brhamidi/Nibbler/master/img/imgOpengl.png)
+</br>**SDL2**</br>
 ![Sdl2 Mode](https://raw.githubusercontent.com/brhamidi/Nibbler/master/img/imgSdl.png)
 
 ## Authors
