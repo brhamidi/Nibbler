@@ -1,4 +1,4 @@
-# Nibbler
+# Snake
 
 Version of the game Snake, with 3 different GUIs. These GUIs being shared libraries.
 
@@ -21,7 +21,7 @@ make
 
 ## Authors
 
-* **Matthias srun** - **Brahim Hamidi** - [Msrun](https://github.com/Matthias-Srun)
+* **[Matthias Srun](https://github.com/Matthias-Srun)** - **[Brahim Hamidi](https://github.com/brhamidi)**
 
 ## License
 
